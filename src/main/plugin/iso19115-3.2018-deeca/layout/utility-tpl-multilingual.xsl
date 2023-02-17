@@ -9,13 +9,13 @@
   exclude-result-prefixes="#all">
 
   <!-- Get the main metadata languages -->
-  <xsl:template name="get-iso19115-3.2018-language">
+  <xsl:template name="get-iso19115-3.2018-deeca-language">
     <xsl:value-of select="$metadata/mdb:defaultLocale/
     lan:PT_Locale/lan:language/lan:LanguageCode/@codeListValue"/>
   </xsl:template>
 
   <!-- Get the list of other languages in JSON -->
-  <xsl:template name="get-iso19115-3.2018-other-languages-as-json">
+  <xsl:template name="get-iso19115-3.2018-deeca-other-languages-as-json">
     <xsl:variable name="langs">
       <xsl:choose>
         <xsl:when test="$metadata/gn:info[position() = last()]/isTemplate = 's'">
@@ -28,7 +28,7 @@
         </xsl:when>
         <xsl:otherwise>
           <xsl:variable name="mainLanguage">
-            <xsl:call-template name="get-iso19115-3.2018-language"/>
+            <xsl:call-template name="get-iso19115-3.2018-deeca-language"/>
           </xsl:variable>
           <xsl:if test="$mainLanguage">
             <xsl:variable name="mainLanguageId"
@@ -49,9 +49,9 @@
   </xsl:template>
 
   <!-- Get the list of other languages -->
-  <xsl:template name="get-iso19115-3.2018-other-languages">
+  <xsl:template name="get-iso19115-3.2018-deeca-other-languages">
     <xsl:variable name="mainLanguage">
-      <xsl:call-template name="get-iso19115-3.2018-language"/>
+      <xsl:call-template name="get-iso19115-3.2018-deeca-language"/>
     </xsl:variable>
 
     <xsl:choose>
@@ -80,7 +80,7 @@
        are reported with an xml:lang attribute indicating
        the language of the text.
     -->
-  <xsl:template name="get-iso19115-3.2018-localised"
+  <xsl:template name="get-iso19115-3.2018-deeca-localised"
                 mode="localised"
                 match="*[lan:PT_FreeText or gco:CharacterString or gcx:Anchor]">
     <xsl:param name="langId"/>

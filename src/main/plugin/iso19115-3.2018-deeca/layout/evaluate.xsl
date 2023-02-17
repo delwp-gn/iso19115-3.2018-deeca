@@ -34,7 +34,7 @@
 
 
   <!-- The following templates usually delegates all to iso19139. -->
-  <xsl:template name="evaluate-iso19115-3.2018">
+  <xsl:template name="evaluate-iso19115-3.2018-deeca">
     <xsl:param name="base" as="node()"/>
     <xsl:param name="in"/>
     <!-- <xsl:message>in xml <xsl:copy-of select="$base"></xsl:copy-of></xsl:message>
@@ -58,7 +58,7 @@
   </xsl:template>
 
   <!-- Evaluate XPath returning a boolean value. -->
-  <xsl:template name="evaluate-iso19115-3.2018-boolean">
+  <xsl:template name="evaluate-iso19115-3.2018-deeca-boolean">
     <xsl:param name="base" as="node()"/>
     <xsl:param name="in"/>
 

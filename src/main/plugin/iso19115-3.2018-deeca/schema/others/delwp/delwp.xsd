@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<schema xmlns="http://www.w3.org/2001/XMLSchema" 
-        xmlns:gco="http://standards.iso.org/iso/19115/-3/gco/1.0" 
-        xmlns:cit="http://standards.iso.org/iso/19115/-3/cit/2.0" 
-        xmlns:delwp="https://github.com/geonetwork-delwp/iso19115-3.2018" 
-        xmlns:mcc="http://standards.iso.org/iso/19115/-3/mcc/1.0" 
-        xmlns:mrd="http://standards.iso.org/iso/19115/-3/mrd/1.0" 
-        elementFormDefault="qualified" 
-        targetNamespace="https://github.com/geonetwork-delwp/iso19115-3.2018" 
+<schema xmlns="http://www.w3.org/2001/XMLSchema"
+        xmlns:gco="http://standards.iso.org/iso/19115/-3/gco/1.0"
+        xmlns:cit="http://standards.iso.org/iso/19115/-3/cit/2.0"
+        xmlns:delwp="https://github.com/geonetwork-delwp/iso19115-3.2018"
+        xmlns:mcc="http://standards.iso.org/iso/19115/-3/mcc/1.0"
+        xmlns:mrd="http://standards.iso.org/iso/19115/-3/mrd/1.0"
+        elementFormDefault="qualified"
+        targetNamespace="https://github.com/geonetwork-delwp/iso19115-3.2018"
         version="1.0">
-  <import namespace="http://standards.iso.org/iso/19115/-3/gco/1.0" schemaLocation="https://schemas.isotc211.org/19115/-3/gco/1.0/gco.xsd"/>
-  <import namespace="http://standards.iso.org/iso/19115/-3/cit/2.0" schemaLocation="https://schemas.isotc211.org/19115/-3/cit/2.0/cit.xsd"/>
-  <import namespace="http://standards.iso.org/iso/19115/-3/mrd/1.0" schemaLocation="https://schemas.isotc211.org/19115/-3/mrd/1.0/mrd.xsd"/>
+  <import namespace="http://standards.iso.org/iso/19115/-3/gco/1.0" schemaLocation="../../standards.iso.org/19115/-3/gco/1.0/gco.xsd"/>
+  <import namespace="http://standards.iso.org/iso/19115/-3/cit/2.0" schemaLocation="../../standards.iso.org/19115/-3/cit/2.0/cit.xsd"/>
+  <import namespace="http://standards.iso.org/iso/19115/-3/mrd/1.0" schemaLocation="../../standards.iso.org/19115/-3/mrd/1.0/mrd.xsd"/>
 
 <!-- A gco:Record type that can be used as a child of elements
-     such as mac:otherProperty 
+     such as mac:otherProperty
 
      eg. for projects:
 
@@ -37,7 +37,7 @@
                         <gco:CharacterString>Photogrammetry project</gco:CharacterString>
                       </delwp:purpose>
                  </delwp:MD_ProjectPartner>
-               </delwp:projectPartner> 
+               </delwp:projectPartner>
              </delwp:MD_ProjectDetails>
            </delwp:projectDetails>
          </gco:Record>
@@ -71,7 +71,7 @@
                  <delwp:MD_DataDetails>
                    <delwp:rasterDetails>
                      <delwp:MD_RasterDetails>
-                         
+
                      </delwp:MD_RasterDetails>
                    </delwp:rasterDetails>
                  </delwp:MD_DataDetails>
@@ -187,16 +187,16 @@
       </sequence>
       <attribute ref="gco:nilReason"/>
     </complexType>
-  
+
     <element name="MD_EllipsoidFormatCode" substitutionGroup="gco:CharacterString" type="gco:CodeListValue_Type"/>
-  
+
     <complexType name="MD_EllipsoidFormatCode_PropertyType">
       <sequence minOccurs="0">
         <element ref="delwp:MD_EllipsoidFormatCode"/>
       </sequence>
       <attribute ref="gco:nilReason"/>
     </complexType>
-  
+
     <element name="MD_GeoidVerticalDatumCode" substitutionGroup="gco:CharacterString" type="gco:CodeListValue_Type"/>
 
     <complexType name="MD_GeoidVerticalDatumCode_PropertyType">
@@ -205,7 +205,7 @@
       </sequence>
       <attribute ref="gco:nilReason"/>
     </complexType>
-  
+
     <!-- BEGIN MD_Classification -->
 
     <element name="MD_Classification" substitutionGroup="gco:AbstractObject" type="delwp:MD_Classification_Type"/>
@@ -217,7 +217,7 @@
       <attributeGroup ref="gco:ObjectReference"/>
       <attribute ref="gco:nilReason"/>
     </complexType>
-  
+
     <complexType name="MD_Classification_Type">
       <complexContent>
         <extension base="gco:AbstractObject_Type">
@@ -244,7 +244,7 @@
 
     <!-- END MD_Classification -->
 
-  
+
   <complexType name="MD_PointCloudDetails_Type">
     <complexContent>
       <extension base="gco:AbstractObject_Type">
@@ -369,7 +369,7 @@
       <attributeGroup ref="gco:ObjectReference"/>
       <attribute ref="gco:nilReason"/>
     </complexType>
-  
+
     <!-- MD_AerialSurveyDetails -->
 
     <element name="MD_AerialSurveyDetails" substitutionGroup="gco:AbstractObject" type="delwp:MD_AerialSurveyDetails_Type"/>
@@ -390,16 +390,16 @@
         </sequence>
         <attribute ref="gco:nilReason"/>
       </complexType>
-    
+
       <element name="MD_FlyingHeightUnitCode" substitutionGroup="gco:CharacterString" type="gco:CodeListValue_Type"/>
-    
+
       <complexType name="MD_FlyingHeightUnitCode_PropertyType">
         <sequence minOccurs="0">
           <element ref="delwp:MD_FlyingHeightUnitCode"/>
         </sequence>
         <attribute ref="gco:nilReason"/>
       </complexType>
-  
+
     <complexType name="MD_AerialSurveyDetails_Type">
       <complexContent>
         <extension base="gco:AbstractObject_Type">
@@ -457,7 +457,7 @@
       <attributeGroup ref="gco:ObjectReference"/>
       <attribute ref="gco:nilReason"/>
     </complexType>
-  
+
       <element name="MD_PhotoTypeCode" substitutionGroup="gco:CharacterString" type="gco:CodeListValue_Type"/>
 
       <complexType name="MD_PhotoTypeCode_PropertyType">
@@ -499,7 +499,7 @@
         </extension>
       </complexContent>
     </complexType>
-  
+
     <!-- END MD_AerialPhoto -->
 
     <!-- MD_Satellite -->
@@ -807,7 +807,7 @@
         <documentation>Description: Describes the type of platform that was used to collect the data. This element is used in a number of complex types</documentation>
       </annotation>
     </element>
-  
+
     <element name="MD_AssemblyCode" substitutionGroup="gco:CharacterString" type="gco:CodeListValue_Type"/>
 
     <complexType name="MD_AssemblyCode_PropertyType">
@@ -825,12 +825,12 @@
       </sequence>
       <attribute ref="gco:nilReason"/>
     </complexType>
-  
+
   <complexType name="MD_DatasetDetails_Type">
     <complexContent>
       <extension base="gco:AbstractObject_Type">
     <sequence minOccurs="0">
-      <element ref="delwp:platformType" minOccurs="1"/> 
+      <element ref="delwp:platformType" minOccurs="1"/>
       <element minOccurs="1" maxOccurs="unbounded" name="assembly" type="delwp:MD_AssemblyCode_PropertyType">
         <annotation>
           <documentation>Description: Describes the way in which the data has been assembled</documentation>
@@ -870,7 +870,7 @@
            <element name="projectDetails" type="delwp:MD_ProjectDetails_PropertyType"/>
            <element name="datasetDetails" type="delwp:MD_DatasetDetails_PropertyType"/>
         </choice>
-      </extension> 
+      </extension>
     </complexContent>
   </complexType>
 
@@ -880,9 +880,9 @@
     <complexContent>
       <extension base="gco:AbstractObject_Type">
         <sequence minOccurs="0">
-          <element ref="delwp:platformType" minOccurs="1"/> 
+          <element ref="delwp:platformType" minOccurs="1"/>
         </sequence>
-      </extension> 
+      </extension>
     </complexContent>
   </complexType>
 
@@ -892,7 +892,7 @@
 
   <element name="MD_Attribute" substitutionGroup="gco:AbstractObject" type="delwp:MD_Attribute_Type"/>
 
-  <!-- This type is used as the xsi:type on the 
+  <!-- This type is used as the xsi:type on the
        mrc:MD_SampleDimension/mrc:otherProperty/gco:Record element to
        hold column (attribute) details about MetaShare datasets -->
 
@@ -969,7 +969,7 @@
             </annotation>
           </element>
         </sequence>
-      </extension> 
+      </extension>
     </complexContent>
   </complexType>
 

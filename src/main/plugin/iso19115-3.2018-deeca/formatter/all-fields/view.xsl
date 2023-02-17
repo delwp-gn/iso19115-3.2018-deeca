@@ -24,9 +24,9 @@
                 xmlns:gex="http://standards.iso.org/iso/19115/-3/gex/1.0"
                 xmlns:gfc="http://standards.iso.org/iso/19110/gfc/1.1"
 
-                xmlns:mmi="http://standards.iso.org/iso/19115/-3/mmi/1.0" 
-                xmlns:mac="http://standards.iso.org/iso/19115/-3/mac/2.0" 
-                xmlns:delwp="https://github.com/geonetwork-delwp/iso19115-3.2018" 
+                xmlns:mmi="http://standards.iso.org/iso/19115/-3/mmi/1.0"
+                xmlns:mac="http://standards.iso.org/iso/19115/-3/mac/2.0"
+                xmlns:delwp="https://github.com/geonetwork-delwp/iso19115-3.2018"
 
                 xmlns:java="java:org.fao.geonet.util.XslUtil"
 
@@ -73,8 +73,8 @@ encoding="UTF-8" indent="yes"/>
   <xsl:include href="../../update-fixed-info-subtemplate.xsl"/>
 
   <!-- The core formatter XSL layout based on the editor configuration -->
-  <xsl:include href="sharedFormatterDir/xslt/render-layout.xsl"/> 
-  
+  <xsl:include href="sharedFormatterDir/xslt/render-layout.xsl"/>
+
   <!-- <xsl:include href="../../../../../data/formatter/xslt/render-layout.xsl"/> -->
 
   <!-- Define the metadata to be loaded for this schema plugin-->
@@ -91,7 +91,7 @@ encoding="UTF-8" indent="yes"/>
   <!-- Specific schema rendering -->
   <xsl:template mode="getMetadataTitle" match="mdb:MD_Metadata">
     <xsl:for-each select="mdb:identificationInfo/*/mri:citation/*/cit:title">
-      <xsl:call-template name="get-iso19115-3-localised">
+      <xsl:call-template name="get-iso19115-3-deeca-localised">
         <xsl:with-param name="langId" select="$langId"/>
       </xsl:call-template>
     </xsl:for-each>
@@ -99,7 +99,7 @@ encoding="UTF-8" indent="yes"/>
 
   <xsl:template mode="getMetadataAbstract" match="mdb:MD_Metadata">
     <xsl:for-each select="mdb:identificationInfo/*/mri:abstract">
-      <xsl:call-template name="get-iso19115-3-localised">
+      <xsl:call-template name="get-iso19115-3-deeca-localised">
         <xsl:with-param name="langId" select="$langId"/>
       </xsl:call-template>
     </xsl:for-each>
@@ -124,10 +124,10 @@ encoding="UTF-8" indent="yes"/>
 
           <img class="gn-img-thumbnail img-thumbnail center-block"
             src="{mcc:linkage/cit:CI_OnlineResource/cit:linkage/*}"/>
-          
+
           <xsl:for-each select="mcc:linkage/cit:CI_OnlineResource/cit:description">
             <div class="gn-img-thumbnail-caption">
-              <xsl:call-template name="get-iso19115-3-localised">
+              <xsl:call-template name="get-iso19115-3-deeca-localised">
                 <xsl:with-param name="langId" select="$langId"/>
               </xsl:call-template>
             </div>
@@ -143,10 +143,10 @@ encoding="UTF-8" indent="yes"/>
                   alt="{mcc:fileDescription}"
                   data-ng-src="{mcc:fileName/*}"/>
           </div>
-          
+
           <xsl:for-each select="mcc:fileDescription">
             <div class="gn-img-thumbnail-caption">
-              <xsl:call-template name="get-iso19115-3-localised">
+              <xsl:call-template name="get-iso19115-3-deeca-localised">
                 <xsl:with-param name="langId" select="$langId"/>
               </xsl:call-template>
             </div>
@@ -163,8 +163,8 @@ encoding="UTF-8" indent="yes"/>
       <section class="gn-md-side-associated">
         <style type="text/css">
           .assoc-table {
-            table-layout: fixed; 
-            width: 100%; 
+            table-layout: fixed;
+            width: 100%;
             font-size: 12px;
             border: 1px solid rgb(221, 221, 221);
           }
@@ -172,7 +172,7 @@ encoding="UTF-8" indent="yes"/>
             border: 1px solid rgb(221, 221, 221);
           }
           .assoc-table tr td div {
-            word-wrap: break-word; 
+            word-wrap: break-word;
             overflow-wrap:break-word;
             margin: 5px;
           }
@@ -196,7 +196,7 @@ encoding="UTF-8" indent="yes"/>
                 <span style="margin-left: 5px">Link</span>
               </th>
             </tr>
-            
+
             <xsl:for-each select="*//mri:associatedResource">
 
               <tr class="assoc-item">
@@ -229,25 +229,25 @@ encoding="UTF-8" indent="yes"/>
         itemscope="itemscope"
         itemtype="http://schema.org/description">
         <pre style="
-          font: inherit; 
-          background-color: inherit; 
-          border: none; 
-          color: inherit; 
+          font: inherit;
+          background-color: inherit;
+          border: none;
+          color: inherit;
           overflow-x: auto;
           white-space: pre-line;
           word-break: keep-all;
           padding: 0;
           margin: 0;">
             <xsl:for-each select="mdb:identificationInfo/*/mri:abstract">
-            <xsl:call-template name="get-iso19115-3-localised">
+            <xsl:call-template name="get-iso19115-3-deeca-localised">
               <xsl:with-param name="langId" select="$langId"/>
             </xsl:call-template>
           </xsl:for-each>
         </pre>
-      
+
     </div>
 
-<!-- 
+<!--
     <!- - Citation - ->
     <table class="table">
       <tr class="active">
@@ -607,8 +607,8 @@ encoding="UTF-8" indent="yes"/>
             </xsl:for-each>
 
           </xsl:for-each>
-          
-          
+
+
         </div>
       </div>
     </div>
@@ -670,7 +670,7 @@ encoding="UTF-8" indent="yes"/>
       </xsl:otherwise>
     </xsl:choose>
   </xsl:template>
-  
+
 
   <!-- Time period handling - catch elements with no contents. I.e. indeterminatePosition attribute is set -->
   <!-- <xsl:template mode="render-field" match="gml:beginPosition[not(normalize-space())]">
@@ -682,7 +682,7 @@ encoding="UTF-8" indent="yes"/>
         <xsl:value-of select="tr:node-label(tr:create($schema), @indeterminatePosition, null)" />
       </dd>
     </dl>
-    
+
   </xsl:template> -->
 
   <!-- render attributes -->
@@ -720,7 +720,7 @@ encoding="UTF-8" indent="yes"/>
         background-color: rgb(249, 249, 249);
       }
     </style>
-    <div class="tab-row clearfix"> 
+    <div class="tab-row clearfix">
       <div class="tab-cell tab-head">Name</div>
       <div class="tab-cell tab-head">Obligation</div>
       <div class="tab-cell tab-head">Unique</div>
@@ -774,7 +774,7 @@ encoding="UTF-8" indent="yes"/>
           <span><xsl:value-of select="$schemaStrings/metadataInXML"/></span>
         </a>
       </dd>
-      
+
     </dl>
   </xsl:template>
 
@@ -936,7 +936,7 @@ encoding="UTF-8" indent="yes"/>
                 match="delwp:surveyDetails"
                 priority="100">
 
-    <h4><xsl:value-of select="tr:node-label(tr:create($schema), name(delwp:MD_SurveyDetails/delwp:aerialSurveyDetails/delwp:MD_AerialSurveyDetails), null)" /></h4>  
+    <h4><xsl:value-of select="tr:node-label(tr:create($schema), name(delwp:MD_SurveyDetails/delwp:aerialSurveyDetails/delwp:MD_AerialSurveyDetails), null)" /></h4>
 
     <xsl:for-each select="delwp:MD_SurveyDetails/delwp:aerialSurveyDetails/delwp:MD_AerialSurveyDetails/*">
       <xsl:choose>
@@ -984,7 +984,7 @@ encoding="UTF-8" indent="yes"/>
   <xsl:template mode="render-field"
                 match="delwp:dataDetails"
                 priority="100">
-    
+
     <h4><xsl:value-of select="tr:node-label(tr:create($schema), name(delwp:MD_DataDetails/delwp:rasterDetails/delwp:MD_RasterDetails), null)" /></h4>
 
     <xsl:for-each select="delwp:MD_DataDetails/delwp:rasterDetails/delwp:MD_RasterDetails/*">
@@ -992,7 +992,7 @@ encoding="UTF-8" indent="yes"/>
         <xsl:when test="@gco:nilReason">
           <dl>
             <dt>
-              
+
             </dt>
             <dd>
                 Missing
@@ -1026,12 +1026,12 @@ encoding="UTF-8" indent="yes"/>
     </xsl:for-each>
 
   </xsl:template>
-  
+
   <xsl:template mode="render-field" match="*//mac:operation/mac:MI_Operation" priority="100">
-    
+
     <div class="entry name">
       <h4><xsl:value-of select="gn-fn-render:get-schema-strings($schemaStrings, local-name(../.))"/></h4>
-      <dl> 
+      <dl>
         <dt>
            <xsl:value-of select="tr:node-label(tr:create($schema), name(mac:status), null)"/>
         </dt>
@@ -1048,13 +1048,13 @@ encoding="UTF-8" indent="yes"/>
 
           </xsl:for-each>
         </div>
-        
+
       </xsl:for-each>
     </div>
 
   </xsl:template>
 
-  
+
 
   <xsl:template mode="render-field"
                 match="mrd:distributionFormat[position() > 1]"

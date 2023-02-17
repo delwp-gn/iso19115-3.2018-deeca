@@ -1,32 +1,8 @@
-# ISO 19115-3:2018 schema plugin
+# ISO 19115-3:2018-deeca schema plugin
 
-This is the ISO19115-3:2018 schema plugin included in core-geonetwork.
+Metadata Profile of ISO19115-3 (2018) for Victorian Government Department of Environment, Land, Water and Planning (DEECA), Australia.
 
-The main changes with the previous ISO19115-3 plugin are:
-
-* Update to latest XSD (https://github.com/ISO-TC211/XML/wiki/Schema-Updates)
-* Add support for 19115-2 Imagery standards
-* directly included in core-geonetwork
-
-## Reference documents:
-
-* http://www.iso.org/iso/catalogue_detail.htm?csnumber=53798
-* http://www.iso.org/iso/catalogue_detail.htm?csnumber=32579
-* https://github.com/ISO-TC211/XML/
- 
-## Talks 
-
-* [Using the latest ISO Standard for
-Geographic Information (ISO19115-1)
-for an INSPIRE
-Discovery Service](http://cnig.gouv.fr/wp-content/uploads/2015/06/titellus_fx_prunayre_iso19115-3_inspire2015.pdf) (INSPIRE conference 2015)
-
-## Catalogue using ISO19115-3
-
-* SPW / Metawal http://metawal.wallonie.be/
-* Ifremer / Sextant https://sextant.ifremer.fr/ (only some projects - EMODnet Checkpoint, CERSAT)
-
-## Description:
+## Description
 
 This plugin is composed of:
 
@@ -42,7 +18,41 @@ This plugin is composed of:
 * multilingual metadata support
 * validation (XSD and Schematron)
 
-## Metadata rules:
+## Building
+
+### Adding the plugin to the source code
+
+The best approach is to add the plugin as a submodule:
+
+1. Use add-schema.sh for automatic deployment:
+
+   ```
+   ./add-schema.sh /iso19115-3.2018-deeca https://github.com/delwp-gn/iso19115-3.2018-deeca 3.12.x
+   ```
+
+2. Build the application:
+
+   ```
+   mvn clean install -Penv-prod -DskipTests
+   ```
+
+3. Once the application is built, the war file contains the schema plugin:
+
+   ```
+   cd web
+   mvn jetty:run -Penv-dev
+   ```
+
+### Deploy locally built profile into existing installation
+
+1. Copy the `iso19115-3.2018-deeca` folder from `schemas/iso19115-3.2018-deeca/src/main/plugin` into geonetwork `WEB-INF/data/config/schema_plugins/`.
+
+2. Copy `schema-iso19115-3.2018-deeca` jar from `target` into geonetwork `WEB-INF/lib`.
+
+3. Restart geonetwork
+
+
+## Metadata rules
 
 ### Metadata identifier
 
@@ -100,7 +110,7 @@ Validation steps are first XSD validation made on the schema, then the schematro
 * INSPIRE rules
 
 
-## CSW requests:
+## CSW requests
 
 If requesting using output schema http://www.isotc211.org/2005/gmd an ISO19139 record is returned. 
 To retrieve the record in ISO19115-3.2018, use http://standards.iso.org/iso/19115/-3/mdb/2.0 output schema.
@@ -130,6 +140,24 @@ Note: outputSchema = own will also return the record in ISO19115-3.
 
 * Better support of mac:childOperation 
 
+
+## Reference documents:
+
+* http://www.iso.org/iso/catalogue_detail.htm?csnumber=53798
+* http://www.iso.org/iso/catalogue_detail.htm?csnumber=32579
+* https://github.com/ISO-TC211/XML/
+
+## Talks
+
+* [Using the latest ISO Standard for
+  Geographic Information (ISO19115-1)
+  for an INSPIRE
+  Discovery Service](http://cnig.gouv.fr/wp-content/uploads/2015/06/titellus_fx_prunayre_iso19115-3_inspire2015.pdf) (INSPIRE conference 2015)
+
+## Catalogue using ISO19115-3
+
+* SPW / Metawal http://metawal.wallonie.be/
+* Ifremer / Sextant https://sextant.ifremer.fr/ (only some projects - EMODnet Checkpoint, CERSAT)
 
 ## Community
 

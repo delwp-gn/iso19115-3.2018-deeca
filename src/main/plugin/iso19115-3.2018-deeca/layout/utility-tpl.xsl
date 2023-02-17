@@ -21,16 +21,16 @@
 
   <xsl:include href="utility-tpl-multilingual.xsl"/>
 
-  <xsl:template name="get-iso19115-3.2018-is-service">
+  <xsl:template name="get-iso19115-3.2018-deeca-is-service">
     <xsl:value-of
             select="count($metadata/mdb:identificationInfo/srv:SV_ServiceIdentification) > 0"/>
   </xsl:template>
 
-  <xsl:template name="get-iso19115-3.2018-title">
+  <xsl:template name="get-iso19115-3.2018-deeca-title">
     <xsl:value-of select="$metadata/mdb:identificationInfo/*/mri:citation/*/cit:title/gco:CharacterString"/>
   </xsl:template>
 
-  <xsl:template name="get-iso19115-3.2018-extents-as-json">[
+  <xsl:template name="get-iso19115-3.2018-deeca-extents-as-json">[
    <xsl:for-each select="//mdb:identificationInfo/*/mri:extent
                           //gex:geographicElement/gex:EX_GeographicBoundingBox[
             number(gex:westBoundLongitude/gco:Decimal)
@@ -55,7 +55,7 @@
     ]
   </xsl:template>
 
-  <xsl:template name="get-iso19115-3.2018-online-source-config">
+  <xsl:template name="get-iso19115-3.2018-deeca-online-source-config">
     <xsl:param name="pattern"/>
     <config>
       <xsl:for-each select="$metadata/descendant::mrd:onLine[

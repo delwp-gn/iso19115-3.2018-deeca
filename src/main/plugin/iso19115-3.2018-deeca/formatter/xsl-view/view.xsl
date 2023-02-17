@@ -81,7 +81,7 @@
   <!-- Specific schema rendering -->
   <xsl:template mode="getMetadataTitle" match="mdb:MD_Metadata">
     <xsl:for-each select="mdb:identificationInfo/*/mri:citation/*/cit:title">
-      <xsl:call-template name="get-iso19115-3.2018-localised">
+      <xsl:call-template name="get-iso19115-3.2018-deeca-localised">
         <xsl:with-param name="langId" select="$langId"/>
       </xsl:call-template>
     </xsl:for-each>
@@ -89,7 +89,7 @@
 
   <xsl:template mode="getMetadataAbstract" match="mdb:MD_Metadata">
     <xsl:for-each select="mdb:identificationInfo/*/mri:abstract">
-      <xsl:call-template name="get-iso19115-3.2018-localised">
+      <xsl:call-template name="get-iso19115-3.2018-deeca-localised">
         <xsl:with-param name="langId" select="$langId"/>
       </xsl:call-template>
     </xsl:for-each>
@@ -113,7 +113,7 @@
 
       <xsl:for-each select="mcc:fileDescription|mcc:linkage//cit:description">
         <div class="gn-img-thumbnail-caption">
-          <xsl:call-template name="get-iso19115-3.2018-localised">
+          <xsl:call-template name="get-iso19115-3.2018-deeca-localised">
             <xsl:with-param name="langId" select="$langId"/>
           </xsl:call-template>
         </div>
@@ -138,7 +138,7 @@
         itemscope="itemscope"
         itemtype="http://schema.org/description">
       <xsl:for-each select="mdb:identificationInfo/*/mri:abstract">
-        <xsl:call-template name="get-iso19115-3.2018-localised">
+        <xsl:call-template name="get-iso19115-3.2018-deeca-localised">
           <xsl:with-param name="langId" select="$langId"/>
         </xsl:call-template>
       </xsl:for-each>
@@ -186,7 +186,7 @@
           <!-- Title -->
           <xsl:for-each select="mdb:identificationInfo/*/mri:citation/*/cit:title">
             <p><b>
-            <xsl:call-template name="get-iso19115-3.2018-localised">
+            <xsl:call-template name="get-iso19115-3.2018-deeca-localised">
               <xsl:with-param name="langId" select="$langId"/>
             </xsl:call-template>
             </b></p>
@@ -327,7 +327,7 @@
     <br/>
   </xsl:template>
 
-  <xsl:template mode="render-field" 
+  <xsl:template mode="render-field"
                 match="gex:EX_BoundingPolygon"
                 priority="100">
     <xsl:variable name="gml31stuff">
@@ -377,7 +377,7 @@
            <xsl:value-of select="."/>
          </xsl:otherwise>
       </xsl:choose>
-    </xsl:element> 
+    </xsl:element>
   </xsl:template>
 
   <!-- A contact is displayed with its role as header -->
@@ -747,7 +747,7 @@
                 <columns>
                   <xsl:for-each select="*">
                     <td id="{name()}">
-                      <xsl:value-of select="."/> 
+                      <xsl:value-of select="."/>
                     </td>
                   </xsl:for-each>
                 </columns>
@@ -763,7 +763,7 @@
                   </xsl:otherwise>
                 </xsl:choose>
               </xsl:for-each>
-            </tr>      
+            </tr>
           </xsl:for-each>
         </table>
       </dd>
@@ -798,10 +798,10 @@
          <tr>
            <xsl:for-each select="descendant::*[starts-with(name(),'delwp:class')]">
              <td>
-               <xsl:value-of select="*"/> 
+               <xsl:value-of select="*"/>
              </td>
            </xsl:for-each>
-         </tr>      
+         </tr>
        </table>
       </dd>
     </dl>
