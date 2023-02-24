@@ -2,10 +2,7 @@ package org.fao.geonet.schema.iso19115_3_2018_deeca;
 
 import org.jdom.Namespace;
 
-/**
- * Created by francois on 3/26/14.
- */
-public class ISO19115_3_2018Namespaces {
+public class ISO19115_3_2018_DEECA_Namespaces {
     public static final Namespace GCO =
             Namespace.getNamespace("gco",
                     "http://standards.iso.org/iso/19115/-3/gco/1.0");
@@ -15,6 +12,9 @@ public class ISO19115_3_2018Namespaces {
     public static final Namespace MRI =
             Namespace.getNamespace("mri",
                     "http://standards.iso.org/iso/19115/-3/mri/1.0");
+    public static final Namespace CIT =
+            Namespace.getNamespace("cit",
+                    "http://standards.iso.org/iso/19115/-3/cit/2.0");
     public static final Namespace SRV =
             Namespace.getNamespace("srv",
                     "http://standards.iso.org/iso/19115/-3/srv/2.1");
