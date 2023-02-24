@@ -1,11 +1,8 @@
-package org.fao.geonet.schema.iso19115_3_2018;
+package org.fao.geonet.schema.iso19115_3_2018_deeca;
 
 import org.jdom.Namespace;
 
-/**
- * Created by francois on 3/26/14.
- */
-public class ISO19115_3_2018Namespaces {
+public class ISO19115_3_2018_DEECA_Namespaces {
     public static final Namespace GCO =
             Namespace.getNamespace("gco",
                     "http://standards.iso.org/iso/19115/-3/gco/1.0");

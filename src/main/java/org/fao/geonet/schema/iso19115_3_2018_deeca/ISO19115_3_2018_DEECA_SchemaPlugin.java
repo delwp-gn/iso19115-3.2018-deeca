@@ -1,4 +1,4 @@
-package org.fao.geonet.schema.iso19115_3_2018;
+package org.fao.geonet.schema.iso19115_3_2018_deeca;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
@@ -32,7 +32,7 @@ import java.util.Set;
 /**
  * Created by francois on 6/15/14.
  */
-public class ISO19115_3_2018SchemaPlugin
+public class ISO19115_3_2018_DEECA_SchemaPlugin
         extends org.fao.geonet.kernel.schema.SchemaPlugin
         implements
     AssociatedResourcesSchemaPlugin,
@@ -40,7 +40,7 @@ public class ISO19115_3_2018SchemaPlugin
     ExportablePlugin,
     ISOPlugin,
     LinkAwareSchemaPlugin {
-    public static final String IDENTIFIER = "iso19115-3";
+    public static final String IDENTIFIER = "iso19115-3-deeca";
 
     private static ImmutableSet<Namespace> allNamespaces;
     private static Map<String, Namespace> allTypenames;
@@ -50,15 +50,15 @@ public class ISO19115_3_2018SchemaPlugin
 
     static {
         allNamespaces = ImmutableSet.<Namespace>builder()
-                .add(ISO19115_3_2018Namespaces.GCO)
-                .add(ISO19115_3_2018Namespaces.MDB)
-                .add(ISO19115_3_2018Namespaces.GEX)
-                .add(ISO19115_3_2018Namespaces.MRC)
-                .add(ISO19115_3_2018Namespaces.MRL)
-                .add(ISO19115_3_2018Namespaces.LAN)
-                .add(ISO19115_3_2018Namespaces.MRI)
-                .add(ISO19115_3_2018Namespaces.SRV)
-                .add(ISO19115_3_2018Namespaces.XLINK)
+                .add(ISO19115_3_2018_DEECA_Namespaces.GCO)
+                .add(ISO19115_3_2018_DEECA_Namespaces.MDB)
+                .add(ISO19115_3_2018_DEECA_Namespaces.GEX)
+                .add(ISO19115_3_2018_DEECA_Namespaces.MRC)
+                .add(ISO19115_3_2018_DEECA_Namespaces.MRL)
+                .add(ISO19115_3_2018_DEECA_Namespaces.LAN)
+                .add(ISO19115_3_2018_DEECA_Namespaces.MRI)
+                .add(ISO19115_3_2018_DEECA_Namespaces.SRV)
+                .add(ISO19115_3_2018_DEECA_Namespaces.XLINK)
                 .build();
 
         allTypenames = ImmutableMap.<String, Namespace>builder()
@@ -72,7 +72,7 @@ public class ISO19115_3_2018SchemaPlugin
                 .build();
     }
 
-    public ISO19115_3_2018SchemaPlugin() {
+    public ISO19115_3_2018_DEECA_SchemaPlugin() {
         super(IDENTIFIER, allNamespaces);
     }
 
@@ -97,18 +97,18 @@ public class ISO19115_3_2018SchemaPlugin
             for (Object o : sibs) {
                 if (o instanceof Element) {
                     Element sib = (Element) o;
-                    Element agId = (Element) sib.getChild("metadataReference", ISO19115_3_2018Namespaces.MRI);
+                    Element agId = (Element) sib.getChild("metadataReference", ISO19115_3_2018_DEECA_Namespaces.MRI);
                     // TODO: Reference may be defined in Citation identifier
                     String sibUuid = agId.getAttributeValue("uuidref");
 
-                    String associationType = sib.getChild("associationType", ISO19115_3_2018Namespaces.MRI)
-                        .getChild("DS_AssociationTypeCode", ISO19115_3_2018Namespaces.MRI)
+                    String associationType = sib.getChild("associationType", ISO19115_3_2018_DEECA_Namespaces.MRI)
+                        .getChild("DS_AssociationTypeCode", ISO19115_3_2018_DEECA_Namespaces.MRI)
                         .getAttributeValue("codeListValue");
 
                     String initType = "";
-                    final Element initiativeTypeEl = sib.getChild("initiativeType", ISO19115_3_2018Namespaces.MRI);
+                    final Element initiativeTypeEl = sib.getChild("initiativeType", ISO19115_3_2018_DEECA_Namespaces.MRI);
                     if (initiativeTypeEl != null) {
-                        initType = initiativeTypeEl.getChild("DS_InitiativeTypeCode", ISO19115_3_2018Namespaces.MRI)
+                        initType = initiativeTypeEl.getChild("DS_InitiativeTypeCode", ISO19115_3_2018_DEECA_Namespaces.MRI)
                             .getAttributeValue("codeListValue");
                     }
 
@@ -127,7 +127,7 @@ public class ISO19115_3_2018SchemaPlugin
         String XPATH_FOR_PARENT_IN_AGGRGATIONINFO = "*//mri:associatedResource/*" +
             "[mri:associationType/*/@codeListValue = '%s']/mri:metadataReference/@uuidref";
 
-        ElementFilter elementFilter = new ElementFilter("parentMetadata", ISO19115_3_2018Namespaces.MDB);
+        ElementFilter elementFilter = new ElementFilter("parentMetadata", ISO19115_3_2018_DEECA_Namespaces.MDB);
         Set<String> parents = Xml.filterElementValues(
                 metadata,
                 elementFilter,
@@ -153,15 +153,15 @@ public class ISO19115_3_2018SchemaPlugin
     }
 
     public Set<String> getAssociatedDatasetUUIDs (Element metadata) {
-        return getAttributeUuidrefValues(metadata, "operatesOn", ISO19115_3_2018Namespaces.SRV);
+        return getAttributeUuidrefValues(metadata, "operatesOn", ISO19115_3_2018_DEECA_Namespaces.SRV);
     };
     public Set<String> getAssociatedFeatureCatalogueUUIDs (Element metadata) {
         // Feature catalog may also be embedded into the document
         // Or the citation of the feature catalog may contains a reference to it
-        return getAttributeUuidrefValues(metadata, "featureCatalogueCitation", ISO19115_3_2018Namespaces.MRC);
+        return getAttributeUuidrefValues(metadata, "featureCatalogueCitation", ISO19115_3_2018_DEECA_Namespaces.MRC);
     };
     public Set<String> getAssociatedSourceUUIDs (Element metadata) {
-        return getAttributeUuidrefValues(metadata, "source", ISO19115_3_2018Namespaces.MRL);
+        return getAttributeUuidrefValues(metadata, "source", ISO19115_3_2018_DEECA_Namespaces.MRL);
     }
 
     private Set<String> getAttributeUuidrefValues(Element metadata, String tagName, Namespace namespace) {
@@ -215,16 +215,16 @@ public class ISO19115_3_2018SchemaPlugin
                 Namespace.getNamespace("xsi", "http://www.w3.org/2001/XMLSchema-instance"));
 
         // Create a new translation for the language
-        Element langElem = new Element("LocalisedCharacterString", ISO19115_3_2018Namespaces.LAN);
+        Element langElem = new Element("LocalisedCharacterString", ISO19115_3_2018_DEECA_Namespaces.LAN);
         langElem.setAttribute("locale", "#" + languageIdentifier);
         langElem.setText(value);
-        Element textGroupElement = new Element("textGroup", ISO19115_3_2018Namespaces.LAN);
+        Element textGroupElement = new Element("textGroup", ISO19115_3_2018_DEECA_Namespaces.LAN);
         textGroupElement.addContent(langElem);
 
         // Get the PT_FreeText node where to insert the translation into
-        Element freeTextElement = element.getChild("PT_FreeText", ISO19115_3_2018Namespaces.LAN);
+        Element freeTextElement = element.getChild("PT_FreeText", ISO19115_3_2018_DEECA_Namespaces.LAN);
         if (freeTextElement == null) {
-            freeTextElement = new Element("PT_FreeText", ISO19115_3_2018Namespaces.LAN);
+            freeTextElement = new Element("PT_FreeText", ISO19115_3_2018_DEECA_Namespaces.LAN);
             element.addContent(freeTextElement);
         }
         freeTextElement.addContent(textGroupElement);
@@ -243,14 +243,14 @@ public class ISO19115_3_2018SchemaPlugin
     public Element removeTranslationFromElement(Element element, List<String> langs) throws JDOMException {
         String mainLanguage = langs != null && langs.size() > 0 ? langs.get(0) : "#EN";
 
-        List<Element> nodesWithStrings = (List<Element>) Xml.selectNodes(element, "*//lan:PT_FreeText", Arrays.asList(ISO19115_3_2018Namespaces.LAN));
+        List<Element> nodesWithStrings = (List<Element>) Xml.selectNodes(element, "*//lan:PT_FreeText", Arrays.asList(ISO19115_3_2018_DEECA_Namespaces.LAN));
 
         for(Element e : nodesWithStrings) {
             // Retrieve or create the main language element
-            Element mainCharacterString = ((Element)e.getParent()).getChild("CharacterString", ISO19115_3_2018Namespaces.GCO);
+            Element mainCharacterString = ((Element)e.getParent()).getChild("CharacterString", ISO19115_3_2018_DEECA_Namespaces.GCO);
             if (mainCharacterString == null) {
                 // create it if it does not exist
-                mainCharacterString = new Element("CharacterString", ISO19115_3_2018Namespaces.GCO);
+                mainCharacterString = new Element("CharacterString", ISO19115_3_2018_DEECA_Namespaces.GCO);
                 ((Element)e.getParent()).addContent(0, mainCharacterString);
             }
 
@@ -258,7 +258,7 @@ public class ISO19115_3_2018SchemaPlugin
             List<Element> mainLangElement = (List<Element>) Xml.selectNodes(
                 e,
                 "*//lan:LocalisedCharacterString[@locale='" + mainLanguage + "']",
-                Arrays.asList(ISO19115_3_2018Namespaces.LAN));
+                Arrays.asList(ISO19115_3_2018_DEECA_Namespaces.LAN));
 
             // Set the main language value
             if (mainLangElement.size() == 1) {
@@ -266,11 +266,11 @@ public class ISO19115_3_2018SchemaPlugin
 
                 if (StringUtils.isNotEmpty(mainLangString)) {
                     mainCharacterString.setText(mainLangString);
-                } else if (mainCharacterString.getAttribute("nilReason", ISO19115_3_2018Namespaces.GCO) == null){
-                    ((Element)mainCharacterString.getParent()).setAttribute("nilReason", "missing", ISO19115_3_2018Namespaces.GCO);
+                } else if (mainCharacterString.getAttribute("nilReason", ISO19115_3_2018_DEECA_Namespaces.GCO) == null){
+                    ((Element)mainCharacterString.getParent()).setAttribute("nilReason", "missing", ISO19115_3_2018_DEECA_Namespaces.GCO);
                 }
             } else if (StringUtils.isEmpty(mainCharacterString.getText())) {
-                ((Element)mainCharacterString.getParent()).setAttribute("nilReason", "missing", ISO19115_3_2018Namespaces.GCO);
+                ((Element)mainCharacterString.getParent()).setAttribute("nilReason", "missing", ISO19115_3_2018_DEECA_Namespaces.GCO);
             }
         }
 
@@ -302,7 +302,7 @@ public class ISO19115_3_2018SchemaPlugin
 
     @Override
     public Element createBasicTypeCharacterString() {
-        return new Element("CharacterString", ISO19115_3_2018Namespaces.GCO);
+        return new Element("CharacterString", ISO19115_3_2018_DEECA_Namespaces.GCO);
 
     }
 
@@ -314,14 +314,14 @@ public class ISO19115_3_2018SchemaPlugin
                                  String baseUrl) {
 
         Element root = serviceRecord
-            .getChild("identificationInfo", ISO19115_3_2018Namespaces.MDB)
-            .getChild("SV_ServiceIdentification", ISO19115_3_2018Namespaces.SRV);
+            .getChild("identificationInfo", ISO19115_3_2018_DEECA_Namespaces.MDB)
+            .getChild("SV_ServiceIdentification", ISO19115_3_2018_DEECA_Namespaces.SRV);
 
         if (root != null) {
 
             // Coupling type MUST be present as it is the insertion point
             // for coupledResource
-            Element couplingType = root.getChild("couplingType", ISO19115_3_2018Namespaces.SRV);
+            Element couplingType = root.getChild("couplingType", ISO19115_3_2018_DEECA_Namespaces.SRV);
             int coupledResourceIdx = root.indexOf(couplingType);
 
             layers.keySet().forEach(uuid -> {
@@ -330,16 +330,16 @@ public class ISO19115_3_2018SchemaPlugin
                 // Create coupled resources elements to register all layername
                 // in service metadata. This information could be used to add
                 // interactive map button when viewing service metadata.
-                Element coupledResource = new Element("coupledResource", ISO19115_3_2018Namespaces.SRV);
-                coupledResource.setAttribute("nilReason", "synchronizedFromOGC", ISO19115_3_2018Namespaces.GCO);
-                Element scr = new Element("SV_CoupledResource", ISO19115_3_2018Namespaces.SRV);
+                Element coupledResource = new Element("coupledResource", ISO19115_3_2018_DEECA_Namespaces.SRV);
+                coupledResource.setAttribute("nilReason", "synchronizedFromOGC", ISO19115_3_2018_DEECA_Namespaces.GCO);
+                Element scr = new Element("SV_CoupledResource", ISO19115_3_2018_DEECA_Namespaces.SRV);
 
 
                 // Create operation according to service type
-                Element operation = new Element("operation", ISO19115_3_2018Namespaces.SRV);
-                Element operationMetadata = new Element("SV_OperationMetadata", ISO19115_3_2018Namespaces.SRV);
-                Element operationName = new Element("operationName", ISO19115_3_2018Namespaces.SRV);
-                Element operationValue = new Element("CharacterString", ISO19115_3_2018Namespaces.GCO);
+                Element operation = new Element("operation", ISO19115_3_2018_DEECA_Namespaces.SRV);
+                Element operationMetadata = new Element("SV_OperationMetadata", ISO19115_3_2018_DEECA_Namespaces.SRV);
+                Element operationName = new Element("operationName", ISO19115_3_2018_DEECA_Namespaces.SRV);
+                Element operationValue = new Element("CharacterString", ISO19115_3_2018_DEECA_Namespaces.GCO);
 
                 if (serviceType.startsWith("WMS"))
                     operationValue.setText("GetMap");
@@ -357,13 +357,13 @@ public class ISO19115_3_2018SchemaPlugin
 
 
                 // Create identifier (which is the metadata identifier)
-                Element id = new Element("resourceReference", ISO19115_3_2018Namespaces.SRV);
+                Element id = new Element("resourceReference", ISO19115_3_2018_DEECA_Namespaces.SRV);
                 id.setAttribute("uuidref", uuid);
 
                 // Create scoped name element as defined in CSW 2.0.2 ISO profil
                 // specification to link service metadata to a layer in a service.
-                Element scopedName = new Element("scopedName", ISO19115_3_2018Namespaces.SRV);
-                Element scopedNameValue = new Element("ScopedName", ISO19115_3_2018Namespaces.GCO);
+                Element scopedName = new Element("scopedName", ISO19115_3_2018_DEECA_Namespaces.SRV);
+                Element scopedNameValue = new Element("ScopedName", ISO19115_3_2018_DEECA_Namespaces.GCO);
                 scopedNameValue.setText(layerName);
                 scopedName.addContent(scopedNameValue);
 
@@ -380,12 +380,12 @@ public class ISO19115_3_2018SchemaPlugin
 
 
                 // Add operatesOn element at the end of identification section.
-                Element op = new Element("operatesOn", ISO19115_3_2018Namespaces.SRV);
-                op.setAttribute("nilReason", "synchronizedFromOGC", ISO19115_3_2018Namespaces.GCO);
+                Element op = new Element("operatesOn", ISO19115_3_2018_DEECA_Namespaces.SRV);
+                op.setAttribute("nilReason", "synchronizedFromOGC", ISO19115_3_2018_DEECA_Namespaces.GCO);
                 op.setAttribute("uuidref", uuid);
 
                 String hRefLink = baseUrl + "api/records/" + uuid + "/formatters/xml";
-                op.setAttribute("href", hRefLink, ISO19115_3_2018Namespaces.XLINK);
+                op.setAttribute("href", hRefLink, ISO19115_3_2018_DEECA_Namespaces.XLINK);
 
                 root.addContent(op);
             });
@@ -398,17 +398,17 @@ public class ISO19115_3_2018SchemaPlugin
     public List<Extent> getExtents(Element record) {
         List<Extent> extents = new ArrayList<>();
 
-        ElementFilter bboxFinder = new ElementFilter("EX_GeographicBoundingBox", ISO19115_3_2018Namespaces.GEX);
+        ElementFilter bboxFinder = new ElementFilter("EX_GeographicBoundingBox", ISO19115_3_2018_DEECA_Namespaces.GEX);
         @SuppressWarnings("unchecked")
         Iterator<Element> bboxes = record.getDescendants(bboxFinder);
         while (bboxes.hasNext()) {
             Element box = bboxes.next();
             try {
                 extents.add(new Extent(
-                    Double.valueOf(box.getChild("westBoundLongitude", ISO19115_3_2018Namespaces.GEX).getChild("Decimal", ISO19115_3_2018Namespaces.GCO).getText()),
-                    Double.valueOf(box.getChild("eastBoundLongitude", ISO19115_3_2018Namespaces.GEX).getChild("Decimal", ISO19115_3_2018Namespaces.GCO).getText()),
-                    Double.valueOf(box.getChild("southBoundLatitude", ISO19115_3_2018Namespaces.GEX).getChild("Decimal", ISO19115_3_2018Namespaces.GCO).getText()),
-                    Double.valueOf(box.getChild("northBoundLatitude", ISO19115_3_2018Namespaces.GEX).getChild("Decimal", ISO19115_3_2018Namespaces.GCO).getText())
+                    Double.valueOf(box.getChild("westBoundLongitude", ISO19115_3_2018_DEECA_Namespaces.GEX).getChild("Decimal", ISO19115_3_2018_DEECA_Namespaces.GCO).getText()),
+                    Double.valueOf(box.getChild("eastBoundLongitude", ISO19115_3_2018_DEECA_Namespaces.GEX).getChild("Decimal", ISO19115_3_2018_DEECA_Namespaces.GCO).getText()),
+                    Double.valueOf(box.getChild("southBoundLatitude", ISO19115_3_2018_DEECA_Namespaces.GEX).getChild("Decimal", ISO19115_3_2018_DEECA_Namespaces.GCO).getText()),
+                    Double.valueOf(box.getChild("northBoundLatitude", ISO19115_3_2018_DEECA_Namespaces.GEX).getChild("Decimal", ISO19115_3_2018_DEECA_Namespaces.GCO).getText())
                 ));
             } catch (NullPointerException e) {}
         }
@@ -462,19 +462,19 @@ public class ISO19115_3_2018SchemaPlugin
             if (isMultilingualElement) {
                 // The attribute provided relates to the CharacterString and not to the LocalisedCharacterString
                 Element targetElement = el.getParentElement().getParentElement().getParentElement()
-                        .getChild("CharacterString", ISO19115_3_2018Namespaces.GCO);
+                        .getChild("CharacterString", ISO19115_3_2018_DEECA_Namespaces.GCO);
                 if (targetElement != null) {
                     el = targetElement;
                 }
             }
 
             if (isEmptyLink) {
-                el.setNamespace(ISO19115_3_2018Namespaces.GCO).setName("CharacterString");
-                el.removeAttribute("href", ISO19115_3_2018Namespaces.XLINK);
+                el.setNamespace(ISO19115_3_2018_DEECA_Namespaces.GCO).setName("CharacterString");
+                el.removeAttribute("href", ISO19115_3_2018_DEECA_Namespaces.XLINK);
                 return el;
             } else {
-                el.setNamespace(ISO19115_3_2018Namespaces.GCX).setName("Anchor");
-                el.setAttribute("href", "", ISO19115_3_2018Namespaces.XLINK);
+                el.setNamespace(ISO19115_3_2018_DEECA_Namespaces.GCX).setName("Anchor");
+                el.setAttribute("href", "", ISO19115_3_2018_DEECA_Namespaces.XLINK);
                 return el;
             }
         } else if (elementToProcess && StringUtils.isNotEmpty(parsedAttributeName) &&
@@ -503,7 +503,7 @@ public class ISO19115_3_2018SchemaPlugin
 
     public <L, M> RawLinkPatternStreamer<L, M> createLinkStreamer(ILinkBuilder<L, M> linkbuilder) {
         RawLinkPatternStreamer patternStreamer = new RawLinkPatternStreamer(linkbuilder);
-        patternStreamer.setNamespaces(ISO19115_3_2018SchemaPlugin.allNamespaces.asList());
+        patternStreamer.setNamespaces(ISO19115_3_2018_DEECA_SchemaPlugin.allNamespaces.asList());
         // TODO: Add xlink:href ?
         patternStreamer.setRawTextXPath(".//*[name() = 'gco:CharacterString' or name() = 'lan:LocalisedCharacterString']");
         return patternStreamer;
