@@ -5,7 +5,7 @@
   <name>iso19115-3.2018-deeca</name>
   <id>77aa4ad2-f116-4f7e-82e5-ba61f5c98599</id>
   <version>1.0</version>
-  <appMinorVersionSupported>3.12.0</appMinorVersionSupported>
+  <appMinorVersionSupported>4.2.0</appMinorVersionSupported>
   <title xml:lang="en">Department of Environment, Land, Water and Planning (DEECA) ISO19115-3 2018 Metadata Profile</title>
   <title xml:lang="fr">Information géographique &#45;&#45; Métadonnées</title>
   <description xml:lang="en"><![CDATA[
@@ -71,7 +71,7 @@ Metadata Profile of ISO19115-3 (2018) for Victorian Government Department of Env
     the information. When filtered the element is
     preserved but with no content in.
     -->
-    <filter xpath="*//*[@gco:nilReason='withheld']"
+    <filter xpath=".//*[@gco:nilReason='withheld']"
             ifNotOperation="editing">
       <keepMarkedElement gco:nilReason="withheld"/>
     </filter>
@@ -81,7 +81,7 @@ Metadata Profile of ISO19115-3 (2018) for Victorian Government Department of Env
     are filtered when user does not have download
     privilege.
     -->
-    <filter xpath="*//mrd:onLine[contains(*/cit:protocol/gco:CharacterString, 'DOWNLOAD') or
+    <filter xpath=".//mrd:onLine[contains(*/cit:protocol/gco:CharacterString, 'DOWNLOAD') or
                                   */cit:protocol/gco:CharacterString = 'FILE' or
                                   */cit:protocol/gco:CharacterString = 'DB' or
                                   */cit:protocol/gco:CharacterString = 'COPYFILE']"
@@ -92,7 +92,7 @@ Metadata Profile of ISO19115-3 (2018) for Victorian Government Department of Env
     to user not having dynamic privilege.
     TODO: other type of services ?
     -->
-    <filter xpath="*//mrd:onLine[starts-with(*/cit:protocol/gco:CharacterString, 'OGC:WMS')]"
+    <filter xpath=".//mrd:onLine[starts-with(*/cit:protocol/gco:CharacterString, 'OGC:WMS')]"
             ifNotOperation="dynamic"/>
   </filters>
 </schema>

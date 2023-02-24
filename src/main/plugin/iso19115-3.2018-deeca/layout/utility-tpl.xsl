@@ -11,26 +11,45 @@
   xmlns:msr="http://standards.iso.org/iso/19115/-3/msr/2.0"
   xmlns:lan="http://standards.iso.org/iso/19115/-3/lan/1.0"
   xmlns:gcx="http://standards.iso.org/iso/19115/-3/gcx/1.0"
+  xmlns:mrc="http://standards.iso.org/iso/19115/-3/mrc/2.0"
+  xmlns:cat="http://standards.iso.org/iso/19115/-3/cat/1.0"
   xmlns:gex="http://standards.iso.org/iso/19115/-3/gex/1.0"
   xmlns:dqm="http://standards.iso.org/iso/19157/-2/dqm/1.0"
   xmlns:cit="http://standards.iso.org/iso/19115/-3/cit/2.0"
   xmlns:gco="http://standards.iso.org/iso/19115/-3/gco/1.0"
-  xmlns:gn="http://www.fao.org/geonetwork"
+  xmlns:gfc="http://standards.iso.org/iso/19110/gfc/1.1"
   xmlns:delwp="https://github.com/geonetwork-delwp/iso19115-3.2018"
+  xmlns:gn-fn-index="http://geonetwork-opensource.org/xsl/functions/index"
+  xmlns:gn="http://www.fao.org/geonetwork"
   xmlns:xs="http://www.w3.org/2001/XMLSchema" exclude-result-prefixes="#all">
 
+  <xsl:import href="common/index-utils.xsl"/>
   <xsl:include href="utility-tpl-multilingual.xsl"/>
 
-  <xsl:template name="get-iso19115-3.2018-deeca-is-service">
+  <xsl:template name="get-iso19115-3.2018-is-service">
     <xsl:value-of
             select="count($metadata/mdb:identificationInfo/srv:SV_ServiceIdentification) > 0"/>
   </xsl:template>
 
-  <xsl:template name="get-iso19115-3.2018-deeca-title">
-    <xsl:value-of select="$metadata/mdb:identificationInfo/*/mri:citation/*/cit:title/gco:CharacterString"/>
+  <xsl:template name="get-iso19115-3.2018-title">
+    <xsl:value-of select="($metadata/mdb:identificationInfo/*/mri:citation/*/cit:title/gco:CharacterString
+                          |$metadata/mdb:contentInfo/*/mrc:featureCatalogue/*/cat:name[*/text() != '']
+                          |$metadata/mdb:contentInfo/*/mrc:featureCatalogue/*/gfc:featureType/*/gfc:typeName[text() != ''])[1]
+"/>
   </xsl:template>
 
-  <xsl:template name="get-iso19115-3.2018-deeca-extents-as-json">[
+  <xsl:template mode="get-formats-as-json" match="mdb:MD_Metadata">
+    [
+    <xsl:for-each select="mdb:distributionInfo/*/mrd:distributionFormat/*/mrd:formatSpecificationCitation/*/cit:title/*/text()">{
+      "value": "WWW:DOWNLOAD:<xsl:value-of select="gn-fn-index:json-escape(.)"/>",
+      "label": "<xsl:value-of select="gn-fn-index:json-escape(.)"/>"}
+      <xsl:if test="position() != last()">,</xsl:if>
+    </xsl:for-each>
+    ]
+  </xsl:template>
+
+
+  <xsl:template name="get-iso19115-3.2018-extents-as-json">[
    <xsl:for-each select="//mdb:identificationInfo/*/mri:extent
                           //gex:geographicElement/gex:EX_GeographicBoundingBox[
             number(gex:westBoundLongitude/gco:Decimal)
@@ -55,7 +74,7 @@
     ]
   </xsl:template>
 
-  <xsl:template name="get-iso19115-3.2018-deeca-online-source-config">
+  <xsl:template name="get-iso19115-3.2018-online-source-config">
     <xsl:param name="pattern"/>
     <config>
       <xsl:for-each select="$metadata/descendant::mrd:onLine[
@@ -64,7 +83,7 @@
         $pattern) and
         normalize-space(cit:CI_OnlineResource/cit:linkage/gco:CharacterString) != '']">
 
-        <xsl:variable name="protocol" select="cit:CI_OnlineResource/cit:protocol/gco:CharacterString"/>
+        <xsl:variable name="protocol" select="cit:CI_OnlineResource/cit:protocol/*/text()"/>
 
         <xsl:variable name="fileName">
           <xsl:choose>
@@ -91,7 +110,7 @@
               mri:citation/cit:CI_Citation/cit:title/gco:CharacterString)"/></title>
             <abstract><xsl:value-of select="normalize-space($metadata/
               mdb:identificationInfo/*/mri:abstract)"/></abstract>
-            <protocol><xsl:value-of select="cit:CI_OnlineResource/cit:protocol/gco:CharacterString"/></protocol>
+            <protocol><xsl:value-of select="cit:CI_OnlineResource/cit:protocol/*/text()"/></protocol>
           </resource>
         </xsl:if>
       </xsl:for-each>

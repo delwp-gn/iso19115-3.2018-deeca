@@ -41,7 +41,8 @@
                 <xsl:if test="$hasChildNode">
                     <!--
                             This could be any substitution for gco:CharacterString.
-                            Get correct namespace and preserve name for substitutions
+                            Get correct namespace and preserve name for substitutions.
+                            Copy attributes eg. xlink for Anchor.
                         -->
                     <xsl:for-each select="$nodeWithStringToWrite/*[local-name() != 'PT_FreeText']">
                         <xsl:variable name="nameSpacePrefix">

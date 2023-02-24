@@ -1,4 +1,4 @@
-package org.fao.geonet.schema.iso19115_3_2018;
+package org.fao.geonet.schema.iso19115_3_2018_deeca;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
@@ -29,10 +29,7 @@ import java.util.Map;
 import java.util.Set;
 
 
-/**
- * Created by francois on 6/15/14.
- */
-public class ISO19115_3_2018SchemaPlugin
+public class ISO19115_3_2018_DEECA_SchemaPlugin
         extends org.fao.geonet.kernel.schema.SchemaPlugin
         implements
     AssociatedResourcesSchemaPlugin,
@@ -40,7 +37,7 @@ public class ISO19115_3_2018SchemaPlugin
     ExportablePlugin,
     ISOPlugin,
     LinkAwareSchemaPlugin {
-    public static final String IDENTIFIER = "iso19115-3";
+    public static final String IDENTIFIER = "iso19115-3-deeca";
 
     private static ImmutableSet<Namespace> allNamespaces;
     private static Map<String, Namespace> allTypenames;
@@ -72,7 +69,7 @@ public class ISO19115_3_2018SchemaPlugin
                 .build();
     }
 
-    public ISO19115_3_2018SchemaPlugin() {
+    public ISO19115_3_2018_DEECA_SchemaPlugin() {
         super(IDENTIFIER, allNamespaces);
     }
 
@@ -503,7 +500,7 @@ public class ISO19115_3_2018SchemaPlugin
 
     public <L, M> RawLinkPatternStreamer<L, M> createLinkStreamer(ILinkBuilder<L, M> linkbuilder) {
         RawLinkPatternStreamer patternStreamer = new RawLinkPatternStreamer(linkbuilder);
-        patternStreamer.setNamespaces(ISO19115_3_2018SchemaPlugin.allNamespaces.asList());
+        patternStreamer.setNamespaces(ISO19115_3_2018_DEECA_SchemaPlugin.allNamespaces.asList());
         // TODO: Add xlink:href ?
         patternStreamer.setRawTextXPath(".//*[name() = 'gco:CharacterString' or name() = 'lan:LocalisedCharacterString']");
         return patternStreamer;

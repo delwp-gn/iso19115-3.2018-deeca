@@ -9,13 +9,13 @@
   exclude-result-prefixes="#all">
 
   <!-- Get the main metadata languages -->
-  <xsl:template name="get-iso19115-3.2018-deeca-language">
+  <xsl:template name="get-iso19115-3.2018-language">
     <xsl:value-of select="$metadata/mdb:defaultLocale/
     lan:PT_Locale/lan:language/lan:LanguageCode/@codeListValue"/>
   </xsl:template>
 
   <!-- Get the list of other languages in JSON -->
-  <xsl:template name="get-iso19115-3.2018-deeca-other-languages-as-json">
+  <xsl:template name="get-iso19115-3.2018-other-languages-as-json">
     <xsl:variable name="langs">
       <xsl:choose>
         <xsl:when test="$metadata/gn:info[position() = last()]/isTemplate = 's'">
@@ -28,7 +28,7 @@
         </xsl:when>
         <xsl:otherwise>
           <xsl:variable name="mainLanguage">
-            <xsl:call-template name="get-iso19115-3.2018-deeca-language"/>
+            <xsl:call-template name="get-iso19115-3.2018-language"/>
           </xsl:variable>
           <xsl:if test="$mainLanguage">
             <xsl:variable name="mainLanguageId"
@@ -49,9 +49,9 @@
   </xsl:template>
 
   <!-- Get the list of other languages -->
-  <xsl:template name="get-iso19115-3.2018-deeca-other-languages">
+  <xsl:template name="get-iso19115-3.2018-other-languages">
     <xsl:variable name="mainLanguage">
-      <xsl:call-template name="get-iso19115-3.2018-deeca-language"/>
+      <xsl:call-template name="get-iso19115-3.2018-language"/>
     </xsl:variable>
 
     <xsl:choose>
@@ -80,7 +80,7 @@
        are reported with an xml:lang attribute indicating
        the language of the text.
     -->
-  <xsl:template name="get-iso19115-3.2018-deeca-localised"
+  <xsl:template name="get-iso19115-3.2018-localised"
                 mode="localised"
                 match="*[lan:PT_FreeText or gco:CharacterString or gcx:Anchor]">
     <xsl:param name="langId"/>
@@ -118,6 +118,39 @@
       </xsl:otherwise>
     </xsl:choose>
   </xsl:template>
+
+
+  <!-- Map GUI language to iso3code -->
+  <xsl:template name="getLangId19115-3.2018">
+    <xsl:param name="langGui"/>
+    <xsl:param name="md"/>
+
+    <xsl:call-template name="getLangIdFromMetadata19115-3.2018">
+      <xsl:with-param name="lang" select="$langGui"/>
+      <xsl:with-param name="md" select="$md"/>
+    </xsl:call-template>
+  </xsl:template>
+
+  <!-- Get lang #id in metadata PT_Locale section,  deprecated: if not return the 2 first letters
+      of the lang iso3code in uper case.
+
+       if not return the lang iso3code in uper case.
+      -->
+  <xsl:template name="getLangIdFromMetadata19115-3.2018">
+    <xsl:param name="md"/>
+    <xsl:param name="lang"/>
+
+    <xsl:choose>
+      <xsl:when
+        test="$md/mdb:defaultLocale/lan:PT_Locale[lan:language/lan:LanguageCode/@codeListValue = $lang]/@id"
+      >#<xsl:value-of
+        select="$md/mdb:defaultLocale/lan:PT_Locale[lan:language/lan:LanguageCode/@codeListValue = $lang]/@id"
+      />
+      </xsl:when>
+      <xsl:otherwise>#<xsl:value-of select="upper-case($lang)"/></xsl:otherwise>
+    </xsl:choose>
+  </xsl:template>
+
 
   <xsl:template mode="localised" match="*">
     <!-- Nothing to do, is not a text content field. -->

@@ -63,8 +63,6 @@
    TODO: Add support to translation https://bib.schema.org/workTranslation
    -->
 
-
-
   <!-- Used for json escape string -->
   <xsl:import href="common/index-utils.xsl"/>
 
@@ -307,10 +305,16 @@
         <xsl:variable name="p" select="normalize-space(cit:protocol/*/text())"/>
         {
         "@type":"DataDownload",
-        "contentUrl": "<xsl:value-of select="gn-fn-index:json-escape(cit:linkage/*/text())" />",
-        "encodingFormat": "<xsl:value-of select="gn-fn-index:json-escape(if ($p != '') then $p else cit:protocol/*/@xlink:href)"/>",
-        "name": <xsl:apply-templates mode="toJsonLDLocalized" select="cit:name"/>,
-        "description": <xsl:apply-templates mode="toJsonLDLocalized" select="cit:description"/>
+        "contentUrl": "<xsl:value-of select="gn-fn-index:json-escape(cit:linkage/*/text())" />"
+        <xsl:if test="cit:protocol">,
+          "encodingFormat": "<xsl:value-of select="gn-fn-index:json-escape(if ($p != '') then $p else cit:protocol/*/@xlink:href)"/>"
+        </xsl:if>
+        <xsl:if test="cit:name">,
+          "name": <xsl:apply-templates mode="toJsonLDLocalized" select="cit:name"/>
+        </xsl:if>
+        <xsl:if test="cit:description">,
+          "description": <xsl:apply-templates mode="toJsonLDLocalized" select="cit:description"/>
+        </xsl:if>
         }
         <xsl:if test="position() != last()">,</xsl:if>
       </xsl:for-each>
@@ -336,14 +340,14 @@
         <xsl:for-each select="gex:description[count(.//text() != '') > 0]">
           <xsl:apply-templates mode="toJsonLDLocalized" select="."/>
           <xsl:if test="position() != last()">,</xsl:if></xsl:for-each>
-          ], 
+          ],
         "geo": [
           <xsl:for-each select="gex:geographicElement/gex:EX_GeographicBoundingBox">
               {"@type":"GeoShape",
               "box": "<xsl:value-of select="string-join((
-                                              gex:southBoundLatitude/gco:Decimal|
-                                              gex:westBoundLongitude/gco:Decimal|
-                                              gex:northBoundLatitude/gco:Decimal|
+                                              gex:southBoundLatitude/gco:Decimal,
+                                              gex:westBoundLongitude/gco:Decimal,
+                                              gex:northBoundLatitude/gco:Decimal,
                                               gex:eastBoundLongitude/gco:Decimal
                                               ), ' ')"/>"
               }<xsl:if test="position() != last()">,</xsl:if>
@@ -367,8 +371,8 @@
     </xsl:for-each>]
 
 
-    <xsl:if test="mdb:identificationInfo/*/mri:resourceConstraints/mco:MD_LegalConstraints/mco:otherConstraints">    
-      ,"license": [<xsl:for-each select="mdb:identificationInfo/*/mri:resourceConstraints/mco:MD_LegalConstraints/mco:otherConstraints"> 
+    <xsl:if test="mdb:identificationInfo/*/mri:resourceConstraints/mco:MD_LegalConstraints/mco:otherConstraints">
+      ,"license": [<xsl:for-each select="mdb:identificationInfo/*/mri:resourceConstraints/mco:MD_LegalConstraints/mco:otherConstraints">
           <xsl:choose>
             <xsl:when test="starts-with(normalize-space(string-join(gco:CharacterString/text(),'')),'http') or starts-with(normalize-space(string-join(gco:CharacterString/text(),'')),'//')">
               "<xsl:value-of select="normalize-space(string-join(gco:CharacterString/text(),''))"/>"

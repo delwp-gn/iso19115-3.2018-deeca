@@ -1,4 +1,4 @@
-package org.fao.geonet.schema.iso19115_3_2018;
+package org.fao.geonet.schema.iso19115_3_2018_deeca;
 
 import org.jdom.Namespace;
 

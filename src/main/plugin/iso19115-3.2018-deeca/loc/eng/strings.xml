@@ -26,7 +26,8 @@
   <temporalRef>Temporal information</temporalRef>
   <constraintInfo>Access constraint information</constraintInfo>
   <xml_iso19139>Save this metadata as an ISO19139 XML file</xml_iso19139>
-  <xml_iso19139Tooai_dc>Save this metadata as an OAI Dublin Core XML file</xml_iso19139Tooai_dc>
+  <xml_iso19139Tooai_dc>Save this metadata as an OAI Dublin Core XML file
+  </xml_iso19139Tooai_dc>
   <resourceLineageTab>Lineage</resourceLineageTab>
 
   <advanced>Full</advanced>
@@ -47,6 +48,7 @@
   <referenceSystemInfo>Ref. system</referenceSystemInfo>
   <contentInfo>Content</contentInfo>
   <portrayalCatalogueInfo>Portrayal</portrayalCatalogueInfo>
+  <metadataConstraints>Md. constraints</metadataConstraints>
   <metadataMaintenance>Md. maintenance</metadataMaintenance>
   <applicationSchemaInfo>Schema info</applicationSchemaInfo>
   <acquisitionInformation>Acquisition info</acquisitionInformation>
@@ -62,6 +64,7 @@
   <linkToPortal-help>Read here the full details and access to the data.</linkToPortal-help>
   <citationProposal>Citation proposal</citationProposal>
   <citationProposal-help>This proposal was automatically generated, check if the metadata authors did not specified custom citation requirements.</citationProposal-help>
+  <citationAdditional>When using this resource in a publication, also cite the related work(s) with:</citationAdditional>
   <associatedResources>Associated resources</associatedResources>
 
 
@@ -70,8 +73,8 @@
     the metadata identifier (eg.
     http://www.organization.org/catalogue/5391bf69-44bc-4ea0-8cc0-6cf6c3bc81ae).
   </add-resource-idHelp>
-  <add-extent-from-geokeywords>Compute extent from keyword
-  </add-extent-from-geokeywords>
+  <add-extent-from-geokeywords>Add extent for each keywords</add-extent-from-geokeywords>
+  <add-one-extent-from-geokeywords>Add one extent from all keywords</add-one-extent-from-geokeywords>
   <add-extent-from-geokeywordsHelp>Analyze each keyword of type place and add
     matching extent.
   </add-extent-from-geokeywordsHelp>
