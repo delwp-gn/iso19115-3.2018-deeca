@@ -32,6 +32,8 @@
 
   <advanced>Full</advanced>
   <default>Simple</default>
+  <metashare>Simple</metashare>
+  <project>Simple</project>
   <simple>Simple</simple>
   <inspire>INSPIRE</inspire>
   <inspireTheme>INSPIRE themes</inspireTheme>
