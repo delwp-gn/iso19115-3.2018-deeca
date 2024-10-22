@@ -13,4 +13,17 @@
       <useDefaultExcludes>true</useDefaultExcludes>
     </fileSet>
   </fileSets>
+
+  <files>
+    <file>
+      <source>${project.build.directory}/${project.artifactId}-${project.version}.jar</source>
+      <outputDirectory>/</outputDirectory>
+    </file>
+
+    <file>
+      <source>src/assembly/README.txt</source>
+      <outputDirectory>/</outputDirectory>
+      <filtered>true</filtered>
+    </file>
+  </files>
 </assembly>
