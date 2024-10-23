@@ -40,8 +40,10 @@
                 xmlns:mrs="http://standards.iso.org/iso/19115/-3/mrs/1.0"
                 xmlns:mdq="http://standards.iso.org/iso/19157/-2/mdq/1.0"
                 xmlns:gco="http://standards.iso.org/iso/19115/-3/gco/1.0"
+                xmlns:mac="http://standards.iso.org/iso/19115/-3/mac/2.0"
                 xmlns:gfc="http://standards.iso.org/iso/19110/gfc/1.1"
                 xmlns:gml="http://www.opengis.net/gml/3.2"
+                xmlns:delwp="https://github.com/geonetwork-delwp/iso19115-3.2018"
                 xmlns:util="java:org.fao.geonet.util.XslUtil"
                 xmlns:date-util="java:org.fao.geonet.utils.DateUtil"
                 xmlns:index="java:org.fao.geonet.kernel.search.EsSearchManager"
@@ -1581,5 +1583,60 @@
   -  could be used to index more fields. -->
   <xsl:template mode="index-extra-fields" match="mdb:MD_Metadata">
 
+    <!-- DELWP Addition -->
+    <xsl:for-each select="mdb:acquisitionInformation/mac:MI_AcquisitionInformation">
+      <xsl:variable name="assembly" select="mac:operation/mac:MI_Operation/mac:otherProperty/gco:Record/delwp:datasetDetails/delwp:MD_DatasetDetails/delwp:assembly/delwp:MD_AssemblyCode/@codeListValue"/>
+      <xsl:if test="$assembly != 'Not Entered' and $assembly != 'Unknown'">
+        <rasterAssemblyType><xsl:value-of select="$assembly" /></rasterAssemblyType>
+      </xsl:if>
+      <rasterType><xsl:value-of select="mac:scope/mcc:MD_Scope/mcc:level/mcc:MD_ScopeCode/@codeListValue" /></rasterType>
+      <sensorType><xsl:value-of select="mac:instrument/mac:MI_Sensor/mac:type/text()" /></sensorType>
+      <platformType><xsl:value-of select="mac:operation/mac:MI_Operation/mac:otherProperty/gco:Record/delwp:datasetDetails/delwp:MD_DatasetDetails/delwp:platformType/delwp:MD_PlatformTypeCode/@codeListValue" /></platformType>
+    </xsl:for-each>
+    <!-- END DEWLP Addition -->
+
+    <xsl:for-each select="mdb:identificationInfo/*">
+
+    <xsl:for-each select="mri:resourceConstraints/*">
+      <!-- DELWP Addition -->
+      <!-- Add separate field for DELWP res constraints - not indexed -->
+      <xsl:for-each select="mco:classification">
+        <resClassification><xsl:value-of select="mco:MD_ClassificationCode/@codeListValue" /></resClassification>
+      </xsl:for-each>
+      <!-- END DELWP Addition -->
+    </xsl:for-each>
+
+
+      <xsl:for-each select="mri:citation/*">
+        <!-- DELWP Addition -->
+        <!-- Add ANZLIC ID as a separate field -->
+        <xsl:for-each select="cit:identifier/mcc:MD_Identifier[mcc:authority/cit:CI_Citation/cit:title/gco:CharacterString='ANZLIC Dataset Identifier']/mcc:code">
+          <anzlicid><xsl:value-of select="." /></anzlicid>
+          <databaseid><xsl:value-of select="." /></databaseid>
+        </xsl:for-each>
+
+        <!-- Add Project ID as a separate field -->
+        <xsl:for-each select="cit:identifier/mcc:MD_Identifier[mcc:authority/cit:CI_Citation/cit:title/gco:CharacterString='DELWP Rastermeta Project Identifier']/mcc:code">
+          <projectid><xsl:value-of select="." /></projectid>
+          <databaseid><xsl:value-of select="." /></databaseid>
+        </xsl:for-each>
+
+        <!-- Add vsdl schema as a separate field -->
+        <xsl:for-each select="cit:identifier/mcc:MD_Identifier[contains(mcc:description/gco:CharacterString,'VSDL')]/mcc:code">
+          <vsdlschema><xsl:value-of select="." /></vsdlschema>
+        </xsl:for-each>
+
+        <!-- Add metashare jurisdiction as a separate field -->
+        <xsl:for-each select="cit:identifier/mcc:MD_Identifier[contains(mcc:description/gco:CharacterString,'Jurisdiction')]/mcc:code">
+          <jurisdiction><xsl:value-of select="." /></jurisdiction>
+        </xsl:for-each>
+
+        <!-- Add DELWP resource owner - selects org of first owner, because some have additional owner  -->
+        <xsl:for-each select="cit:citedResponsibleParty[cit:CI_Responsibility/cit:role/cit:CI_RoleCode/@codeListValue = 'owner']/cit:CI_Responsibility/cit:party/cit:CI_Organisation/cit:name">
+          <resOwner><xsl:value-of select="." /></resOwner>
+        </xsl:for-each>
+        <!-- END DELWP Addition -->
+      </xsl:for-each>
+    </xsl:for-each>
   </xsl:template>
 </xsl:stylesheet>
