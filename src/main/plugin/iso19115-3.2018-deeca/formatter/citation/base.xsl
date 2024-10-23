@@ -38,13 +38,13 @@
                         select=".//cit:individual/*/cit:name[1]"/>
 
           <xsl:for-each select="$name">
-            <xsl:call-template name="get-iso19115-3.2018-localised">
+            <xsl:call-template name="get-iso19115-3.2018-deeca-localised">
               <xsl:with-param name="langId" select="$langId"/>
             </xsl:call-template>
           </xsl:for-each>
           <xsl:if test="normalize-space($name) != ''">(</xsl:if>
           <xsl:for-each select="cit:party/*/cit:name">
-            <xsl:call-template name="get-iso19115-3.2018-localised">
+            <xsl:call-template name="get-iso19115-3.2018-deeca-localised">
               <xsl:with-param name="langId" select="$langId"/>
             </xsl:call-template>
           </xsl:for-each>
@@ -59,7 +59,7 @@
 
     <xsl:variable name="translatedTitle">
       <xsl:for-each select="$title">
-        <xsl:call-template name="get-iso19115-3.2018-localised">
+        <xsl:call-template name="get-iso19115-3.2018-deeca-localised">
           <xsl:with-param name="langId" select="$langId"/>
         </xsl:call-template>
       </xsl:for-each>
@@ -99,13 +99,13 @@
                         select=".//cit:individual/*/cit:name[1]"/>
 
           <xsl:for-each select="$name">
-            <xsl:call-template name="get-iso19115-3.2018-localised">
+            <xsl:call-template name="get-iso19115-3.2018-deeca-localised">
               <xsl:with-param name="langId" select="$langId"/>
             </xsl:call-template>
           </xsl:for-each>
           <xsl:if test="normalize-space($name) != ''">(</xsl:if>
           <xsl:for-each select="cit:party/*/cit:name">
-            <xsl:call-template name="get-iso19115-3.2018-localised">
+            <xsl:call-template name="get-iso19115-3.2018-deeca-localised">
               <xsl:with-param name="langId" select="$langId"/>
             </xsl:call-template>
           </xsl:for-each>
@@ -144,7 +144,7 @@
     <xsl:variable name="translatedKeywords">
       <xsl:for-each select="$keywords">
         <keyword>
-          <xsl:call-template name="get-iso19115-3.2018-localised">
+          <xsl:call-template name="get-iso19115-3.2018-deeca-localised">
             <xsl:with-param name="langId" select="$langId"/>
           </xsl:call-template>
         </keyword>
@@ -153,7 +153,7 @@
 
     <xsl:variable name="additionalCitation">
       <xsl:for-each select=".//mrd:onLine/*[cit:protocol/* = 'WWW:LINK-1.0-http--publication-URL']/cit:description">
-        <xsl:call-template name="get-iso19115-3.2018-localised">
+        <xsl:call-template name="get-iso19115-3.2018-deeca-localised">
           <xsl:with-param name="langId" select="$langId"/>
         </xsl:call-template>
       </xsl:for-each>

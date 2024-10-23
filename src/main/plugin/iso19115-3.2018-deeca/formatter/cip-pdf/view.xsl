@@ -59,8 +59,6 @@
   3 levels of priority are defined: 100, 50, none
   
   -->
-  <xsl:output method="html" version="4.0"
-    encoding="UTF-8" indent="yes"/>
 
   <!-- Load the editor configuration to be able
   to render the different views -->

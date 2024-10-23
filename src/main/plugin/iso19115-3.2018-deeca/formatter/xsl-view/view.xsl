@@ -20,7 +20,8 @@
                 xmlns:mrd="http://standards.iso.org/iso/19115/-3/mrd/1.0"
                 xmlns:mmi="http://standards.iso.org/iso/19115/-3/mmi/1.0"
                 xmlns:mdq="http://standards.iso.org/iso/19157/-2/mdq/1.0"
-                xmlns:gml="http://www.opengis.net/gml/3.2"
+                xmlns:gml="http://www.opengis.net/gml"
+                xmlns:gml32="http://www.opengis.net/gml/3.2"
                 xmlns:srv="http://standards.iso.org/iso/19115/-3/srv/2.1"
                 xmlns:gcx="http://standards.iso.org/iso/19115/-3/gcx/1.0"
                 xmlns:gex="http://standards.iso.org/iso/19115/-3/gex/1.0"
@@ -333,6 +334,8 @@
   <xsl:template mode="render-field"
                 match="gex:EX_BoundingPolygon"
                 priority="100">
+
+    <xsl:message>gex:EX_BoundingPolygon</xsl:message>
     <xsl:variable name="gml31stuff">
       <gml:MultiSurface srsName="EPSG:4326" srsDimension="2">
         <xsl:for-each select=".//gml32:Polygon">
