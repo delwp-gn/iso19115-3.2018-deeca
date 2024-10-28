@@ -53,7 +53,7 @@
   <xsl:variable name="configuration"
                 select="document('../../layout/config-editor.xml')"/>
 
- <!-- Required for utility-fn.xsl -->
+  <!-- Required for utility-fn.xsl -->
   <xsl:variable name="editorConfig"
                 select="document('../../layout/config-editor.xml')"/>
 
@@ -75,6 +75,14 @@
 
   <xsl:variable name="langId" select="gn-fn-iso19115-3.2018:getLangId($metadata, $language)"/>
 
+  <xsl:variable name="allLanguages">
+    <xsl:call-template name="get-iso19115-3.2018-deeca-other-languages"/>
+  </xsl:variable>
+
+  <xsl:variable name="isOnlyFeatureCatalog"
+                select="not($metadata/mdb:identificationInfo)
+                            and exists($metadata/mdb:contentInfo/*/mrc:featureCatalogue)"
+                as="xs:boolean"/>
 
   <!-- Ignore some fields displayed in header or in right column -->
   <xsl:template mode="render-field"
@@ -84,7 +92,9 @@
 
   <!-- Specific schema rendering -->
   <xsl:template mode="getMetadataTitle" match="mdb:MD_Metadata">
-    <xsl:for-each select="mdb:identificationInfo/*/mri:citation/*/cit:title">
+    <xsl:for-each select="if ($isOnlyFeatureCatalog)
+                          then mdb:contentInfo/*/mrc:featureCatalogue/*/cat:name
+                          else mdb:identificationInfo/*/mri:citation/*/cit:title">
       <xsl:call-template name="get-iso19115-3.2018-deeca-localised">
         <xsl:with-param name="langId" select="$langId"/>
       </xsl:call-template>
@@ -104,27 +114,39 @@
   </xsl:template>
 
   <xsl:template mode="getOverviews" match="mdb:MD_Metadata">
-    <h4>
-      <i class="fa fa-fw fa-image">&#160;</i>&#160;
-      <span>
-        <xsl:value-of select="$schemaStrings/overviews"/>
-      </span>
-    </h4>
+    <xsl:if test="mdb:identificationInfo/*/mri:graphicOverview">
+      <section class="gn-md-side-overview">
+        <h2>
+          <i class="fa fa-fw fa-image"></i>
+          <span>
+            <xsl:value-of select="$schemaStrings/overviews"/>
+          </span>
+        </h2>
 
-    <xsl:for-each select="mdb:identificationInfo/*/mri:graphicOverview/*">
-      <img class="gn-img-thumbnail img-thumbnail center-block"
-           src="{mcc:fileName/*|mcc:linkage//cit:linkage/*}"/>
+        <xsl:variable name="imgOnError" as="xs:string?"
+                      select="if (count(mdb:identificationInfo/*/mri:graphicOverview/*) > 1)
+                            then 'this.onerror=null; this.parentElement.style.display=''none'';'
+                            else 'this.onerror=null; $(''.gn-md-side-overview'').hide();'"/>
 
-      <xsl:for-each select="mcc:fileDescription|mcc:linkage//cit:description">
-        <div class="gn-img-thumbnail-caption">
-          <xsl:call-template name="get-iso19115-3.2018-deeca-localised">
-            <xsl:with-param name="langId" select="$langId"/>
-          </xsl:call-template>
-        </div>
-      </xsl:for-each>
-      <br/>
+        <xsl:for-each select="mdb:identificationInfo/*/mri:graphicOverview/*">
+          <div>
+            <img data-gn-img-modal="md"
+                 class="gn-img-thumbnail center-block"
+                 alt="{$schemaStrings/overview}"
+                 src="{mcc:fileName/*|mcc:linkage//cit:linkage/*}"
+                 onerror="{$imgOnError}"/>
 
-    </xsl:for-each>
+            <xsl:for-each select="mcc:fileDescription|mcc:linkage//cit:description">
+              <div class="gn-img-thumbnail-caption">
+                <xsl:call-template name="get-iso19115-3.2018-deeca-localised">
+                  <xsl:with-param name="langId" select="$langId"/>
+                </xsl:call-template>
+              </div>
+            </xsl:for-each>
+          </div>
+        </xsl:for-each>
+      </section>
+    </xsl:if>
   </xsl:template>
 
 
@@ -138,9 +160,9 @@
     </div>
 
     <div class="alert alert-info"
-        itemprop="description"
-        itemscope="itemscope"
-        itemtype="http://schema.org/description">
+         itemprop="description"
+         itemscope="itemscope"
+         itemtype="http://schema.org/description">
       <xsl:for-each select="mdb:identificationInfo/*/mri:abstract">
         <xsl:call-template name="get-iso19115-3.2018-deeca-localised">
           <xsl:with-param name="langId" select="$langId"/>
@@ -190,9 +212,9 @@
           <!-- Title -->
           <xsl:for-each select="mdb:identificationInfo/*/mri:citation/*/cit:title">
             <p><b>
-            <xsl:call-template name="get-iso19115-3.2018-deeca-localised">
-              <xsl:with-param name="langId" select="$langId"/>
-            </xsl:call-template>
+              <xsl:call-template name="get-iso19115-3.2018-deeca-localised">
+                <xsl:with-param name="langId" select="$langId"/>
+              </xsl:call-template>
             </b></p>
           </xsl:for-each>
 
@@ -200,8 +222,8 @@
           <xsl:for-each select="mdb:identificationInfo/*/mri:pointOfContact/
                               *[cit:role/*/@codeListValue = 'pointOfContact']">
             <p>
-            <xsl:value-of select="cit:party/*/cit:name/*"/>
-            <xsl:if test="position() != last()">&#160;-&#160;</xsl:if>
+              <xsl:value-of select="cit:party/*/cit:name/*"/>
+              <xsl:if test="position() != last()">&#160;-&#160;</xsl:if>
             </p>
           </xsl:for-each>
 
@@ -209,8 +231,8 @@
           <xsl:variable name="url"
                         select="concat($nodeUrl, 'eng/catalog.search', '#', '/metadata/', $metadataUuid)"/>
           <a itemprop="url"
-              itemscope="itemscope"
-              itemtype="http://schema.org/url" href="{$url}" target="blank">
+             itemscope="itemscope"
+             itemtype="http://schema.org/url" href="{$url}" target="blank">
             <xsl:value-of select="$url"/>
           </a>
         </td>
@@ -232,7 +254,8 @@
 
   <!-- Most of the elements are ... -->
   <xsl:template mode="render-field"
-                match="*[gco:CharacterString != '']|*[gco:Integer != '']|
+                match="*[gco:CharacterString != '']|*[gcx:Anchor != '']|
+                       *[gco:Integer != '']|
                        *[gco:Decimal != '']|*[gco:Boolean != '']|
                        *[gco:Real != '']|*[gco:Measure != '']|*[gco:Length != '']|
                        *[gco:Distance != '']|*[gco:Angle != '']|*[gco:Scale != '']|
@@ -275,7 +298,66 @@
 
 
 
-  <!-- Some elements are only containers so bypass them -->
+  <xsl:template name="render-field-label">
+    <xsl:param name="fieldName" select="''" as="xs:string" required="no"/>
+    <xsl:param name="languages" as="node()*" required="no"/>
+    <xsl:param name="contextLabel" as="attribute()?" required="no"/>
+
+    <xsl:variable name="name"
+                  select="name()"/>
+
+    <xsl:variable name="context"
+                  select="name(..)"/>
+
+    <xsl:choose>
+      <!-- eg. for codelist, display label in all record languages -->
+      <xsl:when test="$fieldName = '' and $language = 'all' and count($languages/lang) > 0">
+        <xsl:for-each select="$languages/lang">
+          <div xml:lang="{@code}">
+            <xsl:value-of select="tr:nodeLabel(tr:create($schema, @code), $name, $context)"/>
+            <xsl:if test="$contextLabel">
+              <xsl:variable name="extraLabel">
+                <xsl:apply-templates mode="render-value"
+                                     select="$contextLabel">
+                  <xsl:with-param name="forcedLanguage" select="@code"/>
+                </xsl:apply-templates>
+              </xsl:variable>
+              <xsl:value-of select="concat(' (', $extraLabel, ')')"/>
+            </xsl:if>
+          </div>
+        </xsl:for-each>
+      </xsl:when>
+      <!-- eg. for multilingual element, display label in all translations -->
+      <xsl:when test="$fieldName = '' and $language = 'all' and lan:PT_FreeText">
+        <xsl:for-each select="lan:PT_FreeText/lan:textGroup/lan:LocalisedCharacterString[. != '']">
+          <xsl:variable name="id"
+                        select="replace(@locale, '#', '')"/>
+          <xsl:variable name="lang3"
+                        select="$metadata//mdb:otherLocale/*[@id = $id]/lan:languageCode/*/@codeListValue"/>
+          <div xml:lang="{$lang3}">
+            <xsl:value-of select="tr:nodeLabel(tr:create($schema, $lang3), $name, $context)"/>
+          </div>
+        </xsl:for-each>
+      </xsl:when>
+      <xsl:otherwise>
+        <!-- Overriden label or element name in current UI language. -->
+        <xsl:value-of select="if ($fieldName)
+                                then $fieldName
+                                else tr:nodeLabel(tr:create($schema), $name, $context)"/>
+        <xsl:if test="$contextLabel">
+          <xsl:variable name="extraLabel">
+            <xsl:apply-templates mode="render-value"
+                                 select="$contextLabel"/>
+          </xsl:variable>
+          <xsl:value-of select="concat(' (', $extraLabel, ')')"/>
+        </xsl:if>
+      </xsl:otherwise>
+    </xsl:choose>
+  </xsl:template>
+
+
+  <!-- Some elements are only containers so bypass them
+  unless they are flat mode exceptions -->
   <xsl:template mode="render-field"
                 match="*[
                           count(*[name() != 'lan:PT_FreeText']) = 1 and
@@ -298,11 +380,13 @@
                        *[$isFlatMode = false() and not(gco:CharacterString)]">
 
     <div class="entry name">
-      <h4>
-        <xsl:value-of select="tr:node-label(tr:create($schema), name(), null)"/>
+      <h2>
+        <xsl:call-template name="render-field-label">
+          <xsl:with-param name="languages" select="$allLanguages"/>
+        </xsl:call-template>
         <xsl:apply-templates mode="render-value"
                              select="@*"/>
-      </h4>
+      </h2>
       <div class="target">
         <xsl:choose>
           <xsl:when test="count(*) > 0">
@@ -321,7 +405,7 @@
   and the coordinates displayed around -->
   <xsl:template mode="render-field"
                 match="gex:EX_GeographicBoundingBox[
-                            gex:westBoundLongitude/gco:Decimal != '']">
+                            gex:westBoundLongitude/gco:Decimal != '']" priority="100">
     <xsl:copy-of select="gn-fn-render:bbox(
                             xs:double(gex:westBoundLongitude/gco:Decimal),
                             xs:double(gex:southBoundLatitude/gco:Decimal),
@@ -335,8 +419,11 @@
                 match="gex:EX_BoundingPolygon"
                 priority="100">
 
-    <xsl:message>gex:EX_BoundingPolygon</xsl:message>
-    <xsl:variable name="gml31stuff">
+    <xsl:copy-of select="gn-fn-render:extent($metadataUuid,
+        count(ancestor::mri:extent/preceding-sibling::mri:extent/*/*[local-name() = 'geographicElement']/*) +
+        count(../../preceding-sibling::gex:geographicElement) + 1)"/>
+
+    <!--<xsl:variable name="gml31stuff">
       <gml:MultiSurface srsName="EPSG:4326" srsDimension="2">
         <xsl:for-each select=".//gml32:Polygon">
           <gml:surfaceMember>
@@ -354,18 +441,18 @@
                          style="pointer-events:auto;">
     </gn-bounding-polygon>
     <br/>
-    <br/>
+    <br/>-->
 
   </xsl:template>
 
   <xsl:template mode="gml32-to-gml" match="@*">
     <xsl:choose>
       <xsl:when test="namespace-uri()='http://www.opengis.net/gml/3.2'">
-       <xsl:variable name="name" select="concat('gml:',local-name())"/>
-       <xsl:attribute name="{$name}"><xsl:value-of select="."/></xsl:attribute>
+        <xsl:variable name="name" select="concat('gml:',local-name())"/>
+        <xsl:attribute name="{$name}"><xsl:value-of select="."/></xsl:attribute>
       </xsl:when>
       <xsl:otherwise>
-       <xsl:if test="name()!='srsName'"><xsl:copy-of select="."/></xsl:if>
+        <xsl:if test="name()!='srsName'"><xsl:copy-of select="."/></xsl:if>
       </xsl:otherwise>
     </xsl:choose>
   </xsl:template>
@@ -376,12 +463,12 @@
     <xsl:element name="{$name}">
       <xsl:apply-templates mode="gml32-to-gml" select="@*"/>
       <xsl:choose>
-         <xsl:when test="count(*)>0">
-           <xsl:apply-templates mode="gml32-to-gml" select="*"/>
-         </xsl:when>
-         <xsl:otherwise>
-           <xsl:value-of select="."/>
-         </xsl:otherwise>
+        <xsl:when test="count(*)>0">
+          <xsl:apply-templates mode="gml32-to-gml" select="*"/>
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:value-of select="."/>
+        </xsl:otherwise>
       </xsl:choose>
     </xsl:element>
   </xsl:template>
@@ -401,7 +488,7 @@
     <xsl:variable name="displayName">
       <xsl:choose>
         <xsl:when
-                test="*/cit:party/cit:CI_Organisation/cit:name and
+          test="*/cit:party/cit:CI_Organisation/cit:name and
                       *//cit:CI_Individual/cit:name">
           <!-- Org name may be multilingual -->
           <xsl:apply-templates mode="render-value"
@@ -422,7 +509,7 @@
 
     <div class="gn-contact" style="pointer-events:auto;">
       <h4>
-        <i class="fa fa-envelope">&#160;</i>
+        <i class="fa fa-fw fa-envelope">&#160;</i>
         <xsl:apply-templates mode="render-value"
                              select="*/cit:role/*/@codeListValue"/>
       </h4>
@@ -436,23 +523,23 @@
               <xsl:choose>
                 <xsl:when test="normalize-space($email) != ''">
                   <a href="mailto:{normalize-space($email)}">
-                    <xsl:value-of select="$displayName"/>&#160;
+                    <xsl:value-of select="$displayName"/>
                   </a>
                 </xsl:when>
                 <xsl:otherwise>
-                  <xsl:value-of select="$displayName"/>&#160;
+                  <xsl:value-of select="$displayName"/>
                 </xsl:otherwise>
               </xsl:choose>
             </strong><br/>
-            <xsl:for-each select="*//cit:contactInfo/*">
+            <xsl:for-each select=".//cit:contactInfo/*">
               <xsl:for-each select="cit:address/*/(
                                           cit:deliveryPoint|cit:city|
                                           cit:administrativeArea|cit:postalCode|cit:country)">
                 <div itemprop="address"
-                      itemscope="itemscope"
-                      itemtype="http://schema.org/PostalAddress">
+                     itemscope="itemscope"
+                     itemtype="http://schema.org/PostalAddress">
                   <xsl:if test="normalize-space(.) != ''">
-                    <xsl:apply-templates mode="render-value" select="."/><br/>
+                    <xsl:apply-templates mode="render-value-no-breaklines" select="."/><br/>
                   </xsl:if>
                 </div>
               </xsl:for-each>
@@ -464,14 +551,14 @@
             <address>
               <xsl:for-each select="cit:phone/*/cit:voice[normalize-space(.) != '']">
                 <div itemprop="contactPoint"
-                      itemscope="itemscope"
-                      itemtype="http://schema.org/ContactPoint">
+                     itemscope="itemscope"
+                     itemtype="http://schema.org/ContactPoint">
                   <meta itemprop="contactType"
                         content="{ancestor::cit:Responsibility/*/cit:role/*/@codeListValue}"/>
                   <xsl:variable name="phoneNumber">
                     <xsl:apply-templates mode="render-value" select="."/>
                   </xsl:variable>
-                  <i class="fa fa-phone">&#160;</i>
+                  <i class="fa fa-fw fa-phone"></i>
                   <a href="tel:{$phoneNumber}">
                     <xsl:value-of select="$phoneNumber"/>
                   </a>
@@ -481,7 +568,7 @@
                 <xsl:variable name="phoneNumber">
                   <xsl:apply-templates mode="render-value" select="."/>
                 </xsl:variable>
-                <i class="fa fa-fax">&#160;</i>
+                <i class="fa fa-fw fa-fax"></i>
                 <a href="tel:{normalize-space($phoneNumber)}">
                   <xsl:value-of select="normalize-space($phoneNumber)"/>&#160;
                 </a>
@@ -490,7 +577,7 @@
                 <xsl:variable name="linkage">
                   <xsl:apply-templates mode="render-value" select="."/>
                 </xsl:variable>
-                <i class="fa fa-link">&#160;</i>
+                <i class="fa fa-fw fa-link"></i>
                 <a href="{normalize-space($linkage)}" target="_blank">
                   <xsl:value-of select="if (../cit:name)
                                         then ../cit:name/* else
@@ -543,7 +630,9 @@
                 priority="100">
     <dl class="gn-link" style="pointer-events:auto;">
       <dt>
-        <xsl:value-of select="tr:node-label(tr:create($schema), name(), null)"/>
+        <xsl:call-template name="render-field-label">
+          <xsl:with-param name="languages" select="$allLanguages"/>
+        </xsl:call-template>
       </dt>
       <dd>
         <xsl:variable name="linkDescription">
@@ -587,17 +676,19 @@
                 priority="100">
     <dl class="gn-code">
       <dt>
-        <xsl:value-of select="tr:node-label(tr:create($schema), name(), null)"/>
+        <xsl:call-template name="render-field-label">
+          <xsl:with-param name="languages" select="$allLanguages"/>
+        </xsl:call-template>
       </dt>
       <dd>
 
         <xsl:if test="*/mcc:codeSpace">
-        <xsl:apply-templates mode="render-value"
-                             select="*/mcc:codeSpace"/>
-        /
+          <xsl:apply-templates mode="render-value"
+                               select="*/mcc:codeSpace"/>
+          /
         </xsl:if>
         <xsl:apply-templates mode="render-value"
-                               select="*/mcc:code"/>
+                             select="*/mcc:code"/>
         <p>
           <xsl:apply-templates mode="render-field"
                                select="*/mcc:authority"/>
@@ -677,7 +768,9 @@
                 priority="100">
     <dl class="gn-format">
       <dt>
-        <xsl:value-of select="tr:node-label(tr:create($schema), name(), null)"/>
+        <xsl:call-template name="render-field-label">
+          <xsl:with-param name="languages" select="$allLanguages"/>
+        </xsl:call-template>
       </dt>
       <dd>
         <ul>
@@ -687,8 +780,8 @@
                                    select="*/mrd:formatSpecificationCitation/*/
                                     cit:title"/>
               <p>
-              <xsl:apply-templates mode="render-field"
-                      select="*/(mrd:amendmentNumber|
+                <xsl:apply-templates mode="render-field"
+                                     select="*/(mrd:amendmentNumber|
                               mrd:fileDecompressionTechnique|
                               mrd:medium|
                               mrd:formatDistributor)"/>
@@ -732,46 +825,46 @@
         <!-- <xsl:value-of select="tr:node-label(tr:create($schema), name(), null)"/> -->
       </dt>
       <dd>
-        <!-- <table class="table table-bordered table-striped"> -->
-        <!-- striped table somewhat wasteful of space -->
-        <table class="table table-bordered">
-          <tr>
-            <!-- HACK: this crazy variable is necessary because null is somehow context
-                 dependent and doesn't like being used inside an iteration on a sequence!
-                 Wholly bizarre errors result and the line number reported is wrong! -->
-            <xsl:variable name="nullity" select="null"/>
-            <xsl:for-each select="$aheaders">
-              <xsl:variable name="name" select="."/>
-              <th>
-                <xsl:value-of select="tr:node-label(tr:create($schema), $name, $nullity)"/>
-              </th>
-            </xsl:for-each>
-          </tr>
-          <xsl:for-each select="descendant::delwp:MD_Attribute">
+          <!-- <table class="table table-bordered table-striped"> -->
+          <!-- striped table somewhat wasteful of space -->
+          <table class="table table-bordered">
             <tr>
-              <xsl:variable name="columns">
-                <columns>
-                  <xsl:for-each select="*">
-                    <td id="{name()}">
-                      <xsl:value-of select="."/>
-                    </td>
-                  </xsl:for-each>
-                </columns>
-              </xsl:variable>
+              <!-- HACK: this crazy variable is necessary because null is somehow context
+                   dependent and doesn't like being used inside an iteration on a sequence!
+                   Wholly bizarre errors result and the line number reported is wrong! -->
+              <xsl:variable name="nullity" select="null"/>
               <xsl:for-each select="$aheaders">
                 <xsl:variable name="name" select="."/>
-                <xsl:choose>
-                  <xsl:when test="count($columns/columns/td[@id=$name])=1">
-                    <xsl:copy-of select="$columns/columns/td[@id=$name]"/>
-                  </xsl:when>
-                  <xsl:otherwise>
-                     <td></td>
-                  </xsl:otherwise>
-                </xsl:choose>
+                <th>
+                  <xsl:value-of select="tr:node-label(tr:create($schema), $name, $nullity)"/>
+                </th>
               </xsl:for-each>
             </tr>
-          </xsl:for-each>
-        </table>
+            <xsl:for-each select="descendant::delwp:MD_Attribute">
+              <tr>
+                <xsl:variable name="columns">
+                  <columns>
+                    <xsl:for-each select="*">
+                      <td id="{name()}">
+                        <xsl:value-of select="."/>
+                      </td>
+                    </xsl:for-each>
+                  </columns>
+                </xsl:variable>
+                <xsl:for-each select="$aheaders">
+                  <xsl:variable name="name" select="."/>
+                  <xsl:choose>
+                    <xsl:when test="count($columns/columns/td[@id=$name])=1">
+                      <xsl:copy-of select="$columns/columns/td[@id=$name]"/>
+                    </xsl:when>
+                    <xsl:otherwise>
+                      <td></td>
+                    </xsl:otherwise>
+                  </xsl:choose>
+                </xsl:for-each>
+              </tr>
+            </xsl:for-each>
+          </table>
       </dd>
     </dl>
   </xsl:template>
@@ -793,22 +886,22 @@
         <xsl:value-of select="tr:node-label(tr:create($schema), name(), null)"/>
       </dt>
       <dd>
-       <table  class="table table-bordered table-striped">
-         <tr>
-           <xsl:for-each select="descendant::*[starts-with(name(),'delwp:class')]">
-             <th>
-               <xsl:value-of select="tr:node-label(tr:create($schema), name(), null)"/>
-             </th>
-           </xsl:for-each>
-         </tr>
-         <tr>
-           <xsl:for-each select="descendant::*[starts-with(name(),'delwp:class')]">
-             <td>
-               <xsl:value-of select="*"/>
-             </td>
-           </xsl:for-each>
-         </tr>
-       </table>
+        <table  class="table table-bordered table-striped">
+          <tr>
+            <xsl:for-each select="descendant::*[starts-with(name(),'delwp:class')]">
+              <th>
+                <xsl:value-of select="tr:node-label(tr:create($schema), name(), null)"/>
+              </th>
+            </xsl:for-each>
+          </tr>
+          <tr>
+            <xsl:for-each select="descendant::*[starts-with(name(),'delwp:class')]">
+              <td>
+                <xsl:value-of select="*"/>
+              </td>
+            </xsl:for-each>
+          </tr>
+        </table>
       </dd>
     </dl>
   </xsl:template>
@@ -819,15 +912,14 @@
                 priority="100">
     <dl class="gn-date">
       <dt>
-        <xsl:value-of select="tr:node-label(tr:create($schema), name(), null)"/>
-        <xsl:if test="*/cit:dateType/*[@codeListValue != '']">
-          (<xsl:apply-templates mode="render-value"
-                                select="*/cit:dateType/*/@codeListValue"/>)
-        </xsl:if>
+        <xsl:call-template name="render-field-label">
+          <xsl:with-param name="languages" select="$allLanguages"/>
+          <xsl:with-param name="contextLabel" select="*/cit:dateType/*/@codeListValue[. != '']"/>
+        </xsl:call-template>
       </dt>
       <dd>
-          <xsl:apply-templates mode="render-value"
-                               select="*/cit:date/*"/>
+        <xsl:apply-templates mode="render-value"
+                             select="*/cit:date/*"/>
       </dd>
     </dl>
   </xsl:template>
@@ -843,7 +935,9 @@
                 priority="100">
     <dl class="gn-date">
       <dt>
-        <xsl:value-of select="tr:node-label(tr:create($schema), name(), null)"/>
+        <xsl:call-template name="render-field-label">
+          <xsl:with-param name="languages" select="$allLanguages"/>
+        </xsl:call-template>
       </dt>
       <dd>
         <ul>
@@ -851,8 +945,8 @@
                 msr:MD_PixelOrientationCode|srv:SV_ParameterDirection|
                 reg:RE_AmendmentType)">
             <li>
-            <xsl:apply-templates mode="render-value"
-                                 select="*"/>
+              <xsl:apply-templates mode="render-value"
+                                   select="*"/>
             </li>
           </xsl:for-each>
         </ul>
@@ -881,7 +975,9 @@
     <xsl:if test="$isFirstOfItsKind">
       <dl class="gn-md-associated-resources" style="pointer-events:auto;">
         <dt>
-          <xsl:value-of select="tr:node-label(tr:create($schema), name(), null)"/>
+          <xsl:call-template name="render-field-label">
+            <xsl:with-param name="languages" select="$allLanguages"/>
+          </xsl:call-template>
         </dt>
         <dd>
           <ul>
@@ -917,11 +1013,31 @@
 
   <xsl:template mode="render-value"
                 match="*[gco:CharacterString]">
+    <xsl:variable name="txt">
+      <xsl:apply-templates mode="localised" select=".">
+        <xsl:with-param name="langId" select="$langId"/>
+      </xsl:apply-templates>
+    </xsl:variable>
 
-    <xsl:apply-templates mode="localised" select=".">
-      <xsl:with-param name="langId" select="$langId"/>
-    </xsl:apply-templates>
+    <xsl:call-template name="addLineBreaksAndHyperlinks">
+      <xsl:with-param name="txt" select="$txt"/>
+    </xsl:call-template>
   </xsl:template>
+
+  <xsl:template mode="render-value-no-breaklines"
+                match="*[gco:CharacterString]">
+
+    <xsl:variable name="txtNonNormalized">
+      <xsl:apply-templates mode="localised" select=".">
+        <xsl:with-param name="langId" select="$langId"/>
+      </xsl:apply-templates>
+    </xsl:variable>
+
+    <xsl:variable name="txt" select="normalize-space($txtNonNormalized)" />
+    <xsl:value-of select="$txt" />
+  </xsl:template>
+
+
 
   <xsl:template mode="render-value"
                 match="gco:Integer|gco:Decimal|
@@ -949,7 +1065,10 @@
 
 
     <xsl:if test="@uom">
-      &#160;<xsl:value-of select="@uom"/>
+      <!-- Display the unit value only -->
+      &#160;<xsl:value-of select="if (contains(@uom, '#'))
+                                    then tokenize(@uom, '#')[2]
+                                    else @uom"/>
     </xsl:if>
   </xsl:template>
 
@@ -1007,7 +1126,7 @@
 
   <!-- TODO -->
   <xsl:template mode="render-value"
-          match="lan:language/gco:CharacterString">
+                match="lan:language/gco:CharacterString">
     <!--mri:defaultLocale>-->
     <!--<lan:PT_Locale id="ENG">-->
     <!--<lan:language-->
@@ -1067,7 +1186,7 @@
   <xsl:template mode="render-value"
                 match="@gco:nilReason[. = 'withheld']"
                 priority="100">
-    <i class="fa fa-lock text-warning" title="{{{{'withheld' | translate}}}}">&#160;</i>
+    <i class="fa fa-fw fa-lock text-warning" title="{{{{'withheld' | translate}}}}"></i>
   </xsl:template>
 
   <xsl:template mode="render-value"
