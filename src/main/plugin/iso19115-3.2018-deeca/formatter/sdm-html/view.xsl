@@ -582,22 +582,9 @@
       </tr>
     </table>
 
-    <!--  
-          Embed JS directly into HTML body
-          unparsed-text() reads the file,
-          replace() escapes weird line-ending chars,
-          (as here: https://www.data2type.de/en/xml-xslt-xslfo/xslt/xslt-xpath-function-reference/alphabetical-xslt-and-xpath-reference/unparsed-text/ ),
-          disable-output-escaping="yes" attribute on xsl:value-of let's us keep the &, < and > characters from the minified JS 
-    -->
-    <script type="text/javascript">
-      <xsl:value-of select="replace( unparsed-text(concat(/root/gui/baseUrl, 'images/js/yahoo-dom-event.js'), 'iso-8859-1'), '[&#xD;&#xA;]+', '&#xA;' )" disable-output-escaping="yes"/>
-    </script>
-    <script type="text/javascript">
-      <xsl:value-of select="replace( unparsed-text(concat(/root/gui/baseUrl, 'images/js/element-beta-min.js'), 'iso-8859-1'), '[&#xD;&#xA;]+', '&#xA;' )" disable-output-escaping="yes"/>
-    </script>
-    <script type="text/javascript">
-      <xsl:value-of select="replace( unparsed-text(concat(/root/gui/baseUrl, 'images/js/tabview-min.js'), 'iso-8859-1'), '[&#xD;&#xA;]+', '&#xA;' )" disable-output-escaping="yes"/>
-    </script>
+    <script type="text/javascript" src="{concat(/root/gui/baseUrl, 'images/js/yahoo-dom-event.js')}"></script>
+    <script type="text/javascript" src="{concat(/root/gui/baseUrl, 'images/js/element-beta-min.js')}"></script>
+    <script type="text/javascript" src="{concat(/root/gui/baseUrl, 'images/js/tabview-min.js')}"></script>
 
     <script type="text/javascript">
       //  restores the tabs in browsers which support them
