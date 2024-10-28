@@ -683,11 +683,11 @@
       <dd>
 
         <xsl:if test="*/mcc:codeSpace">
-          <xsl:apply-templates mode="render-value"
+          <xsl:apply-templates mode="render-value-no-breaklines"
                                select="*/mcc:codeSpace"/>
           /
         </xsl:if>
-        <xsl:apply-templates mode="render-value"
+        <xsl:apply-templates mode="render-value-no-breaklines"
                              select="*/mcc:code"/>
         <p>
           <xsl:apply-templates mode="render-field"
