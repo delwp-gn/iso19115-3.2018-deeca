@@ -24,9 +24,9 @@
                 xmlns:gex="http://standards.iso.org/iso/19115/-3/gex/1.0"
                 xmlns:gfc="http://standards.iso.org/iso/19110/gfc/1.1"
 
-                xmlns:mmi="http://standards.iso.org/iso/19115/-3/mmi/1.0" 
-                xmlns:mac="http://standards.iso.org/iso/19115/-3/mac/2.0" 
-                xmlns:delwp="https://github.com/geonetwork-delwp/iso19115-3.2018" 
+                xmlns:mmi="http://standards.iso.org/iso/19115/-3/mmi/1.0"
+                xmlns:mac="http://standards.iso.org/iso/19115/-3/mac/2.0"
+                xmlns:delwp="https://github.com/geonetwork-delwp/iso19115-3.2018"
 
                 xmlns:java="java:org.fao.geonet.util.XslUtil"
                 xmlns:fo="http://www.w3.org/1999/XSL/Format"
@@ -40,7 +40,7 @@
                 exclude-result-prefixes="#all">
 
 
-                <!-- xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"  -->
+  <!-- xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"  -->
 
 
   <!-- This formatter render an ISO19139 record based on the
@@ -60,7 +60,7 @@
   <xsl:variable name="configuration"
                 select="document('../../layout/config-editor.xml')"/>
 
- <!-- Required for utility-fn.xsl -->
+  <!-- Required for utility-fn.xsl -->
   <xsl:variable name="editorConfig"
                 select="document('../../layout/config-editor.xml')"/>
 
@@ -71,8 +71,8 @@
   <xsl:include href="../../update-fixed-info-subtemplate.xsl"/>
 
   <!-- The core formatter XSL layout based on the editor configuration -->
-  <xsl:include href="sharedFormatterDir/xslt/render-layout.xsl"/> 
-  
+  <xsl:include href="sharedFormatterDir/xslt/render-layout.xsl"/>
+
   <!-- <xsl:include href="../../../../../data/formatter/xslt/render-layout.xsl"/> -->
 
   <!-- Define the metadata to be loaded for this schema plugin-->
@@ -96,16 +96,16 @@
   </xsl:template>
 
   <xsl:template mode="getMetadataHierarchyLevel" match="mdb:MD_Metadata">
-    
+
   </xsl:template>
 
   <xsl:template mode="getOverviews" match="mdb:MD_Metadata">
-   
+
 
   </xsl:template>
 
   <xsl:template mode="getMetadataHeader" match="mdb:MD_Metadata">
-   
+
   </xsl:template>
 
   <xsl:variable name="warnColour">#f4c842</xsl:variable>
@@ -140,22 +140,33 @@
 
     <!-- custom styling to override external css -->
     <style type="text/css">
-      .listTable tbody { 
-        vertical-align: top !important; 
+      #content {
+      font-size: 16px;
       }
-      .keyColumn { 
-        white-space:nowrap; 
-        padding-top: 10px;
-        padding-bottom: 10px;
-       }
-      </style>
+
+      .listTable tbody {
+      vertical-align: top !important;
+      }
+      .listTable p {
+      font-size: 16px;
+      margin-block-start: 0;
+      }
+      .listTable br {
+      display: none;
+      }
+      .keyColumn {
+      white-space:nowrap;
+      padding-top: 10px;
+      padding-bottom: 10px;
+      }
+    </style>
 
     <table id="main">
       <tr>
-        
+
         <td id="content">
           <div class="yui-skin-sam">
-            
+
             <div id="viewMetadataTab" class="yui-navset">
               <ul class="yui-nav">
                 <li class="selected">
@@ -173,11 +184,12 @@
                     <EM>Attributes</EM>
                   </a>
                 </li>
-                
-                
+
+
               </ul>
+
               <div class="yui-content">
-                
+
                 <!-- TAB 1 -->
                 <div>
                   <table class="listTable">
@@ -210,9 +222,9 @@
                     <tr class="labelCell">
                       <td class="keyColumn">Abstract:</td>
                       <td>
-                        <pre style="{$prestyle}">
-                          <xsl:value-of select="mdb:identificationInfo/mri:MD_DataIdentification/mri:abstract"/>
-                        </pre>
+                        <xsl:call-template name="addLineBreaksAndHyperlinks">
+                          <xsl:with-param name="txt" select="mdb:identificationInfo/mri:MD_DataIdentification/mri:abstract/gco:CharacterString"/>
+                        </xsl:call-template>
                       </td>
                     </tr>
                     <tr class="labelCell">
@@ -231,7 +243,7 @@
                     <tr class="labelCell">
                       <td class="keyColumn">Publication Date:</td>
                       <td>
-                          <xsl:value-of select="format-dateTime(mdb:identificationInfo/mri:MD_DataIdentification/mri:resourceMaintenance/mmi:MD_MaintenanceInformation/mmi:maintenanceDate/cit:CI_Date/cit:date,'[D01] [MNn] [Y0001]')"/>
+                        <xsl:value-of select="format-dateTime(mdb:identificationInfo/mri:MD_DataIdentification/mri:citation/cit:CI_Citation/cit:date/cit:CI_Date[cit:dateType/cit:CI_DateTypeCode/@codeListValue = 'publication']/cit:date,'[D01] [MNn] [Y0001]')"/>
                       </td>
                     </tr>
                     <tr class="labelCell">
@@ -252,8 +264,8 @@
                         <div>
                           <xsl:value-of select="mdb:identificationInfo/mri:MD_DataIdentification/mri:resourceConstraints/mco:MD_LegalConstraints/mco:reference/cit:CI_Citation/cit:title"/>
                           (<a href="{$ccLinkage}" target="blank" >
-                            <xsl:value-of select="mdb:identificationInfo/mri:MD_DataIdentification/mri:resourceConstraints/mco:MD_LegalConstraints/mco:reference/cit:CI_Citation/cit:onlineResource/cit:CI_OnlineResource/cit:description"/>
-                          </a>)
+                          <xsl:value-of select="mdb:identificationInfo/mri:MD_DataIdentification/mri:resourceConstraints/mco:MD_LegalConstraints/mco:reference/cit:CI_Citation/cit:onlineResource/cit:CI_OnlineResource/cit:description"/>
+                        </a>)
                         </div>
                         <div>
                           <xsl:value-of select="mdb:identificationInfo/mri:MD_DataIdentification/mri:resourceConstraints/mco:MD_SecurityConstraints/mco:useLimitation"/>
@@ -281,7 +293,7 @@
                           </xsl:for-each>
                         </xsl:if>
                         <xsl:if test="count(mdb:identificationInfo/*/mri:graphicOverview/*) = 0"> -->
-                          <xsl:apply-templates mode="render-field" select="mdb:identificationInfo/mri:MD_DataIdentification/mri:extent/gex:EX_Extent/gex:geographicElement/gex:EX_GeographicBoundingBox" />
+                        <xsl:apply-templates mode="render-field" select="mdb:identificationInfo/mri:MD_DataIdentification/mri:extent/gex:EX_Extent/gex:geographicElement/gex:EX_GeographicBoundingBox" />
                         <!-- </xsl:if> -->
                       </td>
                     </tr>
@@ -299,113 +311,115 @@
                       <th>Descriptions</th>
                     </tr>
                     <tr class="labelCell">
-                        <td class="keyColumn">Resource Name:</td>
-                        <td><xsl:value-of select="$altTitle"/></td>
-                      </tr>
+                      <td class="keyColumn">Resource Name:</td>
+                      <td><xsl:value-of select="$altTitle"/></td>
+                    </tr>
+                    <tr class="labelCell">
+                      <td class="keyColumn">Title:</td>
+                      <td><xsl:value-of select="$title"/></td>
+                    </tr>
+                    <tr class="labelCell">
+                      <td class="keyColumn">Anzlic ID:</td>
+                      <td><xsl:value-of select="$id"/></td>
+                    </tr>
+                    <tr class="labelCell">
+                      <td class="keyColumn">Custodian:</td>
+                      <td>
+                        <xsl:apply-templates mode="render-value" select="mdb:identificationInfo/mri:MD_DataIdentification/mri:citation/cit:CI_Citation/cit:citedResponsibleParty/cit:CI_Responsibility[cit:role/cit:CI_RoleCode/@codeListValue = 'custodian']/cit:party/cit:CI_Organisation/cit:name"/>
+                      </td>
+                    </tr>
+                    <tr class="labelCell">
+                      <td class="keyColumn">Owner:</td>
+                      <td><xsl:value-of select="mdb:identificationInfo/mri:MD_DataIdentification/mri:citation/cit:CI_Citation/cit:citedResponsibleParty/cit:CI_Responsibility[cit:role/cit:CI_RoleCode/@codeListValue = 'owner']/cit:party/cit:CI_Organisation/cit:name"/></td>
                       <tr class="labelCell">
-                        <td class="keyColumn">Title:</td>
-                        <td><xsl:value-of select="$title"/></td>
-                      </tr>
-                      <tr class="labelCell">
-                        <td class="keyColumn">Anzlic ID:</td>
-                        <td><xsl:value-of select="$id"/></td>
-                      </tr>
-                      <tr class="labelCell">
-                          <td class="keyColumn">Custodian:</td>
-                          <td>
-                            <xsl:apply-templates mode="render-value" select="mdb:identificationInfo/mri:MD_DataIdentification/mri:citation/cit:CI_Citation/cit:citedResponsibleParty/cit:CI_Responsibility[cit:role/cit:CI_RoleCode/@codeListValue = 'custodian']/cit:party/cit:CI_Organisation/cit:name"/>
-                          </td>
-                        </tr>
-                      <tr class="labelCell">
-                        <td class="keyColumn">Owner:</td>
-                        <td><xsl:value-of select="mdb:identificationInfo/mri:MD_DataIdentification/mri:citation/cit:CI_Citation/cit:citedResponsibleParty/cit:CI_Responsibility[cit:role/cit:CI_RoleCode/@codeListValue = 'owner']/cit:party/cit:CI_Organisation/cit:name"/></td>
-                      <tr class="labelCell">
-                          <td class="keyColumn">Jurisdiction:</td>
-                          <td>
-                              <xsl:apply-templates mode="render-value" select="*//cit:identifier/mcc:MD_Identifier[mcc:description/gco:CharacterString = 'Jurisdiction ID']/mcc:code"/>
-                          </td>
-                        </tr>
-                      </tr>
-                      <tr class="labelCell">
-                        <td class="keyColumn">Abstract:</td>
+                        <td class="keyColumn">Jurisdiction:</td>
                         <td>
-                          <pre style="{$prestyle}">
-                            <xsl:value-of select="mdb:identificationInfo/mri:MD_DataIdentification/mri:abstract"/>
-                          </pre>
+                          <xsl:apply-templates mode="render-value" select="*//cit:identifier/mcc:MD_Identifier[mcc:description/gco:CharacterString = 'Jurisdiction ID']/mcc:code"/>
                         </td>
                       </tr>
-                      <tr>
-                        <td class="keyColumn">Search Words:</td>
-                        <td>
-                          <xsl:for-each select="mdb:identificationInfo/mri:MD_DataIdentification//mri:topicCategory">
-                            <xsl:apply-templates mode="render-value" select="mri:MD_TopicCategoryCode"/>
-                            <xsl:if test="position() != last()">,&#160;</xsl:if>
-                          </xsl:for-each>
-                        </td>
-                      </tr>
-                      <tr class="labelCell">
-                        <td class="keyColumn">Purpose:</td>
-                        <td><pre style="{$prestyle}">
-                            <xsl:value-of select="mdb:identificationInfo/mri:MD_DataIdentification/mri:purpose"/>
-                          </pre></td>
-                      </tr>
-                      <tr class="labelCell">
-                        <td class="keyColumn">Geographic Extent Polygon:</td>
-                        <td>
-                          <xsl:for-each select="mdb:identificationInfo/*/mri:graphicOverview/*">
+                    </tr>
+                    <tr class="labelCell">
+                      <td class="keyColumn">Abstract:</td>
+                      <td>
+                        <xsl:call-template name="addLineBreaksAndHyperlinks">
+                          <xsl:with-param name="txt" select="mdb:identificationInfo/mri:MD_DataIdentification/mri:abstract/gco:CharacterString"/>
+                        </xsl:call-template>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td class="keyColumn">Search Words:</td>
+                      <td>
+                        <xsl:for-each select="mdb:identificationInfo/mri:MD_DataIdentification//mri:topicCategory">
+                          <xsl:apply-templates mode="render-value" select="mri:MD_TopicCategoryCode"/>
+                          <xsl:if test="position() != last()">,&#160;</xsl:if>
+                        </xsl:for-each>
+                      </td>
+                    </tr>
+                    <tr class="labelCell">
+                      <td class="keyColumn">Purpose:</td>
+                      <td>
+                        <xsl:call-template name="addLineBreaksAndHyperlinks">
+                          <xsl:with-param name="txt" select="mdb:identificationInfo/mri:MD_DataIdentification/mri:purpose/gco:CharacterString"/>
+                        </xsl:call-template>
+                      </td>
+                    </tr>
+                    <tr class="labelCell">
+                      <td class="keyColumn">Geographic Extent Polygon:</td>
+                      <td>
+                        <xsl:for-each select="mdb:identificationInfo/*/mri:graphicOverview/*">
 
-                            <xsl:variable name="imgUrl">
-                              <xsl:value-of select="mcc:MD_BrowseGraphic/mcc:linkage/cit:CI_OnlineResource/cit:linkage/gco:CharacterString" />
-                            </xsl:variable>
+                          <xsl:variable name="imgUrl">
+                            <xsl:value-of select="mcc:MD_BrowseGraphic/mcc:linkage/cit:CI_OnlineResource/cit:linkage/gco:CharacterString" />
+                          </xsl:variable>
 
-                            <div>
-                              <img src="{$imgUrl}" style="max-width: 50%;" />
-                              <p>
-                                <xsl:apply-templates mode="render-value" select="mcc:fileDescription" />
-                              </p>
-                            </div>
-                          </xsl:for-each>
-                          <xsl:apply-templates mode="render-field" select="mdb:identificationInfo/mri:MD_DataIdentification/mri:extent/gex:EX_Extent/gex:geographicElement/gex:EX_GeographicBoundingBox" />
-                        </td>
-                      </tr>
-                      <tr class="labelCell">
-                        <td class="keyColumn">Geographic Bounding Box:</td>
-                        <xsl:for-each select="*//gex:geographicElement/gex:EX_GeographicBoundingBox">
-                          <xsl:variable name="boxdivstyle">
+                          <div>
+                            <img src="{$imgUrl}" style="max-width: 50%;" />
+                            <p>
+                              <xsl:apply-templates mode="render-value" select="mcc:fileDescription" />
+                            </p>
+                          </div>
+                        </xsl:for-each>
+                        <xsl:apply-templates mode="render-field" select="mdb:identificationInfo/mri:MD_DataIdentification/mri:extent/gex:EX_Extent/gex:geographicElement/gex:EX_GeographicBoundingBox" />
+                      </td>
+                    </tr>
+                    <tr class="labelCell">
+                      <td class="keyColumn">Geographic Bounding Box:</td>
+                      <xsl:for-each select="*//gex:geographicElement/gex:EX_GeographicBoundingBox">
+                        <xsl:variable name="boxdivstyle">
                             <xsl:text>
                               width: 50px;
                               height: 50px;
                               border: 2px solid #aaa;
                             </xsl:text>
-                          </xsl:variable>
-                          <xsl:variable name="aligncenter">
+                        </xsl:variable>
+                        <xsl:variable name="aligncenter">
                             <xsl:text>
                               text-align: center;
                             </xsl:text>
-                          </xsl:variable>
-                          <td>
+                        </xsl:variable>
+                        <td>
 
-                            <table>
-                              <tr>
-                                <td></td>
-                                <td style="{$aligncenter}"><xsl:apply-templates mode="render-value" select="gex:northBoundLatitude" /></td>
-                                <td></td>
-                              </tr>
-                              <tr>
-                                <td ><xsl:apply-templates mode="render-value" select="gex:westBoundLongitude" /></td>
-                                <td style="{$boxdivstyle}"></td>
-                                <td><xsl:apply-templates mode="render-value" select="gex:eastBoundLongitude" /></td>
-                              </tr>
-                              <tr>
-                                <td></td>
-                                <td style="{$aligncenter}"><xsl:apply-templates mode="render-value" select="gex:southBoundLatitude" /></td>
-                                <td></td>
-                              </tr>
-                            </table>
+                          <table>
+                            <tr>
+                              <td></td>
+                              <td style="{$aligncenter}"><xsl:apply-templates mode="render-value" select="gex:northBoundLatitude" /></td>
+                              <td></td>
+                            </tr>
+                            <tr>
+                              <td ><xsl:apply-templates mode="render-value" select="gex:westBoundLongitude" /></td>
+                              <td style="{$boxdivstyle}"></td>
+                              <td><xsl:apply-templates mode="render-value" select="gex:eastBoundLongitude" /></td>
+                            </tr>
+                            <tr>
+                              <td></td>
+                              <td style="{$aligncenter}"><xsl:apply-templates mode="render-value" select="gex:southBoundLatitude" /></td>
+                              <td></td>
+                            </tr>
+                          </table>
 
-                          </td>
-                        </xsl:for-each>
-                      </tr>
+                        </td>
+                      </xsl:for-each>
+                    </tr>
                     <tr class="labelCell">
                       <td class="keyColumn">Beginning to Ending Date:</td>
                       <td>
@@ -433,33 +447,33 @@
                     <tr class="labelCell">
                       <td class="keyColumn">Positional Accuracy:</td>
                       <td>
-                        <pre style="{$prestyle}">
-                          <xsl:value-of select="mdb:dataQualityInfo/mdq:DQ_DataQuality/mdq:report/mdq:DQ_AbsoluteExternalPositionalAccuracy/mdq:result/mdq:DQ_ConformanceResult/mdq:explanation" />
-                        </pre>
+                        <xsl:call-template name="addLineBreaksAndHyperlinks">
+                          <xsl:with-param name="txt" select="mdb:dataQualityInfo/mdq:DQ_DataQuality/mdq:report/mdq:DQ_AbsoluteExternalPositionalAccuracy/mdq:result/mdq:DQ_ConformanceResult/mdq:explanation"/>
+                        </xsl:call-template>
                       </td>
                     </tr>
                     <tr class="labelCell">
                       <td class="keyColumn">Attribute Accuracy:</td>
                       <td>
-                        <pre style="{$prestyle}">
-                          <xsl:value-of select="mdb:dataQualityInfo/mdq:DQ_DataQuality/mdq:report/mdq:DQ_NonQuantitativeAttributeCorrectness/mdq:result/mdq:DQ_ConformanceResult/mdq:explanation" />
-                        </pre>
+                        <xsl:call-template name="addLineBreaksAndHyperlinks">
+                          <xsl:with-param name="txt" select="mdb:dataQualityInfo/mdq:DQ_DataQuality/mdq:report/mdq:DQ_NonQuantitativeAttributeCorrectness/mdq:result/mdq:DQ_ConformanceResult/mdq:explanation"/>
+                        </xsl:call-template>
                       </td>
                     </tr>
                     <tr class="labelCell">
                       <td class="keyColumn">Logical Consistency:</td>
                       <td>
-                        <pre style="{$prestyle}">
-                          <xsl:value-of select="mdb:dataQualityInfo/mdq:DQ_DataQuality/mdq:report/mdq:DQ_ConceptualConsistency/mdq:result/mdq:DQ_ConformanceResult/mdq:explanation" />
-                        </pre>
+                        <xsl:call-template name="addLineBreaksAndHyperlinks">
+                          <xsl:with-param name="txt" select="mdb:dataQualityInfo/mdq:DQ_DataQuality/mdq:report/mdq:DQ_ConceptualConsistency/mdq:result/mdq:DQ_ConformanceResult/mdq:explanation"/>
+                        </xsl:call-template>
                       </td>
                     </tr>
                     <tr class="labelCell">
                       <td class="keyColumn">Data Source:</td>
                       <td>
-                        <pre style="{$prestyle}">
-                          <xsl:value-of select="mdb:resourceLineage/mrl:LI_Lineage/mrl:statement" />
-                        </pre>
+                        <xsl:call-template name="addLineBreaksAndHyperlinks">
+                          <xsl:with-param name="txt" select="mdb:resourceLineage/mrl:LI_Lineage/mrl:statement"/>
+                        </xsl:call-template>
                       </td>
                     </tr>
 
@@ -493,7 +507,7 @@
                     <tr class="labelCell">
                       <td class="keyColumn">Facsimile:</td>
                       <td>
-                          <xsl:apply-templates mode="render-value" select="mdb:contact/cit:CI_Responsibility/cit:party/cit:CI_Organisation/cit:individual/cit:CI_Individual/cit:contactInfo/cit:CI_Contact/cit:phone[cit:CI_Telephone/cit:numberType/cit:CI_TelephoneTypeCode/@codeListValue = 'fax']/cit:CI_Telephone/cit:number" />
+                        <xsl:apply-templates mode="render-value" select="mdb:contact/cit:CI_Responsibility/cit:party/cit:CI_Organisation/cit:individual/cit:CI_Individual/cit:contactInfo/cit:CI_Contact/cit:phone[cit:CI_Telephone/cit:numberType/cit:CI_TelephoneTypeCode/@codeListValue = 'fax']/cit:CI_Telephone/cit:number" />
                       </td>
                     </tr>
                     <tr class="labelCell">
@@ -511,14 +525,14 @@
                     <tr class="labelCell">
                       <td class="keyColumn">Additional Metadata:</td>
                       <td>
-                          <pre style="{$prestyle}">
-                              <xsl:copy-of select="mdb:identificationInfo/mri:MD_DataIdentification/mri:supplementalInformation"/>
-                            </pre>
+                        <xsl:call-template name="addLineBreaksAndHyperlinks">
+                          <xsl:with-param name="txt" select="mdb:identificationInfo/mri:MD_DataIdentification/mri:supplementalInformation"/>
+                        </xsl:call-template>
                       </td>
                     </tr>
 
                   </table>
-                
+
                 </div>
                 <!-- END TAB 2 -->
 
@@ -562,22 +576,21 @@
                           </tr>
                         </xsl:for-each>
                       </table>
-                      
                     </xsl:when>
                     <xsl:otherwise>
-                      <pre>No attributes</pre>
+                      <span>No attributes</span>
                     </xsl:otherwise>
                   </xsl:choose>
-                  
-                  
+
+
                 </div>
                 <!-- END TAB 3 -->
               </div>
-              
+
             </div>
           </div>
-          
-          
+
+
         </td>
       </tr>
     </table>
@@ -589,26 +602,26 @@
     <script type="text/javascript">
       //  restores the tabs in browsers which support them
       //  Chrome refuses to run any script so the tabs will not work in that browser
-      function enabletabs() 
+      function enabletabs()
       {
-        (function() {
-          var tabView = new YAHOO.widget.TabView('viewMetadataTab');
-          console.log('tabs created');
-        })();
+      (function() {
+      var tabView = new YAHOO.widget.TabView('viewMetadataTab');
+      console.log('tabs created');
+      })();
 
-        var f = document.getElementById("tab1");
-        if (f) f.href="#tab1";
-        f = document.getElementById("tab2");
-        if (f) f.href="#tab2";
-        f = document.getElementById("tab3");
-        if (f) f.href="#tab3";
-        console.log('tabs enabled');
+      var f = document.getElementById("tab1");
+      if (f) f.href="#tab1";
+      f = document.getElementById("tab2");
+      if (f) f.href="#tab2";
+      f = document.getElementById("tab3");
+      if (f) f.href="#tab3";
+      console.log('tabs enabled');
       }
 
       window.onload = enabletabs;
 
     </script>
-      
+
   </xsl:template>
 
   <!-- FIELD RENDERING -->
@@ -652,16 +665,16 @@
                             gex:westBoundLongitude/gco:Decimal != '']">
 
     <xsl:variable name="urlbase">
-        <xsl:copy-of select="'https://dev-metashare.maps.vic.gov.au/geonetwork/srv/eng/region.getmap.png?mapsrs=EPSG:3857&amp;width=500&amp;background=osm&amp;geomsrs=EPSG:4326&amp;geom='" />
+      <xsl:copy-of select="'https://dev-metashare.maps.vic.gov.au/geonetwork/srv/eng/region.getmap.png?mapsrs=EPSG:3857&amp;width=500&amp;background=osm&amp;geomsrs=EPSG:4326&amp;geom='" />
     </xsl:variable>
     <xsl:variable name="n">
-        <xsl:value-of select="xs:double(gex:northBoundLatitude/gco:Decimal)" />
+      <xsl:value-of select="xs:double(gex:northBoundLatitude/gco:Decimal)" />
     </xsl:variable>
     <xsl:variable name="s">
-        <xsl:value-of select="xs:double(gex:southBoundLatitude/gco:Decimal)" />
+      <xsl:value-of select="xs:double(gex:southBoundLatitude/gco:Decimal)" />
     </xsl:variable>
     <xsl:variable name="e">
-        <xsl:value-of select="xs:double(gex:eastBoundLongitude/gco:Decimal)" />
+      <xsl:value-of select="xs:double(gex:eastBoundLongitude/gco:Decimal)" />
     </xsl:variable>
     <xsl:variable name="w">
       <xsl:value-of select="xs:double(gex:westBoundLongitude/gco:Decimal)" />
@@ -774,7 +787,7 @@
 
   <!-- TODO -->
   <xsl:template mode="render-value"
-          match="lan:language/gco:CharacterString">
+                match="lan:language/gco:CharacterString">
     <!--mri:defaultLocale>-->
     <!--<lan:PT_Locale id="ENG">-->
     <!--<lan:language-->
