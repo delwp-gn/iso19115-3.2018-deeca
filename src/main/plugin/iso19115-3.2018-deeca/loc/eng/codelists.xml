@@ -1743,6 +1743,12 @@
       <description>Information applies to a data source
       </description>
     </entry>
+    <entry>
+      <code>product</code>
+      <label>Product</label>
+      <description>Information applies to a product
+      </description>
+    </entry>
   </codelist>
   <codelist name="mcc:MD_SpatialRepresentationTypeCode">
     <entry>
