@@ -122,10 +122,10 @@
             </cit:CI_Responsibility>
           </mdb:contact>
         </xsl:when>
-        <!-- Add current user as processor, then process everything except the 
+        <!-- Add current user as processor, then process everything except the
              existing processor which will be excluded from the output
              document - this is to ensure that only the latest user is
-             added as a processor - note: Marlin administrator is excluded from 
+             added as a processor - note: Marlin administrator is excluded from
              this role -->
         <xsl:otherwise>
           <xsl:choose>
@@ -139,7 +139,7 @@
                   <xsl:call-template name="addCurrentUserAsParty"/>
                 </cit:CI_Responsibility>
               </mdb:contact>
-              <!-- copy any other metadata contacts with the exception of processors and 
+              <!-- copy any other metadata contacts with the exception of processors and
                    pointOfContact so we make sure that IDC is point of contact -->
               <xsl:apply-templates select="mdb:contact[not(cit:CI_Responsibility/cit:role/cit:CI_RoleCode='processor' or cit:CI_Responsibility/cit:role/cit:CI_RoleCode='pointOfContact')]"/>
             </xsl:when>
@@ -823,7 +823,22 @@
     </xsl:if>
   </xsl:template>
 
-
+  <!-- Withheld mdb:contact, cit:citedResponsibleParty, mrd:distributorContact elements -->
+  <xsl:template match="mdb:contact|cit:citedResponsibleParty|mrd:distributorContact|mco:responsibleParty|mmi:contact" priority="10">
+    <xsl:copy>
+      <xsl:copy-of select="@*[name() != 'gco:nilReason']" />
+      <xsl:attribute name="gco:nilReason">withheld</xsl:attribute>
+      <xsl:apply-templates select="*" />
+    </xsl:copy>
+  </xsl:template>
+  <!-- Withheld mri:pointOfContact elements with a role different than pointOfContact -->
+  <xsl:template match="mri:pointOfContact[*/cit:role/cit:CI_RoleCode/@codeListValue != 'pointOfContact']" priority="10">
+    <xsl:copy>
+      <xsl:copy-of select="@*[name() != 'gco:nilReason']" />
+      <xsl:attribute name="gco:nilReason">withheld</xsl:attribute>
+      <xsl:apply-templates select="*" />
+    </xsl:copy>
+  </xsl:template>
 
   <!-- Remove empty DQ elements, empty transfer options, empty lineage -->
   <xsl:template match="mdb:dataQualityInfo[count(*) = 0]"/>
