@@ -18,6 +18,8 @@
   xmlns:mdq="http://standards.iso.org/iso/19157/-2/mdq/1.0"
   xmlns:gfc="http://standards.iso.org/iso/19110/gfc/1.1"
   xmlns:delwp="https://github.com/geonetwork-delwp/iso19115-3.2018"
+  xmlns:mco="http://standards.iso.org/iso/19115/-3/mco/1.0"
+  xmlns:mmi="http://standards.iso.org/iso/19115/-3/mmi/1.0"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xmlns:gn-fn-iso19115-3.2018="http://geonetwork-opensource.org/xsl/functions/profiles/iso19115-3.2018"
   xmlns:xlink="http://www.w3.org/1999/xlink"
