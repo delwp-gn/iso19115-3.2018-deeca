@@ -72,6 +72,7 @@ Metadata Profile of ISO19115-3 (2018) for Victorian Government Department of Env
     preserved but with no content in.
     -->
     <filter xpath=".//*[@gco:nilReason='withheld']"
+            jsonpath="$.*[?(@.nilReason == 'withheld')]"
             ifNotOperation="authenticated">
       <keepMarkedElement gco:nilReason="withheld"/>
     </filter>
