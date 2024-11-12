@@ -664,9 +664,8 @@
                 match="gex:EX_GeographicBoundingBox[
                             gex:westBoundLongitude/gco:Decimal != '']">
 
-    <xsl:variable name="urlbase">
-      <xsl:copy-of select="'https://dev-metashare.maps.vic.gov.au/geonetwork/srv/eng/region.getmap.png?mapsrs=EPSG:3857&amp;width=500&amp;background=osm&amp;geomsrs=EPSG:4326&amp;geom='" />
-    </xsl:variable>
+    <xsl:variable name="urlbase"
+                  select="concat($nodeUrl, 'api/regions/geom.png?mapsrs=EPSG:3857&amp;width=500&amp;background=osm&amp;geomsrs=EPSG:4326&amp;geom=')"/>
     <xsl:variable name="n">
       <xsl:value-of select="xs:double(gex:northBoundLatitude/gco:Decimal)" />
     </xsl:variable>
