@@ -24,9 +24,9 @@
                 xmlns:gex="http://standards.iso.org/iso/19115/-3/gex/1.0"
                 xmlns:gfc="http://standards.iso.org/iso/19110/gfc/1.1"
 
-                xmlns:mmi="http://standards.iso.org/iso/19115/-3/mmi/1.0" 
-                xmlns:mac="http://standards.iso.org/iso/19115/-3/mac/2.0" 
-                xmlns:delwp="https://github.com/geonetwork-delwp/iso19115-3.2018" 
+                xmlns:mmi="http://standards.iso.org/iso/19115/-3/mmi/1.0"
+                xmlns:mac="http://standards.iso.org/iso/19115/-3/mac/2.0"
+                xmlns:delwp="https://github.com/geonetwork-delwp/iso19115-3.2018"
 
                 xmlns:java="java:org.fao.geonet.util.XslUtil"
                 xmlns:fo="http://www.w3.org/1999/XSL/Format"
@@ -40,7 +40,7 @@
                 exclude-result-prefixes="#all">
 
 
-                <!-- xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"  -->
+  <!-- xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"  -->
 
 
   <!-- This formatter render an ISO19139 record based on the
@@ -60,7 +60,7 @@
   <xsl:variable name="configuration"
                 select="document('../../layout/config-editor.xml')"/>
 
- <!-- Required for utility-fn.xsl -->
+  <!-- Required for utility-fn.xsl -->
   <xsl:variable name="editorConfig"
                 select="document('../../layout/config-editor.xml')"/>
 
@@ -71,8 +71,8 @@
   <xsl:include href="../../update-fixed-info-subtemplate.xsl"/>
 
   <!-- The core formatter XSL layout based on the editor configuration -->
-  <xsl:include href="sharedFormatterDir/xslt/render-layout.xsl"/> 
-  
+  <xsl:include href="sharedFormatterDir/xslt/render-layout.xsl"/>
+
   <!-- <xsl:include href="../../../../../data/formatter/xslt/render-layout.xsl"/> -->
 
   <!-- Define the metadata to be loaded for this schema plugin-->
@@ -96,16 +96,16 @@
   </xsl:template>
 
   <xsl:template mode="getMetadataHierarchyLevel" match="mdb:MD_Metadata">
-    
+
   </xsl:template>
 
   <xsl:template mode="getOverviews" match="mdb:MD_Metadata">
-   
+
 
   </xsl:template>
 
   <xsl:template mode="getMetadataHeader" match="mdb:MD_Metadata">
-   
+
   </xsl:template>
 
   <xsl:variable name="warnColour">#f4c842</xsl:variable>
@@ -120,7 +120,7 @@
   <xsl:function name="gn-fn-render:cswURL">
     <xsl:param name="uuid"/>
     <xsl:variable name="query">
-        Identifier+like+'<xsl:value-of select="$uuid" />'
+      Identifier+like+'<xsl:value-of select="$uuid" />'
     </xsl:variable>
     <xsl:value-of select="translate( concat('http://localhost:8080/geonetwork/srv/eng/csw?request=GetRecords&amp;service=CSW&amp;version=2.0.2&amp;namespace=xmlns%28csw%3Dhttp%3A%2F%2Fwww.opengis.net%2Fcat%2Fcsw%2F2.0.2%29%2Cxmlns%28gmd%3Dhttp%3A%2F%2Fwww.isotc211.org%2F2005%2Fgmd%29&amp;constraint=', $query, '&amp;constraintLanguage=CQL_TEXT&amp;constraint_language_version=1.1.0&amp;typeNames=mdb:MD_Metadata&amp;resultType=results&amp;ElementSetName=full&amp;outputSchema=http://standards.iso.org/iso/19115/-3/mdb/2.0'), ' ', '')" />
   </xsl:function>
@@ -138,7 +138,7 @@
       <xsl:apply-templates mode="render-value" select="mdb:metadataScope/mdb:MD_MetadataScope/mdb:resourceScope/mcc:MD_ScopeCode/@codeListValue" />
     </xsl:variable>
 
-    <div style="font-family: Arial, Helvetica, sans-serif;">
+    <div style="font-family: Arial, Helvetica, sans-serif;" class="sdmpdf">
 
       <h3>
         <xsl:value-of select="gn-fn-render:get-schema-strings($schemaStrings, 'fdr_fullDescriptionReport')"/>
@@ -181,10 +181,10 @@
             <xsl:value-of select="gn-fn-render:get-schema-strings($schemaStrings, 'fdr_dataAccess')"/>
           </strong></td>
           <td>
-              <xsl:apply-templates mode="render-value" select="mdb:identificationInfo/mri:MD_DataIdentification/mri:resourceConstraints/mco:MD_SecurityConstraints/mco:classification/mco:MD_ClassificationCode/@codeListValue" />
-              <!-- <br />
-              <xsl:apply-templates mode="render-value" select="mdb:identificationInfo/mri:MD_DataIdentification/mri:resourceConstraints/mco:MD_SecurityConstraints/mco:useLimitation"/> -->
-            </td>
+            <xsl:apply-templates mode="render-value" select="mdb:identificationInfo/mri:MD_DataIdentification/mri:resourceConstraints/mco:MD_SecurityConstraints/mco:classification/mco:MD_ClassificationCode/@codeListValue" />
+            <!-- <br />
+            <xsl:apply-templates mode="render-value" select="mdb:identificationInfo/mri:MD_DataIdentification/mri:resourceConstraints/mco:MD_SecurityConstraints/mco:useLimitation"/> -->
+          </td>
         </tr>
         <!-- <tr>
           <td><strong>
@@ -215,9 +215,9 @@
             <xsl:value-of select="gn-fn-render:get-schema-strings($schemaStrings, 'fdr_abstract')"/>
           </strong></td>
           <td style="vertical-align: top;">
-            <pre style="{$prestyle}">
-              <xsl:apply-templates mode="render-value" select="mdb:identificationInfo/mri:MD_DataIdentification/mri:abstract"/>
-            </pre>
+            <xsl:call-template name="addLineBreaksAndHyperlinks">
+              <xsl:with-param name="txt" select="mdb:identificationInfo/mri:MD_DataIdentification/mri:abstract/gco:CharacterString"/>
+            </xsl:call-template>
           </td>
         </tr>
       </table>
@@ -230,9 +230,10 @@
           <h2>
             <xsl:value-of select="gn-fn-render:get-schema-strings($schemaStrings, 'fdr_purpose')"/>
           </h2>
-            <pre style="{$prestyle}">
-              <xsl:apply-templates mode="render-value" select="mdb:identificationInfo/mri:MD_DataIdentification/mri:purpose"/>
-            </pre>
+
+          <xsl:call-template name="addLineBreaksAndHyperlinks">
+            <xsl:with-param name="txt" select="mdb:identificationInfo/mri:MD_DataIdentification/mri:purpose"/>
+          </xsl:call-template>
         </div>
 
         <!-- currency -->
@@ -247,7 +248,7 @@
             </h3>
             <p>
               <xsl:apply-templates mode="render-value" select="mdb:identificationInfo/mri:MD_DataIdentification/mri:status/mcc:MD_ProgressCode/@codeListValue"/>
-            </p>  
+            </p>
             <h3>
               <xsl:value-of select="gn-fn-render:get-schema-strings($schemaStrings, 'fdr_dataCollection')"/>
             </h3>
@@ -257,7 +258,7 @@
               </h4>
               <p>
                 <xsl:apply-templates mode="render-field" select="mdb:identificationInfo/mri:MD_DataIdentification/mri:extent/gex:EX_Extent/gex:temporalElement/gex:EX_TemporalExtent/gex:extent/gml:TimePeriod" />
-              </p> 
+              </p>
               <h4>
                 <xsl:value-of select="gn-fn-render:get-schema-strings($schemaStrings, 'fdr_updateFrequency')"/>
               </h4>
@@ -292,43 +293,57 @@
             <h3>
               <xsl:value-of select="gn-fn-render:get-schema-strings($schemaStrings, 'fdr_datasetSource')"/>
             </h3>
-            <pre style="{$prestyle}">
-              <xsl:apply-templates mode="render-value" select="mdb:resourceLineage/mrl:LI_Lineage/mrl:statement"/>
-              <xsl:apply-templates mode="render-value" select="mdb:resourceLineage/mrl:LI_Lineage/mrl:source/mrl:LI_Source/mrl:description"/>
-            </pre>
+
+            <xsl:call-template name="addLineBreaksAndHyperlinks">
+              <xsl:with-param name="txt" select="mdb:resourceLineage/mrl:LI_Lineage/mrl:statement"/>
+            </xsl:call-template>
+
+            <xsl:call-template name="addLineBreaksAndHyperlinks">
+              <xsl:with-param name="txt" select="mdb:resourceLineage/mrl:LI_Lineage/mrl:source/mrl:LI_Source/mrl:description"/>
+            </xsl:call-template>
+
             <h3>
               <xsl:value-of select="gn-fn-render:get-schema-strings($schemaStrings, 'fdr_datasetProcessingDetails')"/>
             </h3>
-            <pre style="{$prestyle}">
-              <xsl:apply-templates mode="render-value" select="mdb:resourceLineage/mrl:LI_Lineage/mrl:processStep/mrl:LI_ProcessStep/mrl:description"/>
-            </pre>
+
+            <xsl:call-template name="addLineBreaksAndHyperlinks">
+              <xsl:with-param name="txt" select="mdb:resourceLineage/mrl:LI_Lineage/mrl:processStep/mrl:LI_ProcessStep/mrl:description"/>
+            </xsl:call-template>
+
             <h3>
               <xsl:value-of select="gn-fn-render:get-schema-strings($schemaStrings, 'fdr_positionalAccuracy')"/>
             </h3>
-            <pre style="{$prestyle}">
-              <xsl:apply-templates mode="render-value" select="mdb:dataQualityInfo/mdq:DQ_DataQuality/mdq:report/mdq:DQ_AbsoluteExternalPositionalAccuracy/mdq:result/mdq:DQ_ConformanceResult/mdq:explanation" />
-            </pre>
+
+            <xsl:call-template name="addLineBreaksAndHyperlinks">
+              <xsl:with-param name="txt" select="mdb:dataQualityInfo/mdq:DQ_DataQuality/mdq:report/mdq:DQ_AbsoluteExternalPositionalAccuracy/mdq:result/mdq:DQ_ConformanceResult/mdq:explanation"/>
+            </xsl:call-template>
+
             <h3>
               <xsl:value-of select="gn-fn-render:get-schema-strings($schemaStrings, 'fdr_attributeAccuracy')"/>
             </h3>
-            <pre style="{$prestyle}">
-              <xsl:apply-templates mode="render-value" select="mdb:dataQualityInfo/mdq:DQ_DataQuality/mdq:report/mdq:DQ_NonQuantitativeAttributeCorrectness/mdq:result/mdq:DQ_ConformanceResult/mdq:explanation" />
-            </pre>
+
+            <xsl:call-template name="addLineBreaksAndHyperlinks">
+              <xsl:with-param name="txt" select="mdb:dataQualityInfo/mdq:DQ_DataQuality/mdq:report/mdq:DQ_NonQuantitativeAttributeCorrectness/mdq:result/mdq:DQ_ConformanceResult/mdq:explanation"/>
+            </xsl:call-template>
+
             <h3>
               <xsl:value-of select="gn-fn-render:get-schema-strings($schemaStrings, 'fdr_logicalConsistency')"/>
             </h3>
-            <pre style="{$prestyle}">
-              <xsl:apply-templates mode="render-value" select="mdb:dataQualityInfo/mdq:DQ_DataQuality/mdq:report/mdq:DQ_ConceptualConsistency/mdq:result/mdq:DQ_ConformanceResult/mdq:explanation" />
-            </pre>
+
+            <xsl:call-template name="addLineBreaksAndHyperlinks">
+              <xsl:with-param name="txt" select="mdb:dataQualityInfo/mdq:DQ_DataQuality/mdq:report/mdq:DQ_ConceptualConsistency/mdq:result/mdq:DQ_ConformanceResult/mdq:explanation"/>
+            </xsl:call-template>
+
             <h3>
               <xsl:value-of select="gn-fn-render:get-schema-strings($schemaStrings, 'fdr_completeness')"/>
             </h3>
-            <pre style="{$prestyle}">
-              <xsl:apply-templates mode="render-value" select="mdb:dataQualityInfo/mdq:DQ_DataQuality/mdq:report/mdq:DQ_CompletenessOmission/mdq:result/mdq:DQ_ConformanceResult/mdq:explanation" />
-            </pre>
+
+            <xsl:call-template name="addLineBreaksAndHyperlinks">
+              <xsl:with-param name="txt" select="mdb:dataQualityInfo/mdq:DQ_DataQuality/mdq:report/mdq:DQ_CompletenessOmission/mdq:result/mdq:DQ_ConformanceResult/mdq:explanation"/>
+            </xsl:call-template>
           </blockquote>
 
-        </div> 
+        </div>
 
         <!-- access -->
         <div>
@@ -339,9 +354,11 @@
             <h3>
               <xsl:value-of select="gn-fn-render:get-schema-strings($schemaStrings, 'fdr_constraints')"/>
             </h3>
-            <pre style="{$prestyle}">
-              <xsl:apply-templates mode="render-value" select="mdb:identificationInfo/mri:MD_DataIdentification/mri:resourceConstraints/mco:MD_SecurityConstraints/mco:useLimitation"/>
-            </pre>
+
+            <xsl:call-template name="addLineBreaksAndHyperlinks">
+              <xsl:with-param name="txt" select="mdb:identificationInfo/mri:MD_DataIdentification/mri:resourceConstraints/mco:MD_SecurityConstraints/mco:useLimitation"/>
+            </xsl:call-template>
+
             <h3>
               <xsl:value-of select="gn-fn-render:get-schema-strings($schemaStrings, 'fdr_storedDataFormat')"/>
             </h3>
@@ -351,7 +368,7 @@
             </h3>
             <p><xsl:apply-templates mode="render-value" select="mdb:distributionInfo/mrd:MD_Distribution/mrd:distributionFormat/mrd:MD_Format/mrd:formatSpecificationCitation/cit:CI_Citation/cit:title"/></p>
           </blockquote>
-        </div> 
+        </div>
 
         <!-- quality -->
         <!-- <div>
@@ -393,7 +410,7 @@
               </ul>
             </p>
           </blockquote>
-        </div> 
+        </div>
 
         <!-- further info -->
         <div>
@@ -404,52 +421,53 @@
             <h3>
               <xsl:value-of select="gn-fn-render:get-schema-strings($schemaStrings, 'fdr_supportingDocumentation')"/>
             </h3>
-            <pre style="{$prestyle}">
-              <xsl:apply-templates mode="render-value" select="mdb:identificationInfo/mri:MD_DataIdentification/mri:supplementalInformation"/>
-            </pre>
+
+            <xsl:call-template name="addLineBreaksAndHyperlinks">
+              <xsl:with-param name="txt" select="mdb:identificationInfo/mri:MD_DataIdentification/mri:supplementalInformation"/>
+            </xsl:call-template>
           </blockquote>
-        </div> 
+        </div>
 
         <!-- history -->
         <div>
           <h2>
             <xsl:value-of select="gn-fn-render:get-schema-strings($schemaStrings, 'fdr_history')"/>
           </h2>
-            <blockquote>
-              <xsl:if test="mdb:identificationInfo/mri:MD_DataIdentification/mri:resourceMaintenance/mmi:MD_MaintenanceInformation/mmi:maintenanceDate">
-                <h3>
-                  <xsl:value-of select="gn-fn-render:get-schema-strings($schemaStrings, 'fdr_stages')"/>
-                </h3>
-                <blockquote>
-                  <xsl:for-each select="mdb:identificationInfo/mri:MD_DataIdentification/mri:resourceMaintenance/mmi:MD_MaintenanceInformation/mmi:maintenanceDate">
-                    <h4>
-                      <xsl:apply-templates mode="render-value" select="cit:CI_Date/cit:dateType/cit:CI_DateTypeCode/@codeListValue"/>
-                    </h4>
-                    <p><xsl:apply-templates mode="render-value" select="cit:CI_Date/cit:date/gco:DateTime"/></p>
-                  </xsl:for-each>
-                </blockquote>
-              </xsl:if>
+          <blockquote>
+            <xsl:if test="mdb:identificationInfo/mri:MD_DataIdentification/mri:resourceMaintenance/mmi:MD_MaintenanceInformation/mmi:maintenanceDate">
               <h3>
-                <xsl:value-of select="gn-fn-render:get-schema-strings($schemaStrings, 'fdr_lastUpdated')"/>
+                <xsl:value-of select="gn-fn-render:get-schema-strings($schemaStrings, 'fdr_stages')"/>
               </h3>
               <blockquote>
-                <h4>
-                  <xsl:value-of select="gn-fn-render:get-schema-strings($schemaStrings, 'fdr_date')"/>
-                </h4>
-                <p><xsl:apply-templates mode="render-value" select="mdb:dateInfo[1]/cit:CI_Date/cit:date"/></p>
-                <!-- <h4>
-                  <xsl:value-of select="gn-fn-render:get-schema-strings($schemaStrings, 'fdr_user')"/>
-                </h4>
-                <p><xsl:apply-templates mode="render-value" select="$missing"/></p> -->
+                <xsl:for-each select="mdb:identificationInfo/mri:MD_DataIdentification/mri:resourceMaintenance/mmi:MD_MaintenanceInformation/mmi:maintenanceDate">
+                  <h4>
+                    <xsl:apply-templates mode="render-value" select="cit:CI_Date/cit:dateType/cit:CI_DateTypeCode/@codeListValue"/>
+                  </h4>
+                  <p><xsl:apply-templates mode="render-value" select="cit:CI_Date/cit:date/gco:DateTime"/></p>
+                </xsl:for-each>
               </blockquote>
+            </xsl:if>
+            <h3>
+              <xsl:value-of select="gn-fn-render:get-schema-strings($schemaStrings, 'fdr_lastUpdated')"/>
+            </h3>
+            <blockquote>
+              <h4>
+                <xsl:value-of select="gn-fn-render:get-schema-strings($schemaStrings, 'fdr_date')"/>
+              </h4>
+              <p><xsl:apply-templates mode="render-value" select="mdb:dateInfo[1]/cit:CI_Date/cit:date"/></p>
+              <!-- <h4>
+                <xsl:value-of select="gn-fn-render:get-schema-strings($schemaStrings, 'fdr_user')"/>
+              </h4>
+              <p><xsl:apply-templates mode="render-value" select="$missing"/></p> -->
+            </blockquote>
             <!-- <h3>
               <xsl:value-of select="gn-fn-render:get-schema-strings($schemaStrings, 'fdr_history')"/>
             </h3>
             <p><xsl:apply-templates mode="render-value" select="$missing"/></p> -->
-          
-          <h3>
-            <xsl:value-of select="gn-fn-render:get-schema-strings($schemaStrings, 'fdr_relatedDatasets')"/>
-          </h3>
+
+            <h3>
+              <xsl:value-of select="gn-fn-render:get-schema-strings($schemaStrings, 'fdr_relatedDatasets')"/>
+            </h3>
             <blockquote>
               <xsl:choose>
                 <xsl:when test="mdb:identificationInfo/mri:MD_DataIdentification/mri:associatedResource">
@@ -519,7 +537,7 @@
             </h3>
             <p>http://www.delwp.vic.gov.au/vicmap</p>
           </blockquote>
-        </div> 
+        </div>
 
         <!-- contacts -->
         <div>
@@ -540,11 +558,11 @@
             </tr>
             <xsl:for-each select="mdb:identificationInfo/mri:MD_DataIdentification/mri:citation/cit:CI_Citation/cit:citedResponsibleParty[cit:CI_Responsibility/cit:party/cit:CI_Organisation/cit:individual]">
               <xsl:sort select="cit:CI_Responsibility/cit:party/cit:CI_Organisation/cit:individual/cit:CI_Individual/cit:name"/>
-                <xsl:apply-templates mode="render-field" select="."/>
+              <xsl:apply-templates mode="render-field" select="."/>
             </xsl:for-each>
           </table>
-        </div> 
-      
+        </div>
+
       </div>
     </div>
   </xsl:template>
@@ -582,7 +600,7 @@
       </td>
     </tr>
   </xsl:template>
-  
+
 
 
 
@@ -602,7 +620,7 @@
   </xsl:template>
 
 
-  
+
 
 
 
@@ -704,7 +722,7 @@
 
   <!-- TODO -->
   <xsl:template mode="render-value"
-          match="lan:language/gco:CharacterString">
+                match="lan:language/gco:CharacterString">
     <!--mri:defaultLocale>-->
     <!--<lan:PT_Locale id="ENG">-->
     <!--<lan:language-->
@@ -757,7 +775,7 @@
     </xsl:choose>
   </xsl:template>
 
-  
+
 
   <!-- Enumeration -->
   <xsl:template mode="render-value"
