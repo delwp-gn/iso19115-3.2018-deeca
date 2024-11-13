@@ -115,7 +115,7 @@
             data-search-action="true"
             data-popup-action="true"
             data-template-type="party"
-            data-filter='{"_root": "cit:CI_Organisation"}'
+            data-filter='{"root": "cit:CI_Organisation"}'
             data-insert-modes="xlink"/>
     </for>
     <for name="cit:party" addDirective="data-gn-directory-entry-selector">
@@ -125,7 +125,7 @@
             data-search-action="true"
             data-popup-action="true"
             data-template-type="party"
-            data-filter='{"_root": "cit:CI_Organisation"}'
+            data-filter='{"root": "cit:CI_Organisation"}'
             data-insert-modes="xlink"/>
     </for>
     <for name="mac:instrument" addDirective="data-gn-directory-entry-selector">
@@ -135,7 +135,7 @@
             data-search-action="true"
             data-popup-action="true"
             data-template-type="sensor"
-            data-filter='{"_root": "mac:MI_Sensor"}'
+            data-filter='{"root": "mac:MI_Sensor"}'
             data-insert-modes="xlink"/>
     </for>
     <for name="mdb:contact" addDirective="data-gn-directory-entry-selector">
@@ -143,7 +143,7 @@
               data-schema="iso19115-3.2018"
               data-template-add-action="false"
               data-template-type="contact"
-              data-filter='{"_root": "cit:CI_Responsibility"}'
+              data-filter='{"root": "cit:CI_Responsibility"}'
               data-variables="cit:role/cit:CI_RoleCode/@codeListValue~{role}"/>
     </for>
     <for name="mri:pointOfContact" addDirective="data-gn-directory-entry-selector">
@@ -151,7 +151,7 @@
               data-schema="iso19115-3.2018"
               data-template-add-action="true"
               data-template-type="contact"
-              data-filter='{"_root": "cit:CI_Responsibility"}'
+              data-filter='{"root": "cit:CI_Responsibility"}'
               data-variables="cit:role/cit:CI_RoleCode/@codeListValue~{role}"/>
     </for>
     <for name="mri:resourceConstraints" addDirective="data-gn-directory-entry-selector">
@@ -159,7 +159,7 @@
               data-schema="iso19115-3.2018"
               data-template-add-action="false"
               data-template-type="constraint"
-              data-filter='{"_root": "mco:MD_LegalConstraints"}'
+              data-filter='{"root": "mco:MD_LegalConstraints"}'
               data-variables=""/>
     </for>
     <for name="mrd:distributor" addDirective="data-gn-directory-entry-selector">
@@ -167,7 +167,7 @@
               data-schema="iso19115-3.2018"
               data-template-add-action="true"
               data-template-type="contact"
-              data-filter='{"_root": "cit:CI_Responsibility"}'
+              data-filter='{"root": "cit:CI_Responsibility"}'
               data-variables="cit:role/cit:CI_RoleCode/@codeListValue~{role}"/>
     </for>
     <for name="mrl:processor" addDirective="data-gn-directory-entry-selector">
@@ -175,7 +175,7 @@
               data-schema="iso19115-3.2018"
               data-template-add-action="true"
               data-template-type="contact"
-              data-filter='{"_root": "cit:CI_Responsibility"}'
+              data-filter='{"root": "cit:CI_Responsibility"}'
               data-variables="cit:role/cit:CI_RoleCode/@codeListValue~{role}"/>
     </for>
     <for name="cit:citedResponsibleParty" addDirective="data-gn-directory-entry-selector">
@@ -183,7 +183,7 @@
               data-schema="iso19115-3.2018"
               data-template-add-action="true"
               data-template-type="author"
-              data-filter='{"_root": "cit:CI_Responsibility"}'
+              data-filter='{"root": "cit:CI_Responsibility"}'
               data-variables="cit:role/cit:CI_RoleCode/@codeListValue~{role}"/>
     </for>
 
