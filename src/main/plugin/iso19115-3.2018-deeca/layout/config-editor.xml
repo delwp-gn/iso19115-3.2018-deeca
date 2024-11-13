@@ -375,7 +375,7 @@
     <!-- This is an example for organisation table layout.
     19115-3 being more flexible with link between orgs and individual,
     a table view force some constraints. -->
-    <table for="cit:CI_Responsibility">
+    <!--<table for="cit:CI_Responsibility">
       <header>
         <col label="cit:role"/>
         <col label="cit:CI_Organisation"/>
@@ -388,7 +388,7 @@
         <col xpath="cit:party/*/cit:contactInfo/*/cit:address/*/cit:electronicMailAddress"/>
         <col del=".."/>
       </row>
-    </table>
+    </table>-->
   </tableFields>
 
   <!-- View configuration -->
