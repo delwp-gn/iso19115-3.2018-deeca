@@ -176,17 +176,17 @@
                           else if ($mail != '') then $mail else ''"/>
     <xsl:variable name="orgContactInfoSuffix"
                   select="if ($contactInfo != '')
-                          then concat(' (', $contactInfo, ')') else ''"/>
+                          then $contactInfo else ''"/>
 
     <resourceTitleObject type="object">{
     "default": "<xsl:value-of select="util:escapeForJson(
-                                          concat($org, $orgContactInfoSuffix))"/>"
+                                          concat($orgContactInfoSuffix, ' @ ', $org))"/>"
     <xsl:for-each
       select="cit:name/lan:PT_FreeText/*/lan:LocalisedCharacterString[. != '']">
       ,"lang<xsl:value-of select="$allLanguages/lang[
                                       @id = current()/@locale/substring(., 2, 2)
                                     ]/@value"/>": "<xsl:value-of select="util:escapeForJson(
-                                               concat(., $orgContactInfoSuffix))"/>"
+                                               concat($orgContactInfoSuffix, ' @ ', .))"/>"
     </xsl:for-each>
     }
     </resourceTitleObject>
