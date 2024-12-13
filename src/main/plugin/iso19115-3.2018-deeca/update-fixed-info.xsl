@@ -115,7 +115,7 @@
       <xsl:choose>
         <!-- If no originator then add current user as originator -->
         <xsl:when test="/root/env/created">
-          <mdb:contact>
+          <mdb:contact gco:nilReason="withheld">
             <cit:CI_Responsibility>
               <cit:role>
                 <cit:CI_RoleCode codeList="{concat($codelistloc,'#CI_RoleCode')}" codeListValue="originator">originator</cit:CI_RoleCode>
