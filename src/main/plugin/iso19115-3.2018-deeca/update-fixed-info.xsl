@@ -133,7 +133,7 @@
           <xsl:choose>
             <xsl:when test="/root/env/user/details/username!='admin'">
               <!-- admin does not replace a processor -->
-              <mdb:contact>
+              <mdb:contact gco:nilReason="withheld">
                 <cit:CI_Responsibility>
                   <cit:role>
                     <cit:CI_RoleCode codeList="{concat($codelistloc,'#CI_RoleCode')}" codeListValue="processor">processor</cit:CI_RoleCode>
