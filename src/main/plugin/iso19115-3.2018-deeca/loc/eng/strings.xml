@@ -276,4 +276,6 @@
   <fdr_contactName>Contact Name:</fdr_contactName>
   <fdr_telephone>Telephone:</fdr_telephone>
   <fdr_contactRole>Contact Role:</fdr_contactRole>
+
+  <licenseType>License type</licenseType>
 </strings>
