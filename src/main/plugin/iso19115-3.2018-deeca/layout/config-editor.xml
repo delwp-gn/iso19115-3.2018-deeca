@@ -164,11 +164,13 @@
     </for>
     <for name="mri:resourceConstraints" addDirective="data-gn-directory-entry-selector">
       <directiveAttributes
-              data-schema="iso19115-3.2018-deeca"
-              data-template-add-action="false"
-              data-template-type="constraint"
-              data-filter='{"root": "mco:MD_LegalConstraints"}'
-              data-variables=""/>
+        data-schema="iso19115-3.2018-deeca"
+        data-template-add-action="false"
+        data-search-action="true"
+        data-template-type="constraint"
+        data-filter='{"root": "mco:MD_LegalConstraints"}'
+        data-variables=""
+        data-insert-modes="xlink"/>
     </for>
     <for name="mrd:distributor" addDirective="data-gn-directory-entry-selector">
       <directiveAttributes
@@ -612,6 +614,7 @@
       <tab id="resourceConstraints" mode="flat">
         <section>
           <field xpath="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:resourceConstraints/mco:MD_SecurityConstraints/mco:useLimitation"/>
+
           <action type="add" name="useLimitation" or="useLimitation" if="count(mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:resourceConstraints/mco:MD_SecurityConstraints/mco:useLimitation)=0" in="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:resourceConstraints/mco:MD_SecurityConstraints">
             <template>
               <snippet>
@@ -622,9 +625,10 @@
             </template>
           </action>
           <field xpath="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:resourceConstraints/mco:MD_SecurityConstraints/mco:classification"/>
-          <!-- TODO: allow creative commons license to be picked -->
-				</section>
-			</tab>
+
+          <field name="licenseType" xpath="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:resourceConstraints[mco:MD_LegalConstraints]" or="resourceConstraints" in="/mdb:MD_Metadata/mdb:identificationInfo/*"/>
+        </section>
+      </tab>
 
       <tab id="resourceLineage" mode="flat">
         <section>
@@ -1177,6 +1181,7 @@
       <tab id="resourceConstraints" mode="flat">
         <section>
           <field xpath="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:resourceConstraints/mco:MD_SecurityConstraints/mco:useLimitation"/>
+
           <action type="add" name="useLimitation" or="useLimitation" if="count(mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:resourceConstraints/mco:MD_SecurityConstraints/mco:useLimitation)=0" in="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:resourceConstraints/mco:MD_SecurityConstraints">
             <template>
               <snippet>
@@ -1187,6 +1192,8 @@
             </template>
           </action>
           <field xpath="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:resourceConstraints/mco:MD_SecurityConstraints/mco:classification"/>
+
+          <field name="licenseType" xpath="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:resourceConstraints[mco:MD_LegalConstraints]" or="resourceConstraints" in="/mdb:MD_Metadata/mdb:identificationInfo/*"/>
         </section>
       </tab>
 
@@ -1935,6 +1942,7 @@
       <tab id="projectConstraints" mode="flat">
         <section>
           <field xpath="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:resourceConstraints/mco:MD_SecurityConstraints/mco:classification"/>
+          <field name="licenseType" xpath="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:resourceConstraints[mco:MD_LegalConstraints]" or="resourceConstraints" in="/mdb:MD_Metadata/mdb:identificationInfo/*"/>
 				</section>
 			</tab>
 
@@ -2053,7 +2061,7 @@
         <section name="resourceConstraints">
           <field xpath="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:resourceConstraints/mco:MD_SecurityConstraints/mco:useLimitation"/>
           <field xpath="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:resourceConstraints/mco:MD_SecurityConstraints/mco:classification"/>
-          <field xpath="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:resourceConstraints/mco:MD_LegalConstraints"/>
+          <field name="licenseType" xpath="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:resourceConstraints[mco:MD_LegalConstraints]" or="resourceConstraints" in="/mdb:MD_Metadata/mdb:identificationInfo/*"/>
         </section>
 
         <section name="otherDatasetDetails">
