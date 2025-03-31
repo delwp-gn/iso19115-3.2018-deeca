@@ -1592,6 +1592,17 @@
   -  then in the document node the mode 'index-extra-fields'
   -  could be used to index more fields. -->
   <xsl:template mode="index-extra-fields" match="mdb:MD_Metadata">
+
+    <xsl:for-each select="mdb:metadataConstraints/*">
+      <!-- DELWP Addition -->
+      <!-- Add separate field for DELWP metadata constraints - not indexed -->
+      <xsl:for-each select="mco:classification[string(mco:MD_ClassificationCode/@codeListValue)]">
+        <metadataClassification><xsl:value-of select="mco:MD_ClassificationCode/@codeListValue" /></metadataClassification>
+      </xsl:for-each>
+      <!-- END DELWP Addition -->
+    </xsl:for-each>
+
+
     <!-- DELWP Addition -->
     <xsl:for-each select="mdb:acquisitionInformation/mac:MI_AcquisitionInformation">
       <xsl:variable name="assembly" select="mac:operation/mac:MI_Operation/mac:otherProperty/gco:Record/delwp:datasetDetails/delwp:MD_DatasetDetails/delwp:assembly/delwp:MD_AssemblyCode/@codeListValue"/>
@@ -1642,6 +1653,10 @@
           <resClassification><xsl:value-of select="mco:MD_ClassificationCode/@codeListValue" /></resClassification>
         </xsl:for-each>
         <!-- END DELWP Addition -->
+      </xsl:for-each>
+
+      <xsl:for-each select="mri:resourceConstraints[string(mco:MD_LegalConstraints/@title)]">
+        <license><xsl:value-of select="mco:MD_LegalConstraints/@title" /></license>
       </xsl:for-each>
 
       <xsl:for-each select="mri:citation/*">
