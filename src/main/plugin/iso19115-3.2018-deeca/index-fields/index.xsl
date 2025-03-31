@@ -38,6 +38,7 @@
                 xmlns:mrl="http://standards.iso.org/iso/19115/-3/mrl/2.0"
                 xmlns:mrc="http://standards.iso.org/iso/19115/-3/mrc/2.0"
                 xmlns:mrs="http://standards.iso.org/iso/19115/-3/mrs/1.0"
+                xmlns:msr="http://standards.iso.org/iso/19115/-3/msr/2.0"
                 xmlns:mdq="http://standards.iso.org/iso/19157/-2/mdq/1.0"
                 xmlns:gco="http://standards.iso.org/iso/19115/-3/gco/1.0"
                 xmlns:mac="http://standards.iso.org/iso/19115/-3/mac/2.0"
@@ -1609,6 +1610,26 @@
       <xsl:if test="string(mac:operation/mac:MI_Operation/mac:otherProperty/gco:Record/delwp:datasetDetails/delwp:MD_DatasetDetails/delwp:platformType/delwp:MD_PlatformTypeCode/@codeListValue)">
         <platformType><xsl:value-of select="mac:operation/mac:MI_Operation/mac:otherProperty/gco:Record/delwp:datasetDetails/delwp:MD_DatasetDetails/delwp:platformType/delwp:MD_PlatformTypeCode/@codeListValue" /></platformType>
       </xsl:if>
+
+      <xsl:if test="string(mac:operation/mac:MI_Operation/mac:otherProperty/gco:Record/delwp:datasetDetails/*/delwp:dataDetails/*/delwp:pointCloudDetails/*/delwp:pointDensityTarget/gco:Measure)">
+        <pointDensityTarget><xsl:value-of select="mac:operation/mac:MI_Operation/mac:otherProperty/gco:Record/delwp:datasetDetails/*/delwp:dataDetails/*/delwp:pointCloudDetails/*/delwp:pointDensityTarget/gco:Measure" /></pointDensityTarget>
+      </xsl:if>
+
+      <xsl:if test="string(mac:operation/mac:MI_Operation/mac:otherProperty/gco:Record/delwp:datasetDetails/*/delwp:dataDetails/*/delwp:pointCloudDetails/*/delwp:pointDensityActual/gco:Measure)">
+        <pointDensityActual><xsl:value-of select="mac:operation/mac:MI_Operation/mac:otherProperty/gco:Record/delwp:datasetDetails/*/delwp:dataDetails/*/delwp:pointCloudDetails/*/delwp:pointDensityActual/gco:Measure" /></pointDensityActual>
+      </xsl:if>
+
+      <xsl:if test="string(mac:operation/mac:MI_Operation/mac:otherProperty/gco:Record/delwp:datasetDetails/*/delwp:dataDetails/*/delwp:pointCloudDetails/*/delwp:pointSpacingActual/gco:Measure)">
+        <pointSpacingActual><xsl:value-of select="mac:operation/mac:MI_Operation/mac:otherProperty/gco:Record/delwp:datasetDetails/*/delwp:dataDetails/*/delwp:pointCloudDetails/*/delwp:pointSpacingActual/gco:Measure" /></pointSpacingActual>
+      </xsl:if>
+
+      <xsl:if test="string(mac:operation/mac:MI_Operation/mac:otherProperty/gco:Record/delwp:datasetDetails/*/delwp:dataDetails/*/delwp:pointCloudDetails/*/delwp:pointSpacingTarget/gco:Measure)">
+        <pointSpacingTarget><xsl:value-of select="mac:operation/mac:MI_Operation/mac:otherProperty/gco:Record/delwp:datasetDetails/*/delwp:dataDetails/*/delwp:pointCloudDetails/*/delwp:pointSpacingTarget/gco:Measure" /></pointSpacingTarget>
+      </xsl:if>
+
+      <xsl:if test="string(mac:operation/mac:MI_Operation/mac:otherProperty/gco:Record/delwp:datasetDetails/*/delwp:dataDetails/*/delwp:pointCloudDetails/*/delwp:footprintSize/gco:Measure)">
+        <footprintSize><xsl:value-of select="mac:operation/mac:MI_Operation/mac:otherProperty/gco:Record/delwp:datasetDetails/*/delwp:dataDetails/*/delwp:pointCloudDetails/*/delwp:footprintSize/gco:Measure" /></footprintSize>
+      </xsl:if>
     </xsl:for-each>
     <!-- END DEWLP Addition -->
 
@@ -1652,6 +1673,16 @@
           <resOwner><xsl:value-of select="*/text()" /></resOwner>
         </xsl:for-each>
         <!-- END DELWP Addition -->
+      </xsl:for-each>
+    </xsl:for-each>
+
+    <xsl:for-each select="mdb:spatialRepresentationInfo/*">
+      <xsl:for-each select="msr:axisDimensionProperties/msr:MD_Dimension[msr:dimensionName/msr:MD_DimensionNameTypeCode/@codeListValue = 'row']">
+        <rowResolution><xsl:value-of select="msr:resolution/gco:Measure" /></rowResolution>
+      </xsl:for-each>
+
+      <xsl:for-each select="msr:axisDimensionProperties/msr:MD_Dimension[msr:dimensionName/msr:MD_DimensionNameTypeCode/@codeListValue = 'column']">
+        <columnResolution><xsl:value-of select="msr:resolution/gco:Measure" /></columnResolution>
       </xsl:for-each>
     </xsl:for-each>
   </xsl:template>
