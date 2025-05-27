@@ -1605,6 +1605,53 @@
 
     <!-- DELWP Addition -->
     <xsl:for-each select="mdb:acquisitionInformation/mac:MI_AcquisitionInformation">
+
+      <xsl:for-each select=".//gex:temporalElement/*/gex:extent/gml:TimePeriod">
+        <xsl:variable name="start"
+                      select="gml:beginPosition|gml:begin/gml:TimeInstant/gml:timePosition"/>
+        <xsl:variable name="end"
+                      select="gml:endPosition|gml:end/gml:TimeInstant/gml:timePosition"/>
+
+
+        <xsl:variable name="zuluStartDate"
+                      select="date-util:convertToISOZuluDateTime($start)"/>
+        <xsl:variable name="zuluEndDate"
+                      select="date-util:convertToISOZuluDateTime($end)"/>
+
+        <xsl:choose>
+          <xsl:when test="$zuluStartDate != ''
+                                and ($zuluEndDate != '' or $end/@indeterminatePosition = 'now')">
+            <resourceTemporalDateRange type="object">{
+              "gte": "<xsl:value-of select="$zuluStartDate"/>"
+              <xsl:if test="$start &lt; $end and not($end/@indeterminatePosition = 'now')">
+                ,"lte": "<xsl:value-of select="$zuluEndDate"/>"
+              </xsl:if>
+              }</resourceTemporalDateRange>
+            <resourceTemporalExtentDateRange type="object">{
+              "gte": "<xsl:value-of select="$zuluStartDate"/>"
+              <xsl:if test="$start &lt; $end and not($end/@indeterminatePosition = 'now')">
+                ,"lte": "<xsl:value-of select="$zuluEndDate"/>"
+              </xsl:if>
+              }</resourceTemporalExtentDateRange>
+          </xsl:when>
+          <xsl:otherwise>
+            <indexingErrorMsg>Warning / Field resourceTemporalDateRange / Lower and upper bounds empty. Date range not indexed.</indexingErrorMsg>
+          </xsl:otherwise>
+        </xsl:choose>
+
+        <xsl:if test="$zuluStartDate != ''
+                          and $zuluEndDate != ''
+                          and $start &gt; $end">
+          <indexingErrorMsg>Warning / Field resourceTemporalDateRange / Lower range bound '<xsl:value-of select="$start"/>' can not be greater than upper bound '<xsl:value-of select="$end"/>'.</indexingErrorMsg>
+        </xsl:if>
+
+
+        <xsl:call-template name="build-range-details">
+          <xsl:with-param name="start" select="$start"/>
+          <xsl:with-param name="end" select="$end"/>
+        </xsl:call-template>
+      </xsl:for-each>
+
       <xsl:variable name="assembly" select="mac:operation/mac:MI_Operation/mac:otherProperty/gco:Record/delwp:datasetDetails/delwp:MD_DatasetDetails/delwp:assembly/delwp:MD_AssemblyCode/@codeListValue"/>
       <xsl:if test="$assembly != 'Not Entered' and $assembly != 'Unknown'">
         <rasterAssemblyType><xsl:value-of select="$assembly" /></rasterAssemblyType>
