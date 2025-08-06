@@ -1342,7 +1342,7 @@
     <xsl:element name="contact{$fieldSuffix}">
       <!-- TODO: Can be multilingual -->
       <xsl:attribute name="type" select="'object'"/>{
-      <xsl:if test="$organisationName">
+      <xsl:if test="$organisationName and string(normalize-space($organisationName))">
         "organisationObject": <xsl:value-of select="gn-fn-index:add-multilingual-field(
                                 'organisation', $organisationName, $languages)"/>,
       </xsl:if>
@@ -1740,11 +1740,15 @@
 
     <xsl:for-each select="mdb:spatialRepresentationInfo/*">
       <xsl:for-each select="msr:axisDimensionProperties/msr:MD_Dimension[msr:dimensionName/msr:MD_DimensionNameTypeCode/@codeListValue = 'row']">
-        <rowResolution><xsl:value-of select="msr:resolution/gco:Measure" /></rowResolution>
+        <rowResolution type="object">
+          {"value": "<xsl:value-of select="msr:resolution/gco:Measure"/>", "unit": "<xsl:value-of select="msr:resolution/@uom"/>"}
+        </rowResolution>
       </xsl:for-each>
 
       <xsl:for-each select="msr:axisDimensionProperties/msr:MD_Dimension[msr:dimensionName/msr:MD_DimensionNameTypeCode/@codeListValue = 'column']">
-        <columnResolution><xsl:value-of select="msr:resolution/gco:Measure" /></columnResolution>
+        <columnResolution type="object">
+          {"value": "<xsl:value-of select="msr:resolution/gco:Measure"/>", "unit": "<xsl:value-of select="msr:resolution/@uom"/>"}
+        </columnResolution>
       </xsl:for-each>
     </xsl:for-each>
   </xsl:template>
