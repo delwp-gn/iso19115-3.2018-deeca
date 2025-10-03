@@ -130,6 +130,18 @@
       <xsl:value-of select="mdb:identificationInfo/mri:MD_DataIdentification/mri:citation/cit:CI_Citation/cit:title" />
     </xsl:variable>
 
+    <xsl:variable name="resourceName">
+      <xsl:value-of select="mdb:identificationInfo/mri:MD_DataIdentification/mri:citation/cit:CI_Citation/cit:alternateTitle" />
+    </xsl:variable>
+
+    <xsl:variable name="publicationDate">
+      <xsl:value-of select="mdb:identificationInfo/mri:MD_DataIdentification/mri:citation/cit:CI_Citation/cit:date/cit:CI_Date[cit:dateType/cit:CI_DateTypeCode/@codeListValue='publication']/cit:date" />
+    </xsl:variable>
+
+    <xsl:variable name="metadataId">
+      <xsl:value-of select="mdb:metadataIdentifier/mcc:MD_Identifier/mcc:code" />
+    </xsl:variable>
+
     <xsl:variable name="id">
       <xsl:value-of select="mdb:identificationInfo/mri:MD_DataIdentification/mri:citation/cit:CI_Citation/cit:identifier/mcc:MD_Identifier[mcc:authority]/mcc:code" />
     </xsl:variable>
@@ -145,10 +157,6 @@
         <xsl:apply-templates mode="render-value" select="$level" /></h3>
       <h1><xsl:apply-templates mode="render-value" select="$title" /></h1>
 
-      <h3>
-        <xsl:value-of select="gn-fn-render:get-schema-strings($schemaStrings, 'fdr_anzlic')"/>
-      </h3>
-      <h2><xsl:apply-templates mode="render-value" select="$id" /></h2>
 
       <!-- Head section -->
       <table cellpadding="5" width="100%" class="identification">
@@ -157,6 +165,24 @@
             <xsl:value-of select="gn-fn-render:get-schema-strings($schemaStrings, 'fdr_title')"/>
           </strong></td>
           <td style="margin-bottom: 50px;"><xsl:apply-templates mode="render-value" select="$title"/></td>
+        </tr>
+        <tr>
+          <td width="30%"  style="margin-bottom: 50px;"><strong>
+            <xsl:value-of select="gn-fn-render:get-schema-strings($schemaStrings, 'fdr_metadataId')"/>
+          </strong></td>
+          <td style="margin-bottom: 50px;"><xsl:apply-templates mode="render-value" select="$metadataId"/></td>
+        </tr>
+        <tr>
+          <td width="30%"  style="margin-bottom: 50px;"><strong>
+            <xsl:value-of select="gn-fn-render:get-schema-strings($schemaStrings, 'fdr_resourceName')"/>
+          </strong></td>
+          <td style="margin-bottom: 50px;"><xsl:apply-templates mode="render-value" select="$resourceName"/></td>
+        </tr>
+        <tr>
+          <td width="30%"  style="margin-bottom: 50px;"><strong>
+            <xsl:value-of select="gn-fn-render:get-schema-strings($schemaStrings, 'fdr_publicationDate')"/>
+          </strong></td>
+          <td style="margin-bottom: 50px;"><xsl:apply-templates mode="render-value" select="$publicationDate"/></td>
         </tr>
         <tr>
           <td><strong>
@@ -540,6 +566,7 @@
         </div>
 
         <!-- contacts -->
+        <xsl:if test="count(mdb:identificationInfo/mri:MD_DataIdentification/mri:citation/cit:CI_Citation/cit:citedResponsibleParty[cit:CI_Responsibility/cit:role/cit:CI_RoleCode/@codeListValue='owner' and cit:CI_Responsibility/cit:party/cit:CI_Organisation/cit:individual]) > 0">
         <div>
           <h2>
             <xsl:value-of select="gn-fn-render:get-schema-strings($schemaStrings, 'fdr_contacts')"/>
@@ -556,13 +583,16 @@
                 <xsl:value-of select="gn-fn-render:get-schema-strings($schemaStrings, 'fdr_contactRole')"/>
               </th>
             </tr>
-            <xsl:for-each select="mdb:identificationInfo/mri:MD_DataIdentification/mri:citation/cit:CI_Citation/cit:citedResponsibleParty[cit:CI_Responsibility/cit:party/cit:CI_Organisation/cit:individual]">
+            <cit:role>
+              <cit:CI_RoleCode codeList="https://github.com/geonetwork-delwp/iso19115-3.2018-1/blob/master/codelists.xml#CI_RoleCode" codeListValue="pointOfContact"/>
+            </cit:role>
+            <xsl:for-each select="mdb:identificationInfo/mri:MD_DataIdentification/mri:citation/cit:CI_Citation/cit:citedResponsibleParty[cit:CI_Responsibility/cit:role/cit:CI_RoleCode/@codeListValue='pointOfContact' and cit:CI_Responsibility/cit:party/cit:CI_Organisation/cit:individual]">
               <xsl:sort select="cit:CI_Responsibility/cit:party/cit:CI_Organisation/cit:individual/cit:CI_Individual/cit:name"/>
               <xsl:apply-templates mode="render-field" select="."/>
             </xsl:for-each>
           </table>
         </div>
-
+        </xsl:if>
       </div>
     </div>
   </xsl:template>
