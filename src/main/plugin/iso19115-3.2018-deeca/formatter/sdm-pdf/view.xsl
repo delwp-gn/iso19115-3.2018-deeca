@@ -182,7 +182,21 @@
           <td width="30%"  style="margin-bottom: 50px;"><strong>
             <xsl:value-of select="gn-fn-render:get-schema-strings($schemaStrings, 'fdr_publicationDate')"/>
           </strong></td>
-          <td style="margin-bottom: 50px;"><xsl:apply-templates mode="render-value" select="$publicationDate"/></td>
+          <td style="margin-bottom: 50px;">
+            <xsl:analyze-string select="$publicationDate"
+                                regex="([0-9]{{4}})-([0-9]+)-([0-9]+)">
+              <xsl:matching-substring>
+                  <xsl:variable name="publicationDateFormatted">
+                  <xsl:number value="regex-group(3)" format="01"/>
+                  <xsl:text>-</xsl:text>
+                  <xsl:number value="regex-group(2)" format="01"/>
+                  <xsl:text>-</xsl:text>
+                  <xsl:number value="regex-group(1)" format="0001"/>
+                  </xsl:variable>
+                  <xsl:apply-templates mode="render-value" select="$publicationDateFormatted"/>
+              </xsl:matching-substring>
+            </xsl:analyze-string>
+          </td>
         </tr>
         <tr>
           <td><strong>
