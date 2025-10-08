@@ -580,7 +580,7 @@
         </div>
 
         <!-- contacts -->
-        <xsl:if test="count(mdb:identificationInfo/mri:MD_DataIdentification/mri:citation/cit:CI_Citation/cit:citedResponsibleParty[cit:CI_Responsibility/cit:role/cit:CI_RoleCode/@codeListValue='owner' and cit:CI_Responsibility/cit:party/cit:CI_Organisation/cit:individual]) > 0">
+        <xsl:if test="count(mdb:identificationInfo/mri:MD_DataIdentification/mri:pointOfContact[cit:CI_Responsibility/cit:role/cit:CI_RoleCode/@codeListValue='pointOfContact' and cit:CI_Responsibility/cit:party/cit:CI_Organisation/cit:individual]) > 0">
         <div>
           <h2>
             <xsl:value-of select="gn-fn-render:get-schema-strings($schemaStrings, 'fdr_contacts')"/>
@@ -597,10 +597,7 @@
                 <xsl:value-of select="gn-fn-render:get-schema-strings($schemaStrings, 'fdr_contactRole')"/>
               </th>
             </tr>
-            <cit:role>
-              <cit:CI_RoleCode codeList="https://github.com/geonetwork-delwp/iso19115-3.2018-1/blob/master/codelists.xml#CI_RoleCode" codeListValue="pointOfContact"/>
-            </cit:role>
-            <xsl:for-each select="mdb:identificationInfo/mri:MD_DataIdentification/mri:citation/cit:CI_Citation/cit:citedResponsibleParty[cit:CI_Responsibility/cit:role/cit:CI_RoleCode/@codeListValue='pointOfContact' and cit:CI_Responsibility/cit:party/cit:CI_Organisation/cit:individual]">
+            <xsl:for-each select="mdb:identificationInfo/mri:MD_DataIdentification/mri:pointOfContact[cit:CI_Responsibility/cit:role/cit:CI_RoleCode/@codeListValue='pointOfContact' and cit:CI_Responsibility/cit:party/cit:CI_Organisation/cit:individual]">
               <xsl:sort select="cit:CI_Responsibility/cit:party/cit:CI_Organisation/cit:individual/cit:CI_Individual/cit:name"/>
               <xsl:apply-templates mode="render-field" select="."/>
             </xsl:for-each>
@@ -635,7 +632,7 @@
   </xsl:template>
 
   <!-- Contact table rows -->
-  <xsl:template mode="render-field" match="cit:citedResponsibleParty">
+  <xsl:template mode="render-field" match="cit:citedResponsibleParty|mri:pointOfContact">
     <tr>
       <td><xsl:apply-templates mode="render-value" select="cit:CI_Responsibility/cit:party/cit:CI_Organisation/cit:individual/cit:CI_Individual/cit:name"/></td>
       <td><xsl:apply-templates mode="render-value" select="cit:CI_Responsibility/cit:party/cit:CI_Organisation/cit:individual/cit:CI_Individual/cit:contactInfo/cit:CI_Contact/cit:phone/cit:CI_Telephone/cit:number"/></td>
