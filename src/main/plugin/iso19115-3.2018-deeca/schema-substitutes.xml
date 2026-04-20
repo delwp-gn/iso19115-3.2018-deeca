@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <fields>
-<!-- override all the schema substitutes for gco:CharacterString 
+<!-- override all the schema substitutes for gco:CharacterString
 	- we don't want any
 	<field name="gco:CharacterString">
-	</field> --> 
+	</field> -->
 
 <!-- offer just the service and data identification -->
 	<field name="mri:AbstractMD_Identification">
 		<substitute name="srv:SV_ServiceIdentification"/>
-		<substitute name="mri:MD_DataIdentification"/>
+		<substitute name="delwp:MD_DataIdentification"/>
 	</field>
 
 <!-- just VerticalCS (exclude ML_VerticalCS) -->

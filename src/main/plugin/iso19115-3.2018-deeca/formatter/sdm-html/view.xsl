@@ -119,19 +119,19 @@
 
   <xsl:template mode="renderExport" match="mdb:MD_Metadata" name="sdm-view">
     <xsl:variable name="title">
-      <xsl:value-of select="mdb:identificationInfo/mri:MD_DataIdentification/mri:citation/cit:CI_Citation/cit:title" />
+      <xsl:value-of select="mdb:identificationInfo[mri:MD_DataIdentification or */@gco:isoType='mri:MD_DataIdentification']/*/mri:citation/cit:CI_Citation/cit:title" />
     </xsl:variable>
 
     <xsl:variable name="altTitle">
-      <xsl:value-of select="mdb:identificationInfo/mri:MD_DataIdentification/mri:citation/cit:CI_Citation/cit:alternateTitle" />
+      <xsl:value-of select="mdb:identificationInfo[mri:MD_DataIdentification or */@gco:isoType='mri:MD_DataIdentification']/*/mri:citation/cit:CI_Citation/cit:alternateTitle" />
     </xsl:variable>
 
     <xsl:variable name="ccLinkage">
-      <xsl:value-of select="mdb:identificationInfo/mri:MD_DataIdentification/mri:resourceConstraints/mco:MD_LegalConstraints/mco:reference/cit:CI_Citation/cit:CI_OnlineResource/cit:linkage"/>
+      <xsl:value-of select="mdb:identificationInfo[mri:MD_DataIdentification or */@gco:isoType='mri:MD_DataIdentification']/*/mri:resourceConstraints/mco:MD_LegalConstraints/mco:reference/cit:CI_Citation/cit:CI_OnlineResource/cit:linkage"/>
     </xsl:variable>
 
     <xsl:variable name="id">
-      <xsl:value-of select="mdb:identificationInfo/mri:MD_DataIdentification/mri:citation/cit:CI_Citation/cit:identifier/mcc:MD_Identifier[mcc:authority]/mcc:code" />
+      <xsl:value-of select="mdb:identificationInfo[mri:MD_DataIdentification or */@gco:isoType='mri:MD_DataIdentification']/*/mri:citation/cit:CI_Citation/cit:identifier/mcc:MD_Identifier[mcc:authority]/mcc:code" />
     </xsl:variable>
 
     <xsl:variable name="level">
@@ -222,21 +222,21 @@
           <tr class="labelCell">
             <td class="keyColumn">Custodian:</td>
             <td>
-              <xsl:apply-templates mode="render-value" select="mdb:identificationInfo/mri:MD_DataIdentification/mri:citation/cit:CI_Citation/cit:citedResponsibleParty/cit:CI_Responsibility[cit:role/cit:CI_RoleCode/@codeListValue = 'custodian']/cit:party/cit:CI_Organisation/cit:name"/>
+              <xsl:apply-templates mode="render-value" select="mdb:identificationInfo[mri:MD_DataIdentification or */@gco:isoType='mri:MD_DataIdentification']/*/mri:citation/cit:CI_Citation/cit:citedResponsibleParty/cit:CI_Responsibility[cit:role/cit:CI_RoleCode/@codeListValue = 'custodian']/cit:party/cit:CI_Organisation/cit:name"/>
             </td>
           </tr>
           <tr class="labelCell">
             <td class="keyColumn">Abstract:</td>
             <td>
               <xsl:call-template name="addLineBreaksAndHyperlinks">
-                <xsl:with-param name="txt" select="mdb:identificationInfo/mri:MD_DataIdentification/mri:abstract/gco:CharacterString"/>
+                <xsl:with-param name="txt" select="mdb:identificationInfo[mri:MD_DataIdentification or */@gco:isoType='mri:MD_DataIdentification']/*/mri:abstract/gco:CharacterString"/>
               </xsl:call-template>
             </td>
           </tr>
           <tr class="labelCell">
             <td class="keyColumn">Search Words:</td>
             <td>
-              <xsl:for-each select="mdb:identificationInfo/mri:MD_DataIdentification//mri:topicCategory">
+              <xsl:for-each select="mdb:identificationInfo[mri:MD_DataIdentification or */@gco:isoType='mri:MD_DataIdentification']/*//mri:topicCategory">
                 <xsl:apply-templates mode="render-value" select="mri:MD_TopicCategoryCode"/>
                 <xsl:if test="position() != last()">,&#160;</xsl:if>
               </xsl:for-each>
@@ -249,7 +249,7 @@
           <tr class="labelCell">
             <td class="keyColumn">Publication Date:</td>
             <td>
-              <xsl:value-of select="format-dateTime(mdb:identificationInfo/mri:MD_DataIdentification/mri:citation/cit:CI_Citation/cit:date/cit:CI_Date[cit:dateType/cit:CI_DateTypeCode/@codeListValue = 'publication']/cit:date,'[D01] [MNn] [Y0001]')"/>
+              <xsl:value-of select="format-dateTime(mdb:identificationInfo[mri:MD_DataIdentification or */@gco:isoType='mri:MD_DataIdentification']/*/mri:citation/cit:CI_Citation/cit:date/cit:CI_Date[cit:dateType/cit:CI_DateTypeCode/@codeListValue = 'publication']/cit:date,'[D01] [MNn] [Y0001]')"/>
             </td>
           </tr>
           <tr class="labelCell">
@@ -261,20 +261,20 @@
           <tr class="labelCell">
             <td class="keyColumn">Progress:</td>
             <td>
-              <xsl:apply-templates mode="render-value" select="mdb:identificationInfo/mri:MD_DataIdentification/mri:status/mcc:MD_ProgressCode/@codeListValue"/>
+              <xsl:apply-templates mode="render-value" select="mdb:identificationInfo[mri:MD_DataIdentification or */@gco:isoType='mri:MD_DataIdentification']/*/mri:status/mcc:MD_ProgressCode/@codeListValue"/>
             </td>
           </tr>
           <tr class="labelCell">
             <td  class="keyColumn">Access Constraint:</td>
             <td>
               <div>
-                <xsl:value-of select="mdb:identificationInfo/mri:MD_DataIdentification/mri:resourceConstraints/mco:MD_LegalConstraints/mco:reference/cit:CI_Citation/cit:title"/>
+                <xsl:value-of select="mdb:identificationInfo[mri:MD_DataIdentification or */@gco:isoType='mri:MD_DataIdentification']/*/mri:resourceConstraints/mco:MD_LegalConstraints/mco:reference/cit:CI_Citation/cit:title"/>
                 (<a href="{$ccLinkage}" target="blank" >
-                <xsl:value-of select="mdb:identificationInfo/mri:MD_DataIdentification/mri:resourceConstraints/mco:MD_LegalConstraints/mco:reference/cit:CI_Citation/cit:onlineResource/cit:CI_OnlineResource/cit:description"/>
+                <xsl:value-of select="mdb:identificationInfo[mri:MD_DataIdentification or */@gco:isoType='mri:MD_DataIdentification']/*/mri:resourceConstraints/mco:MD_LegalConstraints/mco:reference/cit:CI_Citation/cit:onlineResource/cit:CI_OnlineResource/cit:description"/>
               </a>)
               </div>
               <div>
-                <xsl:value-of select="mdb:identificationInfo/mri:MD_DataIdentification/mri:resourceConstraints/mco:MD_SecurityConstraints/mco:useLimitation"/>
+                <xsl:value-of select="mdb:identificationInfo[mri:MD_DataIdentification or */@gco:isoType='mri:MD_DataIdentification']/*/mri:resourceConstraints/mco:MD_SecurityConstraints/mco:useLimitation"/>
               </div>
             </td>
           </tr>
@@ -299,7 +299,7 @@
                 </xsl:for-each>
               </xsl:if>
               <xsl:if test="count(mdb:identificationInfo/*/mri:graphicOverview/*) = 0"> -->
-              <xsl:apply-templates mode="render-field" select="mdb:identificationInfo/mri:MD_DataIdentification/mri:extent/gex:EX_Extent/gex:geographicElement/gex:EX_GeographicBoundingBox" />
+              <xsl:apply-templates mode="render-field" select="mdb:identificationInfo[mri:MD_DataIdentification or */@gco:isoType='mri:MD_DataIdentification']/*/mri:extent/gex:EX_Extent/gex:geographicElement/gex:EX_GeographicBoundingBox" />
               <!-- </xsl:if> -->
             </td>
           </tr>
@@ -334,14 +334,14 @@
             <td class="keyColumn">Custodian:</td>
             <td>
               <xsl:apply-templates mode="render-value"
-                                   select="mdb:identificationInfo/mri:MD_DataIdentification/mri:citation/cit:CI_Citation/cit:citedResponsibleParty/cit:CI_Responsibility[cit:role/cit:CI_RoleCode/@codeListValue = 'custodian']/cit:party/cit:CI_Organisation/cit:name"/>
+                                   select="mdb:identificationInfo[mri:MD_DataIdentification or */@gco:isoType='mri:MD_DataIdentification']/*/mri:citation/cit:CI_Citation/cit:citedResponsibleParty/cit:CI_Responsibility[cit:role/cit:CI_RoleCode/@codeListValue = 'custodian']/cit:party/cit:CI_Organisation/cit:name"/>
             </td>
           </tr>
           <tr class="labelCell">
             <td class="keyColumn">Owner:</td>
             <td>
               <xsl:value-of
-                select="mdb:identificationInfo/mri:MD_DataIdentification/mri:citation/cit:CI_Citation/cit:citedResponsibleParty/cit:CI_Responsibility[cit:role/cit:CI_RoleCode/@codeListValue = 'owner']/cit:party/cit:CI_Organisation/cit:name"/>
+                select="mdb:identificationInfo[mri:MD_DataIdentification or */@gco:isoType='mri:MD_DataIdentification']/*/mri:citation/cit:CI_Citation/cit:citedResponsibleParty/cit:CI_Responsibility[cit:role/cit:CI_RoleCode/@codeListValue = 'owner']/cit:party/cit:CI_Organisation/cit:name"/>
             </td>
             <tr class="labelCell">
               <td class="keyColumn">Jurisdiction:</td>
@@ -356,14 +356,14 @@
             <td>
               <xsl:call-template name="addLineBreaksAndHyperlinks">
                 <xsl:with-param name="txt"
-                                select="mdb:identificationInfo/mri:MD_DataIdentification/mri:abstract/gco:CharacterString"/>
+                                select="mdb:identificationInfo[mri:MD_DataIdentification or */@gco:isoType='mri:MD_DataIdentification']/*/mri:abstract/gco:CharacterString"/>
               </xsl:call-template>
             </td>
           </tr>
           <tr>
             <td class="keyColumn">Search Words:</td>
             <td>
-              <xsl:for-each select="mdb:identificationInfo/mri:MD_DataIdentification//mri:topicCategory">
+              <xsl:for-each select="mdb:identificationInfo[mri:MD_DataIdentification or */@gco:isoType='mri:MD_DataIdentification']/*//mri:topicCategory">
                 <xsl:apply-templates mode="render-value" select="mri:MD_TopicCategoryCode"/>
                 <xsl:if test="position() != last()">,&#160;</xsl:if>
               </xsl:for-each>
@@ -374,7 +374,7 @@
             <td>
               <xsl:call-template name="addLineBreaksAndHyperlinks">
                 <xsl:with-param name="txt"
-                                select="mdb:identificationInfo/mri:MD_DataIdentification/mri:purpose/gco:CharacterString"/>
+                                select="mdb:identificationInfo[mri:MD_DataIdentification or */@gco:isoType='mri:MD_DataIdentification']/*/mri:purpose/gco:CharacterString"/>
               </xsl:call-template>
             </td>
           </tr>
@@ -396,7 +396,7 @@
                 </div>
               </xsl:for-each>
               <xsl:apply-templates mode="render-field"
-                                   select="mdb:identificationInfo/mri:MD_DataIdentification/mri:extent/gex:EX_Extent/gex:geographicElement/gex:EX_GeographicBoundingBox"/>
+                                   select="mdb:identificationInfo[mri:MD_DataIdentification or */@gco:isoType='mri:MD_DataIdentification']/*/mri:extent/gex:EX_Extent/gex:geographicElement/gex:EX_GeographicBoundingBox"/>
             </td>
           </tr>
           <tr class="labelCell">
@@ -449,21 +449,21 @@
             <td class="keyColumn">Beginning to Ending Date:</td>
             <td>
               <xsl:apply-templates mode="render-field"
-                                   select="mdb:identificationInfo/mri:MD_DataIdentification/mri:extent/gex:EX_Extent/gex:temporalElement/gex:EX_TemporalExtent/gex:extent/gml:TimePeriod"/>
+                                   select="mdb:identificationInfo[mri:MD_DataIdentification or */@gco:isoType='mri:MD_DataIdentification']/*/mri:extent/gex:EX_Extent/gex:temporalElement/gex:EX_TemporalExtent/gex:extent/gml:TimePeriod"/>
             </td>
           </tr>
           <tr class="labelCell">
             <td class="keyColumn">Maintainence and Update Frequency:</td>
             <td>
               <xsl:apply-templates mode="render-value"
-                                   select="mdb:identificationInfo/mri:MD_DataIdentification/mri:resourceMaintenance/mmi:MD_MaintenanceInformation/mmi:maintenanceAndUpdateFrequency/mmi:MD_MaintenanceFrequencyCode/@codeListValue"/>
+                                   select="mdb:identificationInfo[mri:MD_DataIdentification or */@gco:isoType='mri:MD_DataIdentification']/*/mri:resourceMaintenance/mmi:MD_MaintenanceInformation/mmi:maintenanceAndUpdateFrequency/mmi:MD_MaintenanceFrequencyCode/@codeListValue"/>
             </td>
           </tr>
           <tr class="labelCell">
             <td class="keyColumn">Stored Data Format:</td>
             <td>
               <xsl:value-of
-                select="mdb:identificationInfo/mri:MD_DataIdentification/mri:resourceFormat/mrd:MD_Format/mrd:formatSpecificationCitation/cit:CI_Citation/cit:title"/>
+                select="mdb:identificationInfo[mri:MD_DataIdentification or */@gco:isoType='mri:MD_DataIdentification']/*/mri:resourceFormat/mrd:MD_Format/mrd:formatSpecificationCitation/cit:CI_Citation/cit:title"/>
             </td>
           </tr>
           <tr class="labelCell">
@@ -565,7 +565,7 @@
             <td>
               <xsl:call-template name="addLineBreaksAndHyperlinks">
                 <xsl:with-param name="txt"
-                                select="mdb:identificationInfo/mri:MD_DataIdentification/mri:supplementalInformation"/>
+                                select="mdb:identificationInfo[mri:MD_DataIdentification or */@gco:isoType='mri:MD_DataIdentification']/*/mri:supplementalInformation"/>
               </xsl:call-template>
             </td>
           </tr>

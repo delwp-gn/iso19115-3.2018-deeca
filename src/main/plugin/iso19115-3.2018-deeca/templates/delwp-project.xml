@@ -71,7 +71,7 @@
     </cit:CI_Citation>
   </mdb:metadataProfile>
   <mdb:identificationInfo>
-    <mri:MD_DataIdentification>
+    <delwp:MD_DataIdentification gco:isoType="mri:MD_DataIdentification">
       <mri:citation>
         <cit:CI_Citation>
           <cit:title>
@@ -129,7 +129,7 @@
           </lan:characterEncoding>
         </lan:PT_Locale>
       </mri:defaultLocale>
-    </mri:MD_DataIdentification>
+    </delwp:MD_DataIdentification>
   </mdb:identificationInfo>
   <mdb:metadataConstraints>
     <mco:MD_SecurityConstraints>

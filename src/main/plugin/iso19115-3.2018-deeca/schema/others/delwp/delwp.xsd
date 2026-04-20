@@ -5,12 +5,45 @@
         xmlns:delwp="https://github.com/geonetwork-delwp/iso19115-3.2018"
         xmlns:mcc="http://standards.iso.org/iso/19115/-3/mcc/1.0"
         xmlns:mrd="http://standards.iso.org/iso/19115/-3/mrd/1.0"
+        xmlns:mri="http://standards.iso.org/iso/19115/-3/mri/1.0"
         elementFormDefault="qualified"
         targetNamespace="https://github.com/geonetwork-delwp/iso19115-3.2018"
         version="1.0">
+
   <import namespace="http://standards.iso.org/iso/19115/-3/gco/1.0" schemaLocation="../../standards.iso.org/19115/-3/gco/1.0/gco.xsd"/>
   <import namespace="http://standards.iso.org/iso/19115/-3/cit/2.0" schemaLocation="../../standards.iso.org/19115/-3/cit/2.0/cit.xsd"/>
   <import namespace="http://standards.iso.org/iso/19115/-3/mrd/1.0" schemaLocation="../../standards.iso.org/19115/-3/mrd/1.0/mrd.xsd"/>
+  <import namespace="http://standards.iso.org/iso/19115/-3/mri/1.0" schemaLocation="../../standards.iso.org/19115/-3/mri/1.0/identification.xsd"/>
+
+  <!-- Extension DataIdentification class -->
+  <element name="MD_DataIdentification" substitutionGroup="mri:MD_DataIdentification" type="delwp:MD_DataIdentification_Type">
+    <annotation>
+      <documentation>information required to identify a resource including the data location information</documentation>
+    </annotation>
+  </element>
+
+  <complexType name="MD_DataIdentification_Type">
+    <complexContent>
+      <extension base="mri:MD_DataIdentification_Type">
+        <sequence>
+          <element minOccurs="0" name="dataLocation" type="gco:CharacterString_PropertyType">
+            <annotation>
+              <documentation>data location information</documentation>
+            </annotation>
+          </element>
+        </sequence>
+        <attribute ref="gco:isoType" use="required" fixed="mri:MD_DataIdentification"/>
+      </extension>
+    </complexContent>
+  </complexType>
+
+  <complexType name="MD_DataIdentification_PropertyType">
+    <sequence minOccurs="0">
+      <element ref="delwp:MD_DataIdentification"/>
+    </sequence>
+    <attributeGroup ref="gco:ObjectReference"/>
+    <attribute ref="gco:nilReason"/>
+  </complexType>
 
 <!-- A gco:Record type that can be used as a child of elements
      such as mac:otherProperty

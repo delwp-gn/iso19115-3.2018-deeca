@@ -1736,6 +1736,19 @@
         </xsl:for-each>
         <!-- END DELWP Addition -->
       </xsl:for-each>
+
+      <xsl:for-each select="delwp:dataLocation">
+        <xsl:if test="string(gco:CharacterString)">
+          <dataLocation type="object">
+            {
+            "value": "<xsl:value-of select="gn-fn-index:json-escape(gco:CharacterString)"/>"
+            <xsl:if test="@gco:nilReason">
+              ,"nilReason": "<xsl:value-of select="@gco:nilReason"/>"
+            </xsl:if>
+            }
+          </dataLocation>
+        </xsl:if>
+      </xsl:for-each>
     </xsl:for-each>
 
     <xsl:for-each select="mdb:spatialRepresentationInfo/*">
