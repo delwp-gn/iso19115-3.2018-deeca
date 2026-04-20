@@ -144,21 +144,31 @@
       table-layout: fixed;
       }
 
-      .listTable tbody {
+      .listTableAttributes {
+        width: 100%;
+        table-layout: fixed;
+        border-spacing: 5px;
+        border-collapse: separate;
+      }
+
+      .listTable tbody, .listTableAttributes tbody {
       vertical-align: top !important;
       }
-      .listTable p {
+      .listTable p, .listTableAttributes p  {
       font-size: 16px;
       margin-block-start: 0;
       }
-      .listTable br {
+      .listTable br, .listTableAttributes br {
       display: none;
       }
       .keyColumn {
       word-wrap: break-word;
       max-width: 8%;
       }
-      .listTable td, .listTable th {
+      .attributeColumn {
+        word-wrap: break-word;
+      }
+      .listTable td, .listTable th, .listTableAttributes td, .listTableAttributes th {
       padding-top: 10px;
       padding-bottom: 10px;
       }
@@ -566,7 +576,7 @@
       <div id="gn-tab-sdm-attributes" class="tab-pane">
         <xsl:choose>
           <xsl:when test="count(*//mrc:attribute)">
-            <table class="listTable">
+            <table class="listTableAttributes">
               <tr>
                 <th>Column Name</th>
                 <!-- <th>Column Name 10</th> -->
@@ -578,7 +588,7 @@
               </tr>
               <xsl:for-each select="*//mrc:attribute">
                 <tr>
-                  <td>
+                  <td class="attributeColumn">
                     <xsl:value-of select="mrc:MD_SampleDimension/mrc:otherProperty/gco:Record/delwp:MD_Attribute/delwp:name" />
                   </td>
                   <!-- <td>

@@ -124,7 +124,7 @@
   <resourceAcquisitionInfo>Acquisition Info</resourceAcquisitionInfo>
   <projectAcquisitionInfo>Acquisition Info</projectAcquisitionInfo>
   <constraints>Constraints</constraints>
-  <resourceConstraints>Constraints</resourceConstraints>
+  <resourceConstraints>Resource Constraints</resourceConstraints>
   <metadataConstraints>Metadata Constraints</metadataConstraints>
   <projectContacts>Contacts</projectContacts>
   <resourceSpatial>Spatial</resourceSpatial>
@@ -276,6 +276,9 @@
   <fdr_contactName>Contact Name:</fdr_contactName>
   <fdr_telephone>Telephone:</fdr_telephone>
   <fdr_contactRole>Contact Role:</fdr_contactRole>
+  <fdr_metadataId>Metadata ID:</fdr_metadataId>
+  <fdr_resourceName>Resource Name:</fdr_resourceName>
+  <fdr_publicationDate>Publication Date:</fdr_publicationDate>
 
   <licenseType>License type</licenseType>
 </strings>

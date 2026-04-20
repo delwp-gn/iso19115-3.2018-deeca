@@ -38,6 +38,7 @@
                 xmlns:mrl="http://standards.iso.org/iso/19115/-3/mrl/2.0"
                 xmlns:mrc="http://standards.iso.org/iso/19115/-3/mrc/2.0"
                 xmlns:mrs="http://standards.iso.org/iso/19115/-3/mrs/1.0"
+                xmlns:msr="http://standards.iso.org/iso/19115/-3/msr/2.0"
                 xmlns:mdq="http://standards.iso.org/iso/19157/-2/mdq/1.0"
                 xmlns:gco="http://standards.iso.org/iso/19115/-3/gco/1.0"
                 xmlns:mac="http://standards.iso.org/iso/19115/-3/mac/2.0"
@@ -1482,7 +1483,7 @@
     <xsl:element name="contact{$fieldSuffix}">
       <!-- TODO: Can be multilingual -->
       <xsl:attribute name="type" select="'object'"/>{
-      <xsl:if test="$organisationName">
+      <xsl:if test="$organisationName and string(normalize-space($organisationName))">
         "organisationObject": <xsl:value-of select="gn-fn-index:add-multilingual-field(
                                 'organisation', $organisationName, $languages, true())"/>,
       </xsl:if>
@@ -1732,8 +1733,66 @@
   -  then in the document node the mode 'index-extra-fields'
   -  could be used to index more fields. -->
   <xsl:template mode="index-extra-fields" match="mdb:MD_Metadata">
+
+    <xsl:for-each select="mdb:metadataConstraints/*">
+      <!-- DELWP Addition -->
+      <!-- Add separate field for DELWP metadata constraints - not indexed -->
+      <xsl:for-each select="mco:classification[string(mco:MD_ClassificationCode/@codeListValue)]">
+        <metadataClassification><xsl:value-of select="mco:MD_ClassificationCode/@codeListValue" /></metadataClassification>
+      </xsl:for-each>
+      <!-- END DELWP Addition -->
+    </xsl:for-each>
+
+
     <!-- DELWP Addition -->
     <xsl:for-each select="mdb:acquisitionInformation/mac:MI_AcquisitionInformation">
+
+      <xsl:for-each select=".//gex:temporalElement/*/gex:extent/gml:TimePeriod">
+        <xsl:variable name="start"
+                      select="gml:beginPosition|gml:begin/gml:TimeInstant/gml:timePosition"/>
+        <xsl:variable name="end"
+                      select="gml:endPosition|gml:end/gml:TimeInstant/gml:timePosition"/>
+
+
+        <xsl:variable name="zuluStartDate"
+                      select="date-util:convertToISOZuluDateTime($start)"/>
+        <xsl:variable name="zuluEndDate"
+                      select="date-util:convertToISOZuluDateTime($end)"/>
+
+        <xsl:choose>
+          <xsl:when test="$zuluStartDate != ''
+                                and ($zuluEndDate != '' or $end/@indeterminatePosition = 'now')">
+            <resourceTemporalDateRange type="object">{
+              "gte": "<xsl:value-of select="$zuluStartDate"/>"
+              <xsl:if test="$start &lt; $end and not($end/@indeterminatePosition = 'now')">
+                ,"lte": "<xsl:value-of select="$zuluEndDate"/>"
+              </xsl:if>
+              }</resourceTemporalDateRange>
+            <resourceTemporalExtentDateRange type="object">{
+              "gte": "<xsl:value-of select="$zuluStartDate"/>"
+              <xsl:if test="$start &lt; $end and not($end/@indeterminatePosition = 'now')">
+                ,"lte": "<xsl:value-of select="$zuluEndDate"/>"
+              </xsl:if>
+              }</resourceTemporalExtentDateRange>
+          </xsl:when>
+          <xsl:otherwise>
+            <indexingErrorMsg>Warning / Field resourceTemporalDateRange / Lower and upper bounds empty. Date range not indexed.</indexingErrorMsg>
+          </xsl:otherwise>
+        </xsl:choose>
+
+        <xsl:if test="$zuluStartDate != ''
+                          and $zuluEndDate != ''
+                          and $start &gt; $end">
+          <indexingErrorMsg>Warning / Field resourceTemporalDateRange / Lower range bound '<xsl:value-of select="$start"/>' can not be greater than upper bound '<xsl:value-of select="$end"/>'.</indexingErrorMsg>
+        </xsl:if>
+
+
+        <xsl:call-template name="build-range-details">
+          <xsl:with-param name="start" select="$start"/>
+          <xsl:with-param name="end" select="$end"/>
+        </xsl:call-template>
+      </xsl:for-each>
+
       <xsl:variable name="assembly" select="mac:operation/mac:MI_Operation/mac:otherProperty/gco:Record/delwp:datasetDetails/delwp:MD_DatasetDetails/delwp:assembly/delwp:MD_AssemblyCode/@codeListValue"/>
       <xsl:if test="$assembly != 'Not Entered' and $assembly != 'Unknown'">
         <rasterAssemblyType><xsl:value-of select="$assembly" /></rasterAssemblyType>
@@ -1750,6 +1809,26 @@
       <xsl:if test="string(mac:operation/mac:MI_Operation/mac:otherProperty/gco:Record/delwp:datasetDetails/delwp:MD_DatasetDetails/delwp:platformType/delwp:MD_PlatformTypeCode/@codeListValue)">
         <platformType><xsl:value-of select="mac:operation/mac:MI_Operation/mac:otherProperty/gco:Record/delwp:datasetDetails/delwp:MD_DatasetDetails/delwp:platformType/delwp:MD_PlatformTypeCode/@codeListValue" /></platformType>
       </xsl:if>
+
+      <xsl:if test="string(mac:operation/mac:MI_Operation/mac:otherProperty/gco:Record/delwp:datasetDetails/*/delwp:dataDetails/*/delwp:pointCloudDetails/*/delwp:pointDensityTarget/gco:Measure)">
+        <pointDensityTarget><xsl:value-of select="mac:operation/mac:MI_Operation/mac:otherProperty/gco:Record/delwp:datasetDetails/*/delwp:dataDetails/*/delwp:pointCloudDetails/*/delwp:pointDensityTarget/gco:Measure" /></pointDensityTarget>
+      </xsl:if>
+
+      <xsl:if test="string(mac:operation/mac:MI_Operation/mac:otherProperty/gco:Record/delwp:datasetDetails/*/delwp:dataDetails/*/delwp:pointCloudDetails/*/delwp:pointDensityActual/gco:Measure)">
+        <pointDensityActual><xsl:value-of select="mac:operation/mac:MI_Operation/mac:otherProperty/gco:Record/delwp:datasetDetails/*/delwp:dataDetails/*/delwp:pointCloudDetails/*/delwp:pointDensityActual/gco:Measure" /></pointDensityActual>
+      </xsl:if>
+
+      <xsl:if test="string(mac:operation/mac:MI_Operation/mac:otherProperty/gco:Record/delwp:datasetDetails/*/delwp:dataDetails/*/delwp:pointCloudDetails/*/delwp:pointSpacingActual/gco:Measure)">
+        <pointSpacingActual><xsl:value-of select="mac:operation/mac:MI_Operation/mac:otherProperty/gco:Record/delwp:datasetDetails/*/delwp:dataDetails/*/delwp:pointCloudDetails/*/delwp:pointSpacingActual/gco:Measure" /></pointSpacingActual>
+      </xsl:if>
+
+      <xsl:if test="string(mac:operation/mac:MI_Operation/mac:otherProperty/gco:Record/delwp:datasetDetails/*/delwp:dataDetails/*/delwp:pointCloudDetails/*/delwp:pointSpacingTarget/gco:Measure)">
+        <pointSpacingTarget><xsl:value-of select="mac:operation/mac:MI_Operation/mac:otherProperty/gco:Record/delwp:datasetDetails/*/delwp:dataDetails/*/delwp:pointCloudDetails/*/delwp:pointSpacingTarget/gco:Measure" /></pointSpacingTarget>
+      </xsl:if>
+
+      <xsl:if test="string(mac:operation/mac:MI_Operation/mac:otherProperty/gco:Record/delwp:datasetDetails/*/delwp:dataDetails/*/delwp:pointCloudDetails/*/delwp:footprintSize/gco:Measure)">
+        <footprintSize><xsl:value-of select="mac:operation/mac:MI_Operation/mac:otherProperty/gco:Record/delwp:datasetDetails/*/delwp:dataDetails/*/delwp:pointCloudDetails/*/delwp:footprintSize/gco:Measure" /></footprintSize>
+      </xsl:if>
     </xsl:for-each>
     <!-- END DEWLP Addition -->
 
@@ -1762,6 +1841,10 @@
           <resClassification><xsl:value-of select="mco:MD_ClassificationCode/@codeListValue" /></resClassification>
         </xsl:for-each>
         <!-- END DELWP Addition -->
+      </xsl:for-each>
+
+      <xsl:for-each select="mri:resourceConstraints[string(mco:MD_LegalConstraints/@title)]">
+        <license><xsl:value-of select="mco:MD_LegalConstraints/@title" /></license>
       </xsl:for-each>
 
       <xsl:for-each select="mri:citation/*">
@@ -1793,6 +1876,20 @@
           <resOwner><xsl:value-of select="*/text()" /></resOwner>
         </xsl:for-each>
         <!-- END DELWP Addition -->
+      </xsl:for-each>
+    </xsl:for-each>
+
+    <xsl:for-each select="mdb:spatialRepresentationInfo/*">
+      <xsl:for-each select="msr:axisDimensionProperties/msr:MD_Dimension[msr:dimensionName/msr:MD_DimensionNameTypeCode/@codeListValue = 'row']">
+        <rowResolution type="object">
+          {"value": "<xsl:value-of select="msr:resolution/gco:Measure"/>", "unit": "<xsl:value-of select="msr:resolution/@uom"/>"}
+        </rowResolution>
+      </xsl:for-each>
+
+      <xsl:for-each select="msr:axisDimensionProperties/msr:MD_Dimension[msr:dimensionName/msr:MD_DimensionNameTypeCode/@codeListValue = 'column']">
+        <columnResolution type="object">
+          {"value": "<xsl:value-of select="msr:resolution/gco:Measure"/>", "unit": "<xsl:value-of select="msr:resolution/@uom"/>"}
+        </columnResolution>
       </xsl:for-each>
     </xsl:for-each>
   </xsl:template>

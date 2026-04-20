@@ -412,6 +412,15 @@
       </tab>
     </view>
 
+    <!-- mco:MD_LegalConstraints subtemplates -->
+    <view name="default-license" displayIfRecord="count(mco:MD_LegalConstraints) > 0">
+      <tab id="simple" default="true">
+        <section>
+          <field xpath="mco:MD_LegalConstraints"/>
+        </section>
+      </tab>
+    </view>
+
     <!-- metashare: doesn't have acquisitionInformation  -->
     <view name="metashare" displayIfRecord="count(mdb:MD_Metadata/mdb:acquisitionInformation) = 0">
       <sidePanel>

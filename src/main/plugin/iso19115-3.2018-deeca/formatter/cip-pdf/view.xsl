@@ -1131,7 +1131,7 @@
           <p style="{$footstyle}">Printed <xsl:value-of select="$printdate" /></p>
         </div>
         <div style="float: right;">
-          <img style="background-color: #201647; padding: 5px" src="https://www2.delwp.vic.gov.au/__data/assets/git_bridge/0015/177/deploy/mysource_files/logo-copy.png" />
+          <img style="background-color: #201647; padding: 5px" src="{concat(/root/gui/baseUrl, 'images/harvesting/deeca-logo-header-pdf.png')}" />
         </div>
 
       </div>
