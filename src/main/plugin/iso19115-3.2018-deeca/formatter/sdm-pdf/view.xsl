@@ -127,15 +127,15 @@
 
   <xsl:template mode="renderExport" match="mdb:MD_Metadata">
     <xsl:variable name="title">
-      <xsl:value-of select="mdb:identificationInfo/mri:MD_DataIdentification/mri:citation/cit:CI_Citation/cit:title" />
+      <xsl:value-of select="mdb:identificationInfo[mri:MD_DataIdentification or */@gco:isoType='mri:MD_DataIdentification']/*/mri:citation/cit:CI_Citation/cit:title" />
     </xsl:variable>
 
     <xsl:variable name="resourceName">
-      <xsl:value-of select="mdb:identificationInfo/mri:MD_DataIdentification/mri:citation/cit:CI_Citation/cit:alternateTitle" />
+      <xsl:value-of select="mdb:identificationInfo[mri:MD_DataIdentification or */@gco:isoType='mri:MD_DataIdentification']/*/mri:citation/cit:CI_Citation/cit:alternateTitle" />
     </xsl:variable>
 
     <xsl:variable name="publicationDate">
-      <xsl:value-of select="mdb:identificationInfo/mri:MD_DataIdentification/mri:citation/cit:CI_Citation/cit:date/cit:CI_Date[cit:dateType/cit:CI_DateTypeCode/@codeListValue='publication']/cit:date" />
+      <xsl:value-of select="mdb:identificationInfo[mri:MD_DataIdentification or */@gco:isoType='mri:MD_DataIdentification']/*/mri:citation/cit:CI_Citation/cit:date/cit:CI_Date[cit:dateType/cit:CI_DateTypeCode/@codeListValue='publication']/cit:date" />
     </xsl:variable>
 
     <xsl:variable name="metadataId">
@@ -143,7 +143,7 @@
     </xsl:variable>
 
     <xsl:variable name="id">
-      <xsl:value-of select="mdb:identificationInfo/mri:MD_DataIdentification/mri:citation/cit:CI_Citation/cit:identifier/mcc:MD_Identifier[mcc:authority]/mcc:code" />
+      <xsl:value-of select="mdb:identificationInfo[mri:MD_DataIdentification or */@gco:isoType='mri:MD_DataIdentification']/*/mri:citation/cit:CI_Citation/cit:identifier/mcc:MD_Identifier[mcc:authority]/mcc:code" />
     </xsl:variable>
 
     <xsl:variable name="level">
@@ -202,28 +202,28 @@
           <td><strong>
             <xsl:value-of select="gn-fn-render:get-schema-strings($schemaStrings, 'fdr_spatialExtent')"/>
           </strong></td>
-          <td><xsl:apply-templates mode="render-value" select="mdb:identificationInfo/mri:MD_DataIdentification/mri:extent/gex:EX_Extent[not(gex:temporalElement)]/gex:description"/></td>
+          <td><xsl:apply-templates mode="render-value" select="mdb:identificationInfo[mri:MD_DataIdentification or */@gco:isoType='mri:MD_DataIdentification']/*/mri:extent/gex:EX_Extent[not(gex:temporalElement)]/gex:description"/></td>
         </tr>
         <tr>
           <td><strong>
             <xsl:value-of select="gn-fn-render:get-schema-strings($schemaStrings, 'fdr_owner')"/>
           </strong></td>
-          <td><xsl:apply-templates mode="render-value" select="mdb:identificationInfo/mri:MD_DataIdentification/mri:citation/cit:CI_Citation/cit:citedResponsibleParty/cit:CI_Responsibility[cit:role/cit:CI_RoleCode/@codeListValue = 'owner']/cit:party/cit:CI_Organisation/cit:name"/></td>
+          <td><xsl:apply-templates mode="render-value" select="mdb:identificationInfo[mri:MD_DataIdentification or */@gco:isoType='mri:MD_DataIdentification']/*/mri:citation/cit:CI_Citation/cit:citedResponsibleParty/cit:CI_Responsibility[cit:role/cit:CI_RoleCode/@codeListValue = 'owner']/cit:party/cit:CI_Organisation/cit:name"/></td>
         </tr>
         <tr>
           <td><strong>
             <xsl:value-of select="gn-fn-render:get-schema-strings($schemaStrings, 'fdr_custodian')"/>
           </strong></td>
-          <td><xsl:apply-templates mode="render-value" select="mdb:identificationInfo/mri:MD_DataIdentification/mri:citation/cit:CI_Citation/cit:citedResponsibleParty/cit:CI_Responsibility[cit:role/cit:CI_RoleCode/@codeListValue = 'custodian']/cit:party/cit:CI_Organisation/cit:name"/></td>
+          <td><xsl:apply-templates mode="render-value" select="mdb:identificationInfo[mri:MD_DataIdentification or */@gco:isoType='mri:MD_DataIdentification']/*/mri:citation/cit:CI_Citation/cit:citedResponsibleParty/cit:CI_Responsibility[cit:role/cit:CI_RoleCode/@codeListValue = 'custodian']/cit:party/cit:CI_Organisation/cit:name"/></td>
         </tr>
         <tr>
           <td><strong>
             <xsl:value-of select="gn-fn-render:get-schema-strings($schemaStrings, 'fdr_dataAccess')"/>
           </strong></td>
           <td>
-            <xsl:apply-templates mode="render-value" select="mdb:identificationInfo/mri:MD_DataIdentification/mri:resourceConstraints/mco:MD_SecurityConstraints/mco:classification/mco:MD_ClassificationCode/@codeListValue" />
+            <xsl:apply-templates mode="render-value" select="mdb:identificationInfo[mri:MD_DataIdentification or */@gco:isoType='mri:MD_DataIdentification']/*/mri:resourceConstraints/mco:MD_SecurityConstraints/mco:classification/mco:MD_ClassificationCode/@codeListValue" />
             <!-- <br />
-            <xsl:apply-templates mode="render-value" select="mdb:identificationInfo/mri:MD_DataIdentification/mri:resourceConstraints/mco:MD_SecurityConstraints/mco:useLimitation"/> -->
+            <xsl:apply-templates mode="render-value" select="mdb:identificationInfo[mri:MD_DataIdentification or */@gco:isoType='mri:MD_DataIdentification']/*/mri:resourceConstraints/mco:MD_SecurityConstraints/mco:useLimitation"/> -->
           </td>
         </tr>
         <!-- <tr>
@@ -256,7 +256,7 @@
           </strong></td>
           <td style="vertical-align: top;">
             <xsl:call-template name="addLineBreaksAndHyperlinks">
-              <xsl:with-param name="txt" select="mdb:identificationInfo/mri:MD_DataIdentification/mri:abstract/gco:CharacterString"/>
+              <xsl:with-param name="txt" select="mdb:identificationInfo[mri:MD_DataIdentification or */@gco:isoType='mri:MD_DataIdentification']/*/mri:abstract/gco:CharacterString"/>
             </xsl:call-template>
           </td>
         </tr>
@@ -272,7 +272,7 @@
           </h2>
 
           <xsl:call-template name="addLineBreaksAndHyperlinks">
-            <xsl:with-param name="txt" select="mdb:identificationInfo/mri:MD_DataIdentification/mri:purpose"/>
+            <xsl:with-param name="txt" select="mdb:identificationInfo[mri:MD_DataIdentification or */@gco:isoType='mri:MD_DataIdentification']/*/mri:purpose"/>
           </xsl:call-template>
         </div>
 
@@ -287,7 +287,7 @@
               <xsl:value-of select="gn-fn-render:get-schema-strings($schemaStrings, 'fdr_dataSetStatus')"/>
             </h3>
             <p>
-              <xsl:apply-templates mode="render-value" select="mdb:identificationInfo/mri:MD_DataIdentification/mri:status/mcc:MD_ProgressCode/@codeListValue"/>
+              <xsl:apply-templates mode="render-value" select="mdb:identificationInfo[mri:MD_DataIdentification or */@gco:isoType='mri:MD_DataIdentification']/*/mri:status/mcc:MD_ProgressCode/@codeListValue"/>
             </p>
             <h3>
               <xsl:value-of select="gn-fn-render:get-schema-strings($schemaStrings, 'fdr_dataCollection')"/>
@@ -297,13 +297,13 @@
                 <xsl:value-of select="gn-fn-render:get-schema-strings($schemaStrings, 'fdr_collectionPeriod')"/>
               </h4>
               <p>
-                <xsl:apply-templates mode="render-field" select="mdb:identificationInfo/mri:MD_DataIdentification/mri:extent/gex:EX_Extent/gex:temporalElement/gex:EX_TemporalExtent/gex:extent/gml:TimePeriod" />
+                <xsl:apply-templates mode="render-field" select="mdb:identificationInfo[mri:MD_DataIdentification or */@gco:isoType='mri:MD_DataIdentification']/*/mri:extent/gex:EX_Extent/gex:temporalElement/gex:EX_TemporalExtent/gex:extent/gml:TimePeriod" />
               </p>
               <h4>
                 <xsl:value-of select="gn-fn-render:get-schema-strings($schemaStrings, 'fdr_updateFrequency')"/>
               </h4>
               <p>
-                <xsl:apply-templates mode="render-value" select="mdb:identificationInfo/mri:MD_DataIdentification/mri:resourceMaintenance/mmi:MD_MaintenanceInformation/mmi:maintenanceAndUpdateFrequency/mmi:MD_MaintenanceFrequencyCode/@codeListValue"/>
+                <xsl:apply-templates mode="render-value" select="mdb:identificationInfo[mri:MD_DataIdentification or */@gco:isoType='mri:MD_DataIdentification']/*/mri:resourceMaintenance/mmi:MD_MaintenanceInformation/mmi:maintenanceAndUpdateFrequency/mmi:MD_MaintenanceFrequencyCode/@codeListValue"/>
               </p>
             </blockquote>
           </blockquote>
@@ -338,9 +338,11 @@
               <xsl:with-param name="txt" select="mdb:resourceLineage/mrl:LI_Lineage/mrl:statement"/>
             </xsl:call-template>
 
-            <xsl:call-template name="addLineBreaksAndHyperlinks">
-              <xsl:with-param name="txt" select="mdb:resourceLineage/mrl:LI_Lineage/mrl:source/mrl:LI_Source/mrl:description"/>
-            </xsl:call-template>
+            <xsl:for-each select="mdb:resourceLineage/mrl:LI_Lineage/mrl:source/mrl:LI_Source/mrl:description">
+              <xsl:call-template name="addLineBreaksAndHyperlinks">
+                <xsl:with-param name="txt" select="."/>
+              </xsl:call-template>
+            </xsl:for-each>
 
             <h3>
               <xsl:value-of select="gn-fn-render:get-schema-strings($schemaStrings, 'fdr_datasetProcessingDetails')"/>
@@ -396,13 +398,13 @@
             </h3>
 
             <xsl:call-template name="addLineBreaksAndHyperlinks">
-              <xsl:with-param name="txt" select="mdb:identificationInfo/mri:MD_DataIdentification/mri:resourceConstraints/mco:MD_SecurityConstraints/mco:useLimitation"/>
+              <xsl:with-param name="txt" select="mdb:identificationInfo[mri:MD_DataIdentification or */@gco:isoType='mri:MD_DataIdentification']/*/mri:resourceConstraints/mco:MD_SecurityConstraints/mco:useLimitation"/>
             </xsl:call-template>
 
             <h3>
               <xsl:value-of select="gn-fn-render:get-schema-strings($schemaStrings, 'fdr_storedDataFormat')"/>
             </h3>
-            <p><xsl:apply-templates mode="render-value" select="mdb:identificationInfo/mri:MD_DataIdentification/mri:resourceFormat/mrd:MD_Format/mrd:formatSpecificationCitation/cit:CI_Citation/cit:title"/></p>
+            <p><xsl:apply-templates mode="render-value" select="mdb:identificationInfo[mri:MD_DataIdentification or */@gco:isoType='mri:MD_DataIdentification']/*/mri:resourceFormat/mrd:MD_Format/mrd:formatSpecificationCitation/cit:CI_Citation/cit:title"/></p>
             <h3>
               <xsl:value-of select="gn-fn-render:get-schema-strings($schemaStrings, 'fdr_availableFormatType')"/>
             </h3>
@@ -444,7 +446,7 @@
             <p>
               <!-- TODO breakout to template -->
               <ul>
-                <xsl:for-each select="mdb:identificationInfo/mri:MD_DataIdentification//mri:topicCategory">
+                <xsl:for-each select="mdb:identificationInfo[mri:MD_DataIdentification or */@gco:isoType='mri:MD_DataIdentification']/*//mri:topicCategory">
                   <li><xsl:apply-templates mode="render-value" select="mri:MD_TopicCategoryCode"/></li>
                 </xsl:for-each>
               </ul>
@@ -463,7 +465,7 @@
             </h3>
 
             <xsl:call-template name="addLineBreaksAndHyperlinks">
-              <xsl:with-param name="txt" select="mdb:identificationInfo/mri:MD_DataIdentification/mri:supplementalInformation"/>
+              <xsl:with-param name="txt" select="mdb:identificationInfo[mri:MD_DataIdentification or */@gco:isoType='mri:MD_DataIdentification']/*/mri:supplementalInformation"/>
             </xsl:call-template>
           </blockquote>
         </div>
@@ -474,12 +476,12 @@
             <xsl:value-of select="gn-fn-render:get-schema-strings($schemaStrings, 'fdr_history')"/>
           </h2>
           <blockquote>
-            <xsl:if test="mdb:identificationInfo/mri:MD_DataIdentification/mri:resourceMaintenance/mmi:MD_MaintenanceInformation/mmi:maintenanceDate">
+            <xsl:if test="mdb:identificationInfo[mri:MD_DataIdentification or */@gco:isoType='mri:MD_DataIdentification']/*/mri:resourceMaintenance/mmi:MD_MaintenanceInformation/mmi:maintenanceDate">
               <h3>
                 <xsl:value-of select="gn-fn-render:get-schema-strings($schemaStrings, 'fdr_stages')"/>
               </h3>
               <blockquote>
-                <xsl:for-each select="mdb:identificationInfo/mri:MD_DataIdentification/mri:resourceMaintenance/mmi:MD_MaintenanceInformation/mmi:maintenanceDate">
+                <xsl:for-each select="mdb:identificationInfo[mri:MD_DataIdentification or */@gco:isoType='mri:MD_DataIdentification']/*/mri:resourceMaintenance/mmi:MD_MaintenanceInformation/mmi:maintenanceDate">
                   <h4>
                     <xsl:apply-templates mode="render-value" select="cit:CI_Date/cit:dateType/cit:CI_DateTypeCode/@codeListValue"/>
                   </h4>
@@ -510,7 +512,7 @@
             </h3>
             <blockquote>
               <xsl:choose>
-                <xsl:when test="mdb:identificationInfo/mri:MD_DataIdentification/mri:associatedResource">
+                <xsl:when test="mdb:identificationInfo[mri:MD_DataIdentification or */@gco:isoType='mri:MD_DataIdentification']/*/mri:associatedResource">
                   <table>
                     <tr>
                       <th>
@@ -523,7 +525,7 @@
                         <xsl:value-of select="gn-fn-render:get-schema-strings($schemaStrings, 'fdr_description')"/>
                       </th>
                     </tr>
-                    <xsl:for-each select="mdb:identificationInfo/mri:MD_DataIdentification/mri:associatedResource">
+                    <xsl:for-each select="mdb:identificationInfo[mri:MD_DataIdentification or */@gco:isoType='mri:MD_DataIdentification']/*/mri:associatedResource">
 
                       <!-- extract URL -->
                       <xsl:variable name="resLink" select="mri:MD_AssociatedResource/mri:metadataReference/cit:CI_Citation/cit:onlineResource/cit:CI_OnlineResource/cit:linkage" />
@@ -545,8 +547,8 @@
                       <tr>
                         <td>
                           <xsl:choose>
-                            <xsl:when test="$resourceDoc//mdb:identificationInfo/mri:MD_DataIdentification/mri:citation/cit:CI_Citation/cit:title">
-                              <xsl:value-of select="$resourceDoc//mdb:identificationInfo/mri:MD_DataIdentification/mri:citation/cit:CI_Citation/cit:title" />
+                            <xsl:when test="$resourceDoc//mdb:identificationInfo[mri:MD_DataIdentification or */@gco:isoType='mri:MD_DataIdentification']/*/mri:citation/cit:CI_Citation/cit:title">
+                              <xsl:value-of select="$resourceDoc//mdb:identificationInfo[mri:MD_DataIdentification or */@gco:isoType='mri:MD_DataIdentification']/*/mri:citation/cit:CI_Citation/cit:title" />
                             </xsl:when>
                             <xsl:otherwise>
                               <xsl:value-of select="mri:MD_AssociatedResource/mri:metadataReference/cit:CI_Citation/cit:title" />
@@ -580,7 +582,7 @@
         </div>
 
         <!-- contacts -->
-        <xsl:if test="count(mdb:identificationInfo/mri:MD_DataIdentification/mri:pointOfContact[cit:CI_Responsibility/cit:role/cit:CI_RoleCode/@codeListValue='pointOfContact' and cit:CI_Responsibility/cit:party/cit:CI_Organisation/cit:individual]) > 0">
+        <xsl:if test="count(mdb:identificationInfo[mri:MD_DataIdentification or */@gco:isoType='mri:MD_DataIdentification']/*/mri:pointOfContact[cit:CI_Responsibility/cit:role/cit:CI_RoleCode/@codeListValue='pointOfContact' and cit:CI_Responsibility/cit:party/cit:CI_Organisation/cit:individual]) > 0">
         <div>
           <h2>
             <xsl:value-of select="gn-fn-render:get-schema-strings($schemaStrings, 'fdr_contacts')"/>
@@ -597,8 +599,8 @@
                 <xsl:value-of select="gn-fn-render:get-schema-strings($schemaStrings, 'fdr_contactRole')"/>
               </th>
             </tr>
-            <xsl:for-each select="mdb:identificationInfo/mri:MD_DataIdentification/mri:pointOfContact[cit:CI_Responsibility/cit:role/cit:CI_RoleCode/@codeListValue='pointOfContact' and cit:CI_Responsibility/cit:party/cit:CI_Organisation/cit:individual]">
-              <xsl:sort select="cit:CI_Responsibility/cit:party/cit:CI_Organisation/cit:individual/cit:CI_Individual/cit:name"/>
+            <xsl:for-each select="mdb:identificationInfo[mri:MD_DataIdentification or */@gco:isoType='mri:MD_DataIdentification']/*/mri:pointOfContact[cit:CI_Responsibility/cit:role/cit:CI_RoleCode/@codeListValue='pointOfContact' and cit:CI_Responsibility/cit:party/cit:CI_Organisation/cit:individual]/cit:CI_Responsibility/cit:party">
+              <xsl:sort select="cit:CI_Organisation/cit:individual/cit:CI_Individual/cit:name"/>
               <xsl:apply-templates mode="render-field" select="."/>
             </xsl:for-each>
           </table>
@@ -642,6 +644,15 @@
     </tr>
   </xsl:template>
 
+  <xsl:template mode="render-field" match="cit:party">
+    <tr>
+      <td><xsl:apply-templates mode="render-value" select="cit:CI_Organisation/cit:individual/cit:CI_Individual/cit:name"/></td>
+      <td><xsl:apply-templates mode="render-value" select="cit:CI_Organisation/cit:individual/cit:CI_Individual/cit:contactInfo/cit:CI_Contact/cit:phone/cit:CI_Telephone/cit:number"/></td>
+      <td>
+        <xsl:apply-templates mode="render-value" select="../cit:CI_Responsibility/cit:role/cit:CI_RoleCode/@codeListValue"/>
+      </td>
+    </tr>
+  </xsl:template>
 
 
 

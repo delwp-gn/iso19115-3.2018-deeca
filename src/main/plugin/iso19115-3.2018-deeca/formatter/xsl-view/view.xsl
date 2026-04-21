@@ -825,6 +825,7 @@
         <!-- <xsl:value-of select="tr:node-label(tr:create($schema), name(), null)"/> -->
       </dt>
       <dd>
+        <div style="overflow: auto">
           <!-- <table class="table table-bordered table-striped"> -->
           <!-- striped table somewhat wasteful of space -->
           <table class="table table-bordered">
@@ -865,6 +866,7 @@
               </tr>
             </xsl:for-each>
           </table>
+        </div>
       </dd>
     </dl>
   </xsl:template>

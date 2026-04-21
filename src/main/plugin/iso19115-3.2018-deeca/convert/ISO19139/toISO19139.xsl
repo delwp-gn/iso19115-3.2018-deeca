@@ -41,6 +41,7 @@
                 xmlns:gml="http://www.opengis.net/gml/3.2"
                 xmlns:xlink="http://www.w3.org/1999/xlink"
                 xmlns:xd="http://www.oxygenxml.com/ns/doc/xsl"
+                xmlns:delwp="https://github.com/geonetwork-delwp/iso19115-3.2018"
                 exclude-result-prefixes="#all">
   <xd:doc scope="stylesheet">
     <xd:desc>
@@ -229,7 +230,7 @@
                       select="local-name(.) = 'SV_ServiceIdentification'"/>
 
         <xsl:element name="{concat($nameSpacePrefix,':',local-name(.))}">
-          <xsl:apply-templates select="@*"/>
+          <xsl:apply-templates select="@*[name() != 'gco:isoType']"/>
           <xsl:apply-templates select="mri:citation"/>
           <xsl:call-template name="writeCharacterStringElement">
             <xsl:with-param name="elementName" select="'gmd:abstract'"/>
@@ -1058,6 +1059,7 @@
           <xsl:text>gmd</xsl:text>
         </xsl:when>
         <xsl:when test="ancestor-or-self::mri:MD_DataIdentification
+          or ancestor-or-self::delwp:MD_DataIdentification
           or ancestor-or-self::mri:MD_SpatialRepresentationTypeCode">
           <xsl:text>gmd</xsl:text>
         </xsl:when>

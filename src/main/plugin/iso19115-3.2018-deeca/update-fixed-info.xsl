@@ -841,6 +841,14 @@
       <xsl:apply-templates select="*" />
     </xsl:copy>
   </xsl:template>
+  <!-- Withheld delwp:dataLocation -->
+  <xsl:template match="delwp:dataLocation" priority="10">
+    <xsl:copy>
+      <xsl:copy-of select="@*[name() != 'gco:nilReason']" />
+      <xsl:attribute name="gco:nilReason">withheld</xsl:attribute>
+      <xsl:apply-templates select="*" />
+    </xsl:copy>
+  </xsl:template>
 
   <!-- Remove empty DQ elements, empty transfer options, empty lineage -->
   <xsl:template match="mdb:dataQualityInfo[count(*) = 0]"/>

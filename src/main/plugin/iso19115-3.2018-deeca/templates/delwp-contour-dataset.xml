@@ -107,7 +107,7 @@
     </mrs:MD_ReferenceSystem>
   </mdb:referenceSystemInfo>
   <mdb:identificationInfo>
-    <mri:MD_DataIdentification>
+    <delwp:MD_DataIdentification gco:isoType="mri:MD_DataIdentification">
       <mri:citation>
         <cit:CI_Citation>
           <cit:title>
@@ -173,7 +173,7 @@
             </cit:CI_Citation>
           </mrd:formatSpecificationCitation>
         </mrd:MD_Format>
-      </mri:resourceFormat>		
+      </mri:resourceFormat>
       <mri:resourceConstraints>
         <mco:MD_SecurityConstraints>
           <mco:useLimitation>
@@ -194,7 +194,7 @@
           </lan:characterEncoding>
         </lan:PT_Locale>
       </mri:defaultLocale>
-    </mri:MD_DataIdentification>
+    </delwp:MD_DataIdentification>
   </mdb:identificationInfo>
   <mdb:dataQualityInfo>
     <mdq:DQ_DataQuality>
@@ -286,7 +286,7 @@
             </gco:Record>
           </mac:otherProperty>
         </mac:MI_Operation>
-      </mac:operation> 
+      </mac:operation>
     </mac:MI_AcquisitionInformation>
   </mdb:acquisitionInformation>
 </mdb:MD_Metadata>
