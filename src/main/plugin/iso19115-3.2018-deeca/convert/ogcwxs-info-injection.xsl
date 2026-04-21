@@ -59,6 +59,7 @@
                 xmlns:inspire_common="http://inspire.ec.europa.eu/schemas/common/1.0"
                 xmlns:saxon="http://saxon.sf.net/"
                 xmlns:math="http://exslt.org/math"
+                xmlns:delwp="https://github.com/geonetwork-delwp/iso19115-3.2018"
                 extension-element-prefixes="saxon math"
                 exclude-result-prefixes="#all"
                 version="2.0">
@@ -213,7 +214,7 @@
   </xsl:template>
 
   <xsl:template mode="copy"
-                match="mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:citation/*/cit:title"
+                match="mdb:MD_Metadata/mdb:identificationInfo/delwp:MD_DataIdentification/mri:citation/*/cit:title"
                 priority="1999">
 
     <xsl:copy>
@@ -262,7 +263,7 @@
 
 
   <xsl:template mode="copy"
-                match="mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:abstract"
+                match="mdb:MD_Metadata/mdb:identificationInfo/delwp:MD_DataIdentification/mri:abstract"
                 priority="1999">
 
     <xsl:copy>
@@ -554,7 +555,7 @@
                              select="."/>
       </xsl:for-each>
 
-      <!-- If no '<AccessConstraints>' in "getCapabilities" response then 
+      <!-- If no '<AccessConstraints>' in "getCapabilities" response then
            copy constraints from template record -->
       <xsl:if test="not($constraints)">
         <xsl:apply-templates mode="copy" select="mri:resourceConstraints"/>

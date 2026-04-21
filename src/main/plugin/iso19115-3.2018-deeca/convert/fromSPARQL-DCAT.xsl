@@ -33,6 +33,7 @@
                 xmlns:gfc="http://standards.iso.org/iso/19110/gfc/1.1"
                 xmlns:gml="http://www.opengis.net/gml/3.2"
                 xmlns:gn-fn-sparql="http://geonetwork-opensource.org/xsl/functions/sparql"
+                xmlns:delwp="https://github.com/geonetwork-delwp/iso19115-3.2018"
                 version="2.0"
                 exclude-result-prefixes="#all">
 
@@ -212,7 +213,7 @@
             <xsl:choose>
               <xsl:when test="$isService"></xsl:when>
               <xsl:otherwise>
-                <mri:MD_DataIdentification>
+                <delwp:MD_DataIdentification gco:isoType="mri:MD_DataIdentification">
                   <mri:citation>
                     <cit:CI_Citation>
                       <cit:title>
@@ -453,7 +454,7 @@
                     </xsl:call-template>
                   </xsl:for-each>
 
-                </mri:MD_DataIdentification>
+                </delwp:MD_DataIdentification>
               </xsl:otherwise>
             </xsl:choose>
           </mdb:identificationInfo>

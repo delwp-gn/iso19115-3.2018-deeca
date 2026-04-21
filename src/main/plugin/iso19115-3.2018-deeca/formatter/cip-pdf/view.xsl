@@ -187,7 +187,7 @@
 
     <!-- store title -->
     <xsl:variable name="title">
-      <xsl:value-of select="mdb:identificationInfo/mri:MD_DataIdentification/mri:citation/cit:CI_Citation/cit:title" />
+      <xsl:value-of select="mdb:identificationInfo[mri:MD_DataIdentification or */@gco:isoType='mri:MD_DataIdentification']/*/mri:citation/cit:CI_Citation/cit:title" />
     </xsl:variable>
 
     <!-- START PROCESSING ASSOCIATED RECORDS -->
@@ -196,13 +196,13 @@
     <!-- nb. this is a list or mri:associatedResource elements from the parent project, not the records themselves -->
     <!-- use the doc-available() function on the rendered URL to test if we can access it -->
     <xsl:variable name="availableAssocRecords"
-                  select=" mdb:identificationInfo/mri:MD_DataIdentification/mri:associatedResource[
+                  select=" mdb:identificationInfo[mri:MD_DataIdentification or */@gco:isoType='mri:MD_DataIdentification']/*/mri:associatedResource[
         doc-available( gn-fn-render:APIURL( mri:MD_AssociatedResource/mri:metadataReference/@uuidref ) )
         ]" />
 
     <!-- same as above, but these are the associated records that are not available -->
     <xsl:variable name="missingAssocRecords"
-                  select="mdb:identificationInfo/mri:MD_DataIdentification/mri:associatedResource[
+                  select="mdb:identificationInfo[mri:MD_DataIdentification or */@gco:isoType='mri:MD_DataIdentification']/*/mri:associatedResource[
         not( doc-available( gn-fn-render:APIURL( mri:MD_AssociatedResource/mri:metadataReference/@uuidref ) ) )
         ]" />
 
@@ -343,7 +343,7 @@
           <!-- custodian -->
           <td style="font: bold 9pt Verdana, Arial, sans-serif;">Custodian:</td>
           <td>
-            <xsl:value-of select="mdb:identificationInfo/mri:MD_DataIdentification/mri:citation/cit:CI_Citation/cit:citedResponsibleParty/cit:CI_Responsibility[cit:role/cit:CI_RoleCode/@codeListValue = 'custodian' ]/cit:party/cit:CI_Organisation/cit:name" />
+            <xsl:value-of select="mdb:identificationInfo[mri:MD_DataIdentification or */@gco:isoType='mri:MD_DataIdentification']/*/mri:citation/cit:CI_Citation/cit:citedResponsibleParty/cit:CI_Responsibility[cit:role/cit:CI_RoleCode/@codeListValue = 'custodian' ]/cit:party/cit:CI_Organisation/cit:name" />
           </td>
         </tr>
         <tr>
@@ -351,7 +351,7 @@
           <td style="vertical-align: top;font: bold 9pt Verdana, Arial, sans-serif;">Abstract:</td>
           <td>
             <xsl:call-template name="addLineBreaksAndHyperlinks">
-              <xsl:with-param name="txt" select="mdb:identificationInfo/mri:MD_DataIdentification/mri:abstract"/>
+              <xsl:with-param name="txt" select="mdb:identificationInfo[mri:MD_DataIdentification or */@gco:isoType='mri:MD_DataIdentification']/*/mri:abstract"/>
             </xsl:call-template>
           </td>
         </tr>
@@ -359,19 +359,19 @@
           <!-- extent -->
           <td style="font: bold 9pt Verdana, Arial, sans-serif;">Geographic Extent:</td>
           <td>
-            <xsl:value-of select="mdb:identificationInfo/mri:MD_DataIdentification/mri:extent/gex:EX_Extent/gex:description"/>
+            <xsl:value-of select="mdb:identificationInfo[mri:MD_DataIdentification or */@gco:isoType='mri:MD_DataIdentification']/*/mri:extent/gex:EX_Extent/gex:description"/>
           </td>
         </tr>
         <td></td>
         <xsl:choose>
-          <xsl:when test="mdb:identificationInfo/mri:MD_DataIdentification/mri:extent/gex:EX_Extent/gex:geographicElement/gex:EX_GeographicBoundingBox">
+          <xsl:when test="mdb:identificationInfo[mri:MD_DataIdentification or */@gco:isoType='mri:MD_DataIdentification']/*/mri:extent/gex:EX_Extent/gex:geographicElement/gex:EX_GeographicBoundingBox">
             <td>
-              <xsl:apply-templates mode="render-field" select="mdb:identificationInfo/mri:MD_DataIdentification/mri:extent/gex:EX_Extent/gex:geographicElement/gex:EX_GeographicBoundingBox" />
+              <xsl:apply-templates mode="render-field" select="mdb:identificationInfo[mri:MD_DataIdentification or */@gco:isoType='mri:MD_DataIdentification']/*/mri:extent/gex:EX_Extent/gex:geographicElement/gex:EX_GeographicBoundingBox" />
             </td>
           </xsl:when>
-          <xsl:when test="mdb:identificationInfo/mri:MD_DataIdentification/mri:extent/gex:EX_Extent/gex:geographicElement/gex:EX_BoundingPolygon">
+          <xsl:when test="mdb:identificationInfo[mri:MD_DataIdentification or */@gco:isoType='mri:MD_DataIdentification']/*/mri:extent/gex:EX_Extent/gex:geographicElement/gex:EX_BoundingPolygon">
             <td>
-              <xsl:apply-templates mode="render-field" select="mdb:identificationInfo/mri:MD_DataIdentification/mri:extent/gex:EX_Extent/gex:geographicElement/gex:EX_BoundingPolygon" />
+              <xsl:apply-templates mode="render-field" select="mdb:identificationInfo[mri:MD_DataIdentification or */@gco:isoType='mri:MD_DataIdentification']/*/mri:extent/gex:EX_Extent/gex:geographicElement/gex:EX_BoundingPolygon" />
             </td>
           </xsl:when>
           <xsl:otherwise>
@@ -441,7 +441,7 @@
                   </td>
                   <td  style="font: bold 9pt Verdana, Arial, sans-serif;">Stored Data Format:</td>
                   <td>
-                      <xsl:value-of select="mdb:identificationInfo/mri:MD_DataIdentification/mri:resourceFormat" />
+                      <xsl:value-of select="mdb:identificationInfo[mri:MD_DataIdentification or */@gco:isoType='mri:MD_DataIdentification']/*/mri:resourceFormat" />
                   </td>
                 </tr>
                 <tr>
@@ -491,7 +491,7 @@
                 <tr>
                   <td  style="font: bold 9pt Verdana, Arial, sans-serif;">Stored Data Format:</td>
                   <td>
-                    <td><xsl:value-of select="mdb:identificationInfo/mri:MD_DataIdentification/mri:resourceFormat/mrd:MD_Format/mrd:formatSpecificationCitation/cit:CI_Citation/cit:title"/></td>
+                    <td><xsl:value-of select="mdb:identificationInfo[mri:MD_DataIdentification or */@gco:isoType='mri:MD_DataIdentification']/*/mri:resourceFormat/mrd:MD_Format/mrd:formatSpecificationCitation/cit:CI_Citation/cit:title"/></td>
                   </td>
                 </tr>
               </table>
@@ -522,7 +522,7 @@
                 <tr>
                   <td  style="font: bold 9pt Verdana, Arial, sans-serif;">Stored Data Format:</td>
                   <td>
-                    <td><xsl:value-of select="mdb:identificationInfo/mri:MD_DataIdentification/mri:resourceFormat/mrd:MD_Format/mrd:formatSpecificationCitation/cit:CI_Citation/cit:title"/></td>
+                    <td><xsl:value-of select="mdb:identificationInfo[mri:MD_DataIdentification or */@gco:isoType='mri:MD_DataIdentification']/*/mri:resourceFormat/mrd:MD_Format/mrd:formatSpecificationCitation/cit:CI_Citation/cit:title"/></td>
                   </td>
                 </tr>
               </table>
@@ -562,8 +562,8 @@
                   <td>
                     <td>
                       <xsl:choose>
-                        <xsl:when test=".//mdb:identificationInfo/mri:MD_DataIdentification/mri:resourceFormat/mrd:MD_Format/mrd:formatSpecificationCitation/cit:CI_Citation/cit:title">
-                          <xsl:value-of select=".//mdb:identificationInfo/mri:MD_DataIdentification/mri:resourceFormat/mrd:MD_Format/mrd:formatSpecificationCitation/cit:CI_Citation/cit:title" />
+                        <xsl:when test=".//mdb:identificationInfo[mri:MD_DataIdentification or */@gco:isoType='mri:MD_DataIdentification']/*/mri:resourceFormat/mrd:MD_Format/mrd:formatSpecificationCitation/cit:CI_Citation/cit:title">
+                          <xsl:value-of select=".//mdb:identificationInfo[mri:MD_DataIdentification or */@gco:isoType='mri:MD_DataIdentification']/*/mri:resourceFormat/mrd:MD_Format/mrd:formatSpecificationCitation/cit:CI_Citation/cit:title" />
                         </xsl:when>
                         <xsl:otherwise>
                           <xsl:value-of select="$missing"/>
@@ -696,8 +696,8 @@
             <td  style="font: bold 9pt Verdana, Arial, sans-serif;">Stored Data Format:</td>
             <td>
                 <xsl:choose>
-                <xsl:when test="$pointCloudIndexDoc//mdb:identificationInfo/mri:MD_DataIdentification/mri:resourceFormat">
-                  <xsl:value-of select="$pointCloudIndexDoc//mdb:identificationInfo/mri:MD_DataIdentification/mri:resourceFormat" />
+                <xsl:when test="$pointCloudIndexDoc//mdb:identificationInfo[mri:MD_DataIdentification or */@gco:isoType='mri:MD_DataIdentification']/*/mri:resourceFormat">
+                  <xsl:value-of select="$pointCloudIndexDoc//mdb:identificationInfo[mri:MD_DataIdentification or */@gco:isoType='mri:MD_DataIdentification']/*/mri:resourceFormat" />
                 </xsl:when>
                 <xsl:otherwise>
                   <xsl:value-of select="$missing"/>
@@ -815,8 +815,8 @@
             <td>
               <td>
                 <xsl:choose>
-                  <xsl:when test="$demIndexDoc//mdb:identificationInfo/mri:MD_DataIdentification/mri:resourceFormat/mrd:MD_Format/mrd:formatSpecificationCitation/cit:CI_Citation/cit:title">
-                    <xsl:value-of select="$demIndexDoc//mdb:identificationInfo/mri:MD_DataIdentification/mri:resourceFormat/mrd:MD_Format/mrd:formatSpecificationCitation/cit:CI_Citation/cit:title" />
+                  <xsl:when test="$demIndexDoc//mdb:identificationInfo[mri:MD_DataIdentification or */@gco:isoType='mri:MD_DataIdentification']/*/mri:resourceFormat/mrd:MD_Format/mrd:formatSpecificationCitation/cit:CI_Citation/cit:title">
+                    <xsl:value-of select="$demIndexDoc//mdb:identificationInfo[mri:MD_DataIdentification or */@gco:isoType='mri:MD_DataIdentification']/*/mri:resourceFormat/mrd:MD_Format/mrd:formatSpecificationCitation/cit:CI_Citation/cit:title" />
                   </xsl:when>
                   <xsl:otherwise>
                     <xsl:value-of select="$missing"/>
@@ -923,8 +923,8 @@
             <td>
               <td>
                 <xsl:choose>
-                  <xsl:when test="$imageryIndexDoc//mdb:identificationInfo/mri:MD_DataIdentification/mri:resourceFormat/mrd:MD_Format/mrd:formatSpecificationCitation/cit:CI_Citation/cit:title">
-                    <xsl:value-of select="$imageryIndexDoc//mdb:identificationInfo/mri:MD_DataIdentification/mri:resourceFormat/mrd:MD_Format/mrd:formatSpecificationCitation/cit:CI_Citation/cit:title" />
+                  <xsl:when test="$imageryIndexDoc//mdb:identificationInfo[mri:MD_DataIdentification or */@gco:isoType='mri:MD_DataIdentification']/*/mri:resourceFormat/mrd:MD_Format/mrd:formatSpecificationCitation/cit:CI_Citation/cit:title">
+                    <xsl:value-of select="$imageryIndexDoc//mdb:identificationInfo[mri:MD_DataIdentification or */@gco:isoType='mri:MD_DataIdentification']/*/mri:resourceFormat/mrd:MD_Format/mrd:formatSpecificationCitation/cit:CI_Citation/cit:title" />
                   </xsl:when>
                   <xsl:otherwise>
                     <xsl:value-of select="$missing"/>
@@ -1026,8 +1026,8 @@
             <td>
               <td>
                 <xsl:choose>
-                  <xsl:when test="$contourIndexDoc//mdb:identificationInfo/mri:MD_DataIdentification/mri:resourceFormat/mrd:MD_Format/mrd:formatSpecificationCitation/cit:CI_Citation/cit:title">
-                    <xsl:value-of select="$contourIndexDoc//mdb:identificationInfo/mri:MD_DataIdentification/mri:resourceFormat/mrd:MD_Format/mrd:formatSpecificationCitation/cit:CI_Citation/cit:title" />
+                  <xsl:when test="$contourIndexDoc//mdb:identificationInfo[mri:MD_DataIdentification or */@gco:isoType='mri:MD_DataIdentification']/*/mri:resourceFormat/mrd:MD_Format/mrd:formatSpecificationCitation/cit:CI_Citation/cit:title">
+                    <xsl:value-of select="$contourIndexDoc//mdb:identificationInfo[mri:MD_DataIdentification or */@gco:isoType='mri:MD_DataIdentification']/*/mri:resourceFormat/mrd:MD_Format/mrd:formatSpecificationCitation/cit:CI_Citation/cit:title" />
                   </xsl:when>
                   <xsl:otherwise>
                     <xsl:value-of select="$missing"/>
@@ -1147,13 +1147,13 @@
         <tr>
           <td style="vertical-align: top">
             <a href="{.//resUrl}" target="blank">
-              <xsl:value-of select=".//mdb:identificationInfo/mri:MD_DataIdentification/mri:citation/cit:CI_Citation/cit:title"/>
+              <xsl:value-of select=".//mdb:identificationInfo[mri:MD_DataIdentification or */@gco:isoType='mri:MD_DataIdentification']/*/mri:citation/cit:CI_Citation/cit:title"/>
             </a>
           </td>
           <!-- <td style="vertical-align: top"><xsl:value-of select=".//delwp:contourDetails/delwp:MD_ContourDetails/delwp:interval"/></td> -->
           <td style="vertical-align: top"><xsl:apply-templates mode="render-value" select=".//delwp:contourDetails/delwp:MD_ContourDetails/delwp:interval/gco:Measure"/></td>
-          <td style="vertical-align: top"><xsl:apply-templates mode="render-value" select=".//mdb:identificationInfo/mri:MD_DataIdentification/mri:spatialResolution/mri:MD_Resolution/mri:distance/gco:Distance"/></td>
-          <td style="vertical-align: top"><xsl:apply-templates mode="render-value" select=".//mdb:identificationInfo/mri:MD_DataIdentification/mri:spatialResolution/mri:MD_Resolution/mri:vertical/gco:Distance"/></td>
+          <td style="vertical-align: top"><xsl:apply-templates mode="render-value" select=".//mdb:identificationInfo[mri:MD_DataIdentification or */@gco:isoType='mri:MD_DataIdentification']/*/mri:spatialResolution/mri:MD_Resolution/mri:distance/gco:Distance"/></td>
+          <td style="vertical-align: top"><xsl:apply-templates mode="render-value" select=".//mdb:identificationInfo[mri:MD_DataIdentification or */@gco:isoType='mri:MD_DataIdentification']/*/mri:spatialResolution/mri:MD_Resolution/mri:vertical/gco:Distance"/></td>
           <td style="vertical-align: top"><xsl:value-of select=".//mdb:referenceSystemInfo/mrs:MD_ReferenceSystem/mrs:referenceSystemIdentifier/mcc:MD_Identifier/mcc:code"/></td>
           <td style="vertical-align: top"><xsl:value-of select="$verticalDatum"/></td>
           <td style="vertical-align: top">
@@ -1174,7 +1174,7 @@
         <tr>
           <td style="vertical-align: top">
             <a href="{.//resUrl}" target="blank">
-              <xsl:value-of select=".//mdb:identificationInfo/mri:MD_DataIdentification/mri:citation/cit:CI_Citation/cit:title"/>
+              <xsl:value-of select=".//mdb:identificationInfo[mri:MD_DataIdentification or */@gco:isoType='mri:MD_DataIdentification']/*/mri:citation/cit:CI_Citation/cit:title"/>
             </a>
           </td>
           <td style="vertical-align: top">
@@ -1189,8 +1189,8 @@
               </xsl:choose>
             </xsl:for-each>
           </td>
-          <td style="vertical-align: top"><xsl:apply-templates mode="render-value" select=".//mdb:identificationInfo/mri:MD_DataIdentification/mri:spatialResolution/mri:MD_Resolution/mri:distance/gco:Distance"/></td>
-          <td style="vertical-align: top"><xsl:apply-templates mode="render-value" select=".//mdb:identificationInfo/mri:MD_DataIdentification/mri:spatialResolution/mri:MD_Resolution/mri:vertical/gco:Distance"/></td>
+          <td style="vertical-align: top"><xsl:apply-templates mode="render-value" select=".//mdb:identificationInfo[mri:MD_DataIdentification or */@gco:isoType='mri:MD_DataIdentification']/*/mri:spatialResolution/mri:MD_Resolution/mri:distance/gco:Distance"/></td>
+          <td style="vertical-align: top"><xsl:apply-templates mode="render-value" select=".//mdb:identificationInfo[mri:MD_DataIdentification or */@gco:isoType='mri:MD_DataIdentification']/*/mri:spatialResolution/mri:MD_Resolution/mri:vertical/gco:Distance"/></td>
           <td style="vertical-align: top"><xsl:value-of select=".//mdb:referenceSystemInfo/mrs:MD_ReferenceSystem/mrs:referenceSystemIdentifier/mcc:MD_Identifier/mcc:code"/></td>
           <td style="vertical-align: top"><xsl:value-of select="$verticalDatum"/></td>
           <td style="vertical-align: top">
@@ -1211,19 +1211,19 @@
         <tr>
           <td>
             <a href="{.//resUrl}" target="blank">
-              <xsl:value-of select=".//mdb:identificationInfo/mri:MD_DataIdentification/mri:citation/cit:CI_Citation/cit:title"/>
+              <xsl:value-of select=".//mdb:identificationInfo[mri:MD_DataIdentification or */@gco:isoType='mri:MD_DataIdentification']/*/mri:citation/cit:CI_Citation/cit:title"/>
             </a>
           </td>
-          <td><xsl:apply-templates mode="render-value" select=".//mdb:identificationInfo/mri:MD_DataIdentification/mri:spatialResolution/mri:MD_Resolution/mri:distance/gco:Distance"/></td>
+          <td><xsl:apply-templates mode="render-value" select=".//mdb:identificationInfo[mri:MD_DataIdentification or */@gco:isoType='mri:MD_DataIdentification']/*/mri:spatialResolution/mri:MD_Resolution/mri:distance/gco:Distance"/></td>
           <td>
-            <xsl:apply-templates mode="render-value" select=".//mdb:identificationInfo/mri:MD_DataIdentification/mri:spatialResolution/mri:MD_Resolution/mri:vertical/gco:Distance"/>
+            <xsl:apply-templates mode="render-value" select=".//mdb:identificationInfo[mri:MD_DataIdentification or */@gco:isoType='mri:MD_DataIdentification']/*/mri:spatialResolution/mri:MD_Resolution/mri:vertical/gco:Distance"/>
           </td>
           <td>
             <xsl:apply-templates mode="render-value" select=".//delwp:pointCloudDetails/delwp:MD_PointCloudDetails/delwp:pointDensityActual/gco:Measure"/>
           </td>
           <td><xsl:value-of select=".//mdb:referenceSystemInfo/mrs:MD_ReferenceSystem/mrs:referenceSystemIdentifier/mcc:MD_Identifier/mcc:code"/></td>
           <td><xsl:value-of select="$verticalDatum"/></td>
-          <td><xsl:value-of select=".//mdb:identificationInfo/mri:MD_DataIdentification/mri:resourceFormat" /></td>
+          <td><xsl:value-of select=".//mdb:identificationInfo[mri:MD_DataIdentification or */@gco:isoType='mri:MD_DataIdentification']/*/mri:resourceFormat" /></td>
           <td><xsl:value-of select=".//delwp:pointCloudDetails/delwp:MD_PointCloudDetails/delwp:classification/delwp:MD_Classification/delwp:classLevel" /></td>
           <td>
             <span data-gn-humanize-time="{.//mdb:acquisitionInformation/mac:MI_AcquisitionInformation/mac:scope/mcc:MD_Scope/mcc:extent/gex:EX_Extent/gex:temporalElement/gex:EX_TemporalExtent/gex:extent/gml:TimePeriod/gml:beginPosition}" data-format="DD MMM YYYY">

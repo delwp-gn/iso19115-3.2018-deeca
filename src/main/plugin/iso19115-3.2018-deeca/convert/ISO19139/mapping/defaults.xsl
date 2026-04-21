@@ -42,6 +42,7 @@
                 xmlns:gml="http://www.opengis.net/gml/3.2"
                 xmlns:xlink="http://www.w3.org/1999/xlink"
                 xmlns:xd="http://www.oxygenxml.com/ns/doc/xsl"
+                xmlns:delwp="https://github.com/geonetwork-delwp/iso19115-3.2018"
                 exclude-result-prefixes="#all">
 
   <xsl:template name="characterStringSubstitutions">
@@ -131,7 +132,7 @@
           and not(ancestor-or-self::gmi:LE_Source) and not(ancestor-or-self::gmi:MI_CoverageDescription)">
           <xsl:text>msr</xsl:text>
         </xsl:when>
-        <xsl:when test="starts-with(name(),'gmi:') and 
+        <xsl:when test="starts-with(name(),'gmi:') and
           (ancestor-or-self::gmi:LE_ProcessStep or ancestor-or-self::gmi:LE_Source)">
           <xsl:text>mrl</xsl:text>
         </xsl:when>
@@ -139,7 +140,7 @@
           <xsl:text>mrc</xsl:text>
         </xsl:when>
         <xsl:when test="ancestor-or-self::gmd:MD_Constraints
-          or ancestor-or-self::gmd:MD_SecurityConstraints 
+          or ancestor-or-self::gmd:MD_SecurityConstraints
           or ancestor-or-self::gmd:MD_LegalConstraints
           ">
           <xsl:text>mco</xsl:text>
@@ -150,7 +151,7 @@
         <xsl:when test="ancestor-or-self::gmd:CI_ResponsibleParty or ancestor-or-self::gmd:CI_OnlineResource">
           <xsl:text>cit</xsl:text>
         </xsl:when>
-        <xsl:when test="ancestor-or-self::gmd:MD_ScopeCode or ancestor-or-self::gmx:MX_ScopeCode 
+        <xsl:when test="ancestor-or-self::gmd:MD_ScopeCode or ancestor-or-self::gmx:MX_ScopeCode
           or ancestor-or-self::gmd:MD_ScopeDescription">
           <xsl:text>mcc</xsl:text>
         </xsl:when>
@@ -202,7 +203,11 @@
         <xsl:when test="ancestor-or-self::gmd:MD_MaintenanceInformation">
           <xsl:text>mmi</xsl:text>
         </xsl:when>
-        <xsl:when test="ancestor-or-self::gmd:MD_DataIdentification or ancestor-or-self::srvold:SV_ServiceIdentification">
+        <xsl:when test="ancestor-or-self::gmd:MD_DataIdentification">
+          <!-- or ancestor-or-self::gmd:MD_SpatialRepresentationTypeCode"> this test is not necessary -->
+          <xsl:text>delwp</xsl:text>
+        </xsl:when>
+        <xsl:when test="ancestor-or-self::srvold:SV_ServiceIdentification">
           <!-- or ancestor-or-self::gmd:MD_SpatialRepresentationTypeCode"> this test is not necessary -->
           <xsl:text>mri</xsl:text>
         </xsl:when>

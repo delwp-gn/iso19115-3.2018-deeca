@@ -109,7 +109,7 @@
 
     <!-- Configuration to check duplicated metadata alternate title (resource name) -->
     <for name="cit:alternateTitle"
-         xpath="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:citation/cit:CI_Citation/cit:alternateTitle"
+         xpath="/mdb:MD_Metadata/mdb:identificationInfo[mri:MD_DataIdentification or */@gco:isoType='mri:MD_DataIdentification']/*/mri:citation/cit:CI_Citation/cit:alternateTitle"
          use="data-gn-duplicated-metadata-value-checker">
       <directiveAttributes
         data-field-key="altTitle" />
@@ -203,6 +203,8 @@
               data-allow-free-text-keywords="false"
               data-transformation="to-iso19115-3.2018-keyword"/>
     </for>
+
+    <for name="delwp:dataLocation" use="textarea" />
   </fields>
 
 
@@ -436,9 +438,9 @@
 
       <tab id="description" default="true" mode="flat">
         <section>
-          <field xpath="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:citation/cit:CI_Citation/cit:title"/>
-          <field xpath="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:citation/cit:CI_Citation/cit:alternateTitle"/>
-          <action type="add" name="alternateTitle" or="alternateTitle" if="count(mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:citation/cit:CI_Citation/cit:alternateTitle)=0" in="mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:citation/cit:CI_Citation">
+          <field xpath="/mdb:MD_Metadata/mdb:identificationInfo[mri:MD_DataIdentification or */@gco:isoType='mri:MD_DataIdentification']/*/mri:citation/cit:CI_Citation/cit:title"/>
+          <field xpath="/mdb:MD_Metadata/mdb:identificationInfo[mri:MD_DataIdentification or */@gco:isoType='mri:MD_DataIdentification']/*/mri:citation/cit:CI_Citation/cit:alternateTitle"/>
+          <action type="add" name="alternateTitle" or="alternateTitle" if="count(mdb:MD_Metadata/mdb:identificationInfo[mri:MD_DataIdentification or */@gco:isoType='mri:MD_DataIdentification']/*/mri:citation/cit:CI_Citation/cit:alternateTitle)=0" in="mdb:MD_Metadata/mdb:identificationInfo[mri:MD_DataIdentification or */@gco:isoType='mri:MD_DataIdentification']/*/mri:citation/cit:CI_Citation">
             <template>
               <snippet>
                 <cit:alternateTitle>
@@ -448,19 +450,20 @@
             </template>
           </action>
           <field xpath="/mdb:MD_Metadata/mdb:metadataScope/mdb:MD_MetadataScope/mdb:resourceScope"/>
-          <field xpath="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:abstract"/>
-          <field xpath="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:purpose" or="purpose" in="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification"/>
-          <field xpath="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:credit" or="credit" in="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification"/>
-          <field xpath="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:supplementalInformation" or="supplementalInformation" in="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification"/>
-          <field xpath="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:status" />
+          <field xpath="/mdb:MD_Metadata/mdb:identificationInfo[mri:MD_DataIdentification or */@gco:isoType='mri:MD_DataIdentification']/*/mri:abstract"/>
+          <field xpath="/mdb:MD_Metadata/mdb:identificationInfo[mri:MD_DataIdentification or */@gco:isoType='mri:MD_DataIdentification']/*/mri:purpose" or="purpose" in="/mdb:MD_Metadata/mdb:identificationInfo[mri:MD_DataIdentification or */@gco:isoType='mri:MD_DataIdentification']/*"/>
+          <field xpath="/mdb:MD_Metadata/mdb:identificationInfo[mri:MD_DataIdentification or */@gco:isoType='mri:MD_DataIdentification']/*/mri:credit" or="credit" in="/mdb:MD_Metadata/mdb:identificationInfo[mri:MD_DataIdentification or */@gco:isoType='mri:MD_DataIdentification']/*"/>
+          <field xpath="/mdb:MD_Metadata/mdb:identificationInfo[mri:MD_DataIdentification or */@gco:isoType='mri:MD_DataIdentification']/*/mri:supplementalInformation" or="supplementalInformation" in="/mdb:MD_Metadata/mdb:identificationInfo[mri:MD_DataIdentification or */@gco:isoType='mri:MD_DataIdentification']/*"/>
+          <field xpath="/mdb:MD_Metadata/mdb:identificationInfo[mri:MD_DataIdentification or */@gco:isoType='mri:MD_DataIdentification']/*/mri:status" />
+          <field xpath="/mdb:MD_Metadata/mdb:identificationInfo[mri:MD_DataIdentification or */@gco:isoType='mri:MD_DataIdentification']/*/delwp:dataLocation" />
 				</section>
 			</tab>
 
       <tab id="resourceTemporal" mode="flat">
         <section>
 
-          <field xpath="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:extent/gex:EX_Extent/gex:temporalElement/gex:EX_TemporalExtent/gex:extent/gml:TimePeriod" del="../../.."/>
-          <action type="add" name="temporalElement" or="temporalElement" if="count(mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:extent/gex:EX_Extent/gex:temporalElement)=0" in="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:extent/gex:EX_Extent">
+          <field xpath="/mdb:MD_Metadata/mdb:identificationInfo[mri:MD_DataIdentification or */@gco:isoType='mri:MD_DataIdentification']/*/mri:extent/gex:EX_Extent/gex:temporalElement/gex:EX_TemporalExtent/gex:extent/gml:TimePeriod" del="../../.."/>
+          <action type="add" name="temporalElement" or="temporalElement" if="count(mdb:MD_Metadata/mdb:identificationInfo[mri:MD_DataIdentification or */@gco:isoType='mri:MD_DataIdentification']/*/mri:extent/gex:EX_Extent/gex:temporalElement)=0" in="/mdb:MD_Metadata/mdb:identificationInfo[mri:MD_DataIdentification or */@gco:isoType='mri:MD_DataIdentification']/*/mri:extent/gex:EX_Extent">
             <template>
               <snippet>
           <gex:temporalElement>
@@ -489,9 +492,9 @@
 
       <tab id="resourceSpatial" mode="flat">
         <section name=" ">
-          <field xpath="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:spatialRepresentationType"/>
-          <field xpath="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:spatialResolution/mri:MD_Resolution//mri:distance" del="../../.."/>
-					<action type="add" name="spatialResolution" or="spatialResolution" in="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification" if="count(mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:spatialResolution)=0">
+          <field xpath="/mdb:MD_Metadata/mdb:identificationInfo[mri:MD_DataIdentification or */@gco:isoType='mri:MD_DataIdentification']/*/mri:spatialRepresentationType"/>
+          <field xpath="/mdb:MD_Metadata/mdb:identificationInfo[mri:MD_DataIdentification or */@gco:isoType='mri:MD_DataIdentification']/*/mri:spatialResolution/mri:MD_Resolution//mri:distance" del="../../.."/>
+					<action type="add" name="spatialResolution" or="spatialResolution" in="/mdb:MD_Metadata/mdb:identificationInfo[mri:MD_DataIdentification or */@gco:isoType='mri:MD_DataIdentification']/*" if="count(mdb:MD_Metadata/mdb:identificationInfo[mri:MD_DataIdentification or */@gco:isoType='mri:MD_DataIdentification']/*/mri:spatialResolution)=0">
             <template>
               <snippet>
                 <mri:spatialResolution>
@@ -533,10 +536,10 @@
             </template>
           </action>
 
-          <field xpath="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:extent/gex:EX_Extent/gex:description" or="description" in="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:extent/gex:EX_Extent"/>
+          <field xpath="/mdb:MD_Metadata/mdb:identificationInfo[mri:MD_DataIdentification or */@gco:isoType='mri:MD_DataIdentification']/*/mri:extent/gex:EX_Extent/gex:description" or="description" in="/mdb:MD_Metadata/mdb:identificationInfo[mri:MD_DataIdentification or */@gco:isoType='mri:MD_DataIdentification']/*/mri:extent/gex:EX_Extent"/>
 
-          <field xpath="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:extent/gex:EX_Extent/gex:geographicElement"/>
-          <action type="add" name="geographicElement" or="geographicElement" if="count(mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:extent/gex:EX_Extent/gex:geographicElement/gex:EX_GeographicBoundingBox)=0" in="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:extent/gex:EX_Extent">
+          <field xpath="/mdb:MD_Metadata/mdb:identificationInfo[mri:MD_DataIdentification or */@gco:isoType='mri:MD_DataIdentification']/*/mri:extent/gex:EX_Extent/gex:geographicElement"/>
+          <action type="add" name="geographicElement" or="geographicElement" if="count(mdb:MD_Metadata/mdb:identificationInfo[mri:MD_DataIdentification or */@gco:isoType='mri:MD_DataIdentification']/*/mri:extent/gex:EX_Extent/gex:geographicElement/gex:EX_GeographicBoundingBox)=0" in="/mdb:MD_Metadata/mdb:identificationInfo[mri:MD_DataIdentification or */@gco:isoType='mri:MD_DataIdentification']/*/mri:extent/gex:EX_Extent">
             <template>
               <snippet>
           <gex:geographicElement>
@@ -563,8 +566,8 @@
 
       <tab id="resourceMaintenance" mode="flat">
         <section>
-					<field xpath="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:resourceMaintenance/mmi:MD_MaintenanceInformation/mmi:maintenanceAndUpdateFrequency" del="../../.."/>
-					<action type="add" name="resourceMaintenance" or="resourceMaintenance" in="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification" if="count(mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:resourceMaintenance)=0">
+					<field xpath="/mdb:MD_Metadata/mdb:identificationInfo[mri:MD_DataIdentification or */@gco:isoType='mri:MD_DataIdentification']/*/mri:resourceMaintenance/mmi:MD_MaintenanceInformation/mmi:maintenanceAndUpdateFrequency" del="../../.."/>
+					<action type="add" name="resourceMaintenance" or="resourceMaintenance" in="/mdb:MD_Metadata/mdb:identificationInfo[mri:MD_DataIdentification or */@gco:isoType='mri:MD_DataIdentification']/*" if="count(mdb:MD_Metadata/mdb:identificationInfo[mri:MD_DataIdentification or */@gco:isoType='mri:MD_DataIdentification']/*/mri:resourceMaintenance)=0">
             <template>
               <snippet>
             <mri:resourceMaintenance>
@@ -582,8 +585,8 @@
 
       <tab id="resourceFormat" mode="flat">
         <section>
-					<field xpath="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:resourceFormat/mrd:MD_Format/mrd:formatSpecificationCitation/cit:CI_Citation/cit:title" del="../../../../.."/>
-					<action type="add" name="resourceFormat" or="resourceFormat" in="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification" if="count(mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:resourceFormat)=0">
+					<field xpath="/mdb:MD_Metadata/mdb:identificationInfo[mri:MD_DataIdentification or */@gco:isoType='mri:MD_DataIdentification']/*/mri:resourceFormat/mrd:MD_Format/mrd:formatSpecificationCitation/cit:CI_Citation/cit:title" del="../../../../.."/>
+					<action type="add" name="resourceFormat" or="resourceFormat" in="/mdb:MD_Metadata/mdb:identificationInfo[mri:MD_DataIdentification or */@gco:isoType='mri:MD_DataIdentification']/*" if="count(mdb:MD_Metadata/mdb:identificationInfo[mri:MD_DataIdentification or */@gco:isoType='mri:MD_DataIdentification']/*/mri:resourceFormat)=0">
             <template>
               <snippet>
             <mri:resourceFormat>
@@ -605,26 +608,26 @@
 
       <tab id="resourceContacts" mode="flat">
         <section>
-          <text ref="pointOfContactIsMandatory" if="count(mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:pointOfContact/cit:CI_Responsibility[cit:role/cit:CI_RoleCode/@codeListValue='pointOfContact']/cit:*) = 0"/>
-					<field xpath="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:pointOfContact" or="pointOfContact" in="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification"/>
-          <text ref="custodianIsMandatory" if="count(mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:citation/cit:CI_Citation/cit:citedResponsibleParty/cit:CI_Responsibility[cit:role/cit:CI_RoleCode/@codeListValue='custodian']/cit:*) = 1"/>
-					<field xpath="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:citation/cit:CI_Citation/cit:citedResponsibleParty" or="citedResponsibleParty" in="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:citation/cit:CI_Citation"/>
+          <text ref="pointOfContactIsMandatory" if="count(mdb:MD_Metadata/mdb:identificationInfo[mri:MD_DataIdentification or */@gco:isoType='mri:MD_DataIdentification']/*/mri:pointOfContact/cit:CI_Responsibility[cit:role/cit:CI_RoleCode/@codeListValue='pointOfContact']/cit:*) = 0"/>
+					<field xpath="/mdb:MD_Metadata/mdb:identificationInfo[mri:MD_DataIdentification or */@gco:isoType='mri:MD_DataIdentification']/*/mri:pointOfContact" or="pointOfContact" in="/mdb:MD_Metadata/mdb:identificationInfo[mri:MD_DataIdentification or */@gco:isoType='mri:MD_DataIdentification']/*"/>
+          <text ref="custodianIsMandatory" if="count(mdb:MD_Metadata/mdb:identificationInfo[mri:MD_DataIdentification or */@gco:isoType='mri:MD_DataIdentification']/*/mri:citation/cit:CI_Citation/cit:citedResponsibleParty/cit:CI_Responsibility[cit:role/cit:CI_RoleCode/@codeListValue='custodian']/cit:*) = 1"/>
+					<field xpath="/mdb:MD_Metadata/mdb:identificationInfo[mri:MD_DataIdentification or */@gco:isoType='mri:MD_DataIdentification']/*/mri:citation/cit:CI_Citation/cit:citedResponsibleParty" or="citedResponsibleParty" in="/mdb:MD_Metadata/mdb:identificationInfo[mri:MD_DataIdentification or */@gco:isoType='mri:MD_DataIdentification']/*/mri:citation/cit:CI_Citation"/>
 				</section>
 			</tab>
 
       <tab id="resourceKeywords" mode="flat">
         <section>
-          <field xpath="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:topicCategory"/>
+          <field xpath="/mdb:MD_Metadata/mdb:identificationInfo[mri:MD_DataIdentification or */@gco:isoType='mri:MD_DataIdentification']/*/mri:topicCategory"/>
           <!-- TODO: Should be just SDM Product Categories Thesaurus and nothing else -->
-          <field xpath="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:descriptiveKeywords" or="descriptiveKeywords" in="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification"/>
+          <field xpath="/mdb:MD_Metadata/mdb:identificationInfo[mri:MD_DataIdentification or */@gco:isoType='mri:MD_DataIdentification']/*/mri:descriptiveKeywords" or="descriptiveKeywords" in="/mdb:MD_Metadata/mdb:identificationInfo[mri:MD_DataIdentification or */@gco:isoType='mri:MD_DataIdentification']/*"/>
 				</section>
 			</tab>
 
       <tab id="resourceConstraints" mode="flat">
         <section>
-          <field xpath="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:resourceConstraints/mco:MD_SecurityConstraints/mco:useLimitation"/>
+          <field xpath="/mdb:MD_Metadata/mdb:identificationInfo[mri:MD_DataIdentification or */@gco:isoType='mri:MD_DataIdentification']/*/mri:resourceConstraints/mco:MD_SecurityConstraints/mco:useLimitation"/>
 
-          <action type="add" name="useLimitation" or="useLimitation" if="count(mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:resourceConstraints/mco:MD_SecurityConstraints/mco:useLimitation)=0" in="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:resourceConstraints/mco:MD_SecurityConstraints">
+          <action type="add" name="useLimitation" or="useLimitation" if="count(mdb:MD_Metadata/mdb:identificationInfo[mri:MD_DataIdentification or */@gco:isoType='mri:MD_DataIdentification']/*/mri:resourceConstraints/mco:MD_SecurityConstraints/mco:useLimitation)=0" in="/mdb:MD_Metadata/mdb:identificationInfo[mri:MD_DataIdentification or */@gco:isoType='mri:MD_DataIdentification']/*/mri:resourceConstraints/mco:MD_SecurityConstraints">
             <template>
               <snippet>
                 <mco:useLimitation>
@@ -633,9 +636,9 @@
               </snippet>
             </template>
           </action>
-          <field xpath="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:resourceConstraints/mco:MD_SecurityConstraints/mco:classification"/>
+          <field xpath="/mdb:MD_Metadata/mdb:identificationInfo[mri:MD_DataIdentification or */@gco:isoType='mri:MD_DataIdentification']/*/mri:resourceConstraints/mco:MD_SecurityConstraints/mco:classification"/>
 
-          <field name="licenseType" xpath="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:resourceConstraints[mco:MD_LegalConstraints]" or="resourceConstraints" in="/mdb:MD_Metadata/mdb:identificationInfo/*"/>
+          <field name="licenseType" xpath="/mdb:MD_Metadata/mdb:identificationInfo[mri:MD_DataIdentification or */@gco:isoType='mri:MD_DataIdentification']/*/mri:resourceConstraints[mco:MD_LegalConstraints]" or="resourceConstraints" in="/mdb:MD_Metadata/mdb:identificationInfo/*"/>
         </section>
       </tab>
 
@@ -1030,7 +1033,7 @@
     </view>
 
     <!-- rastermeta: datasets with spatialRepresentation = grid, pointCloud or contour -->
-    <view name="default" displayIfRecord="(count(mdb:MD_Metadata/mdb:metadataScope/mdb:MD_MetadataScope/mdb:resourceScope/mcc:MD_ScopeCode[@codeListValue=('','dataset')]) + count(mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:spatialRepresentationType/mcc:MD_SpatialRepresentationTypeCode[@codeListValue=('grid','pointCloud','contour')]) + count(mdb:MD_Metadata/mdb:acquisitionInformation)) = 3">
+    <view name="default" displayIfRecord="(count(mdb:MD_Metadata/mdb:metadataScope/mdb:MD_MetadataScope/mdb:resourceScope/mcc:MD_ScopeCode[@codeListValue=('','dataset')]) + count(mdb:MD_Metadata/mdb:identificationInfo[mri:MD_DataIdentification or */@gco:isoType='mri:MD_DataIdentification']/*/mri:spatialRepresentationType/mcc:MD_SpatialRepresentationTypeCode[@codeListValue=('grid','pointCloud','contour')]) + count(mdb:MD_Metadata/mdb:acquisitionInformation)) = 3">
       <sidePanel>
         <directive data-gn-onlinesrc-list=""/>
         <directive gn-geo-publisher=""
@@ -1045,9 +1048,9 @@
       <tab id="description" default="true" mode="flat">
         <section>
           <!-- RasterMeta dataset name -->
-          <field xpath="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:citation/cit:CI_Citation/cit:title"/>
-          <field xpath="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:citation/cit:CI_Citation/cit:alternateTitle"/>
-          <action type="add" name="alternateTitle" or="alternateTitle" if="count(mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:citation/cit:CI_Citation/cit:alternateTitle)=0" in="mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:citation/cit:CI_Citation">
+          <field xpath="/mdb:MD_Metadata/mdb:identificationInfo[mri:MD_DataIdentification or */@gco:isoType='mri:MD_DataIdentification']/*/mri:citation/cit:CI_Citation/cit:title"/>
+          <field xpath="/mdb:MD_Metadata/mdb:identificationInfo[mri:MD_DataIdentification or */@gco:isoType='mri:MD_DataIdentification']/*/mri:citation/cit:CI_Citation/cit:alternateTitle"/>
+          <action type="add" name="alternateTitle" or="alternateTitle" if="count(mdb:MD_Metadata/mdb:identificationInfo[mri:MD_DataIdentification or */@gco:isoType='mri:MD_DataIdentification']/*/mri:citation/cit:CI_Citation/cit:alternateTitle)=0" in="mdb:MD_Metadata/mdb:identificationInfo[mri:MD_DataIdentification or */@gco:isoType='mri:MD_DataIdentification']/*/mri:citation/cit:CI_Citation">
             <template>
               <snippet>
                 <cit:alternateTitle>
@@ -1056,11 +1059,11 @@
               </snippet>
             </template>
           </action>
-          <field xpath="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:abstract"/>
-          <field xpath="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:purpose" or="purpose" in="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification"/>
-          <field xpath="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:credit" or="credit" in="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification"/>
-          <field xpath="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:supplementalInformation" or="supplementalInformation" in="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification"/>
-          <field xpath="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:status" />
+          <field xpath="/mdb:MD_Metadata/mdb:identificationInfo[mri:MD_DataIdentification or */@gco:isoType='mri:MD_DataIdentification']/*/mri:abstract"/>
+          <field xpath="/mdb:MD_Metadata/mdb:identificationInfo[mri:MD_DataIdentification or */@gco:isoType='mri:MD_DataIdentification']/*/mri:purpose" or="purpose" in="/mdb:MD_Metadata/mdb:identificationInfo[mri:MD_DataIdentification or */@gco:isoType='mri:MD_DataIdentification']/*"/>
+          <field xpath="/mdb:MD_Metadata/mdb:identificationInfo[mri:MD_DataIdentification or */@gco:isoType='mri:MD_DataIdentification']/*/mri:credit" or="credit" in="/mdb:MD_Metadata/mdb:identificationInfo[mri:MD_DataIdentification or */@gco:isoType='mri:MD_DataIdentification']/*"/>
+          <field xpath="/mdb:MD_Metadata/mdb:identificationInfo[mri:MD_DataIdentification or */@gco:isoType='mri:MD_DataIdentification']/*/mri:supplementalInformation" or="supplementalInformation" in="/mdb:MD_Metadata/mdb:identificationInfo[mri:MD_DataIdentification or */@gco:isoType='mri:MD_DataIdentification']/*"/>
+          <field xpath="/mdb:MD_Metadata/mdb:identificationInfo[mri:MD_DataIdentification or */@gco:isoType='mri:MD_DataIdentification']/*/mri:status" />
 				</section>
 			</tab>
 
@@ -1100,8 +1103,8 @@
 
       <tab id="resourceSpatial" mode="flat">
         <section>
-          <field xpath="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:spatialResolution/mri:MD_Resolution//mri:distance"/>
-          <field xpath="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:spatialResolution/mri:MD_Resolution//mri:vertical"/>
+          <field xpath="/mdb:MD_Metadata/mdb:identificationInfo[mri:MD_DataIdentification or */@gco:isoType='mri:MD_DataIdentification']/*/mri:spatialResolution/mri:MD_Resolution//mri:distance"/>
+          <field xpath="/mdb:MD_Metadata/mdb:identificationInfo[mri:MD_DataIdentification or */@gco:isoType='mri:MD_DataIdentification']/*/mri:spatialResolution/mri:MD_Resolution//mri:vertical"/>
           <field xpath="/mdb:MD_Metadata/mdb:referenceSystemInfo/mrs:MD_ReferenceSystem/mrs:referenceSystemIdentifier/mcc:MD_Identifier/mcc:code" del="../../../.."/>
           <!-- show the add reference system info directive only if there
                is no reference system -->
@@ -1130,8 +1133,8 @@
 
       <tab id="resourceMaintenance" mode="flat">
         <section>
-          <field xpath="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:resourceMaintenance/mmi:MD_MaintenanceInformation/mmi:maintenanceAndUpdateFrequency" del="../../.."/>
-          <action type="add" name="resourceMaintenance" or="resourceMaintenance" in="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification" if="count(mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:resourceMaintenance)=0">
+          <field xpath="/mdb:MD_Metadata/mdb:identificationInfo[mri:MD_DataIdentification or */@gco:isoType='mri:MD_DataIdentification']/*/mri:resourceMaintenance/mmi:MD_MaintenanceInformation/mmi:maintenanceAndUpdateFrequency" del="../../.."/>
+          <action type="add" name="resourceMaintenance" or="resourceMaintenance" in="/mdb:MD_Metadata/mdb:identificationInfo[mri:MD_DataIdentification or */@gco:isoType='mri:MD_DataIdentification']/*" if="count(mdb:MD_Metadata/mdb:identificationInfo[mri:MD_DataIdentification or */@gco:isoType='mri:MD_DataIdentification']/*/mri:resourceMaintenance)=0">
             <template>
               <snippet>
             <mri:resourceMaintenance>
@@ -1149,8 +1152,8 @@
 
       <tab id="resourceFormat" mode="flat">
         <section>
-					<field xpath="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:resourceFormat/mrd:MD_Format/mrd:formatSpecificationCitation/cit:CI_Citation/cit:title" del="../../../../.."/>
-					<action type="add" name="resourceFormat" or="resourceFormat" in="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification" if="count(mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:resourceFormat)=0">
+					<field xpath="/mdb:MD_Metadata/mdb:identificationInfo[mri:MD_DataIdentification or */@gco:isoType='mri:MD_DataIdentification']/*/mri:resourceFormat/mrd:MD_Format/mrd:formatSpecificationCitation/cit:CI_Citation/cit:title" del="../../../../.."/>
+					<action type="add" name="resourceFormat" or="resourceFormat" in="/mdb:MD_Metadata/mdb:identificationInfo[mri:MD_DataIdentification or */@gco:isoType='mri:MD_DataIdentification']/*" if="count(mdb:MD_Metadata/mdb:identificationInfo[mri:MD_DataIdentification or */@gco:isoType='mri:MD_DataIdentification']/*/mri:resourceFormat)=0">
             <template>
               <snippet>
             <mri:resourceFormat>
@@ -1172,26 +1175,26 @@
 
       <tab id="resourceContacts" mode="flat">
         <section>
-          <text ref="pointOfContactIsMandatory" if="count(mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:pointOfContact/cit:CI_Responsibility[cit:role/cit:CI_RoleCode/@codeListValue='pointOfContact']/cit:*) = 0"/>
-          <field xpath="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:pointOfContact" or="pointOfContact" in="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification"/>
-          <text ref="custodianIsMandatory" if="count(mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:citation/cit:CI_Citation/cit:citedResponsibleParty/cit:CI_Responsibility[cit:role/cit:CI_RoleCode/@codeListValue='custodian']/cit:*) = 1"/>
-					<field xpath="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:citation/cit:CI_Citation/cit:citedResponsibleParty" or="citedResponsibleParty" in="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:citation/cit:CI_Citation"/>
+          <text ref="pointOfContactIsMandatory" if="count(mdb:MD_Metadata/mdb:identificationInfo[mri:MD_DataIdentification or */@gco:isoType='mri:MD_DataIdentification']/*/mri:pointOfContact/cit:CI_Responsibility[cit:role/cit:CI_RoleCode/@codeListValue='pointOfContact']/cit:*) = 0"/>
+          <field xpath="/mdb:MD_Metadata/mdb:identificationInfo[mri:MD_DataIdentification or */@gco:isoType='mri:MD_DataIdentification']/*/mri:pointOfContact" or="pointOfContact" in="/mdb:MD_Metadata/mdb:identificationInfo[mri:MD_DataIdentification or */@gco:isoType='mri:MD_DataIdentification']/*"/>
+          <text ref="custodianIsMandatory" if="count(mdb:MD_Metadata/mdb:identificationInfo[mri:MD_DataIdentification or */@gco:isoType='mri:MD_DataIdentification']/*/mri:citation/cit:CI_Citation/cit:citedResponsibleParty/cit:CI_Responsibility[cit:role/cit:CI_RoleCode/@codeListValue='custodian']/cit:*) = 1"/>
+					<field xpath="/mdb:MD_Metadata/mdb:identificationInfo[mri:MD_DataIdentification or */@gco:isoType='mri:MD_DataIdentification']/*/mri:citation/cit:CI_Citation/cit:citedResponsibleParty" or="citedResponsibleParty" in="/mdb:MD_Metadata/mdb:identificationInfo[mri:MD_DataIdentification or */@gco:isoType='mri:MD_DataIdentification']/*/mri:citation/cit:CI_Citation"/>
         </section>
       </tab>
 
       <tab id="resourceKeywords" mode="flat">
         <section>
-          <field xpath="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:topicCategory"/>
+          <field xpath="/mdb:MD_Metadata/mdb:identificationInfo[mri:MD_DataIdentification or */@gco:isoType='mri:MD_DataIdentification']/*/mri:topicCategory"/>
           <!-- TODO: Should be just SDM Product Categories Thesaurus and nothing else -->
-          <field xpath="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:descriptiveKeywords" or="descriptiveKeywords" in="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification"/>
+          <field xpath="/mdb:MD_Metadata/mdb:identificationInfo[mri:MD_DataIdentification or */@gco:isoType='mri:MD_DataIdentification']/*/mri:descriptiveKeywords" or="descriptiveKeywords" in="/mdb:MD_Metadata/mdb:identificationInfo[mri:MD_DataIdentification or */@gco:isoType='mri:MD_DataIdentification']/*"/>
 				</section>
 			</tab>
 
       <tab id="resourceConstraints" mode="flat">
         <section>
-          <field xpath="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:resourceConstraints/mco:MD_SecurityConstraints/mco:useLimitation"/>
+          <field xpath="/mdb:MD_Metadata/mdb:identificationInfo[mri:MD_DataIdentification or */@gco:isoType='mri:MD_DataIdentification']/*/mri:resourceConstraints/mco:MD_SecurityConstraints/mco:useLimitation"/>
 
-          <action type="add" name="useLimitation" or="useLimitation" if="count(mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:resourceConstraints/mco:MD_SecurityConstraints/mco:useLimitation)=0" in="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:resourceConstraints/mco:MD_SecurityConstraints">
+          <action type="add" name="useLimitation" or="useLimitation" if="count(mdb:MD_Metadata/mdb:identificationInfo[mri:MD_DataIdentification or */@gco:isoType='mri:MD_DataIdentification']/*/mri:resourceConstraints/mco:MD_SecurityConstraints/mco:useLimitation)=0" in="/mdb:MD_Metadata/mdb:identificationInfo[mri:MD_DataIdentification or */@gco:isoType='mri:MD_DataIdentification']/*/mri:resourceConstraints/mco:MD_SecurityConstraints">
             <template>
               <snippet>
                 <mco:useLimitation>
@@ -1200,9 +1203,9 @@
               </snippet>
             </template>
           </action>
-          <field xpath="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:resourceConstraints/mco:MD_SecurityConstraints/mco:classification"/>
+          <field xpath="/mdb:MD_Metadata/mdb:identificationInfo[mri:MD_DataIdentification or */@gco:isoType='mri:MD_DataIdentification']/*/mri:resourceConstraints/mco:MD_SecurityConstraints/mco:classification"/>
 
-          <field name="licenseType" xpath="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:resourceConstraints[mco:MD_LegalConstraints]" or="resourceConstraints" in="/mdb:MD_Metadata/mdb:identificationInfo/*"/>
+          <field name="licenseType" xpath="/mdb:MD_Metadata/mdb:identificationInfo[mri:MD_DataIdentification or */@gco:isoType='mri:MD_DataIdentification']/*/mri:resourceConstraints[mco:MD_LegalConstraints]" or="resourceConstraints" in="/mdb:MD_Metadata/mdb:identificationInfo/*"/>
         </section>
       </tab>
 
@@ -1597,7 +1600,7 @@
 				</section>
 			</tab>
 
-      <tab id="rasterDataDetails" mode="flat" displayIfRecord="count(mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:spatialRepresentationType/mcc:MD_SpatialRepresentationTypeCode[@codeListValue='grid']) > 0">
+      <tab id="rasterDataDetails" mode="flat" displayIfRecord="count(mdb:MD_Metadata/mdb:identificationInfo[mri:MD_DataIdentification or */@gco:isoType='mri:MD_DataIdentification']/*/mri:spatialRepresentationType/mcc:MD_SpatialRepresentationTypeCode[@codeListValue='grid']) > 0">
         <!-- Raster data details -->
         <section>
           <!-- Data details common to all rasters -->
@@ -1640,7 +1643,7 @@
 			</tab>
 
       <!-- Raster type details: only applies to spatial rep type = grid -->
-      <tab id="rasterTypeDetails" mode="flat" displayIfRecord="count(mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:spatialRepresentationType/mcc:MD_SpatialRepresentationTypeCode[@codeListValue='grid']) > 0">
+      <tab id="rasterTypeDetails" mode="flat" displayIfRecord="count(mdb:MD_Metadata/mdb:identificationInfo[mri:MD_DataIdentification or */@gco:isoType='mri:MD_DataIdentification']/*/mri:spatialRepresentationType/mcc:MD_SpatialRepresentationTypeCode[@codeListValue='grid']) > 0">
           <!-- No raster type details -->
           <text ref="noRasterTypeDetails" if="count(mdb:MD_Metadata/mdb:acquisitionInformation/mac:MI_AcquisitionInformation/mac:operation/mac:MI_Operation/mac:otherProperty/gco:Record//delwp:datasetDetails/delwp:MD_DatasetDetails/delwp:dataDetails/delwp:MD_DataDetails//delwp:rasterDetails/delwp:MD_RasterDetails/delwp:type/delwp:MD_RasterTypeCode[not(@codeListValue='AerialPhoto') and not(@codeListValue='DEM') and not(@codeListValue='Satellite')]) > 0"/>
           <!-- Aerial Photo raster type details -->
@@ -1666,7 +1669,7 @@
 			</tab>
 
       <!-- PointCloud (LiDAR) data details -->
-      <tab id="pointCloudDataDetails" mode="flat" displayIfRecord="count(mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:spatialRepresentationType/mcc:MD_SpatialRepresentationTypeCode[@codeListValue='pointCloud']) > 0">
+      <tab id="pointCloudDataDetails" mode="flat" displayIfRecord="count(mdb:MD_Metadata/mdb:identificationInfo[mri:MD_DataIdentification or */@gco:isoType='mri:MD_DataIdentification']/*/mri:spatialRepresentationType/mcc:MD_SpatialRepresentationTypeCode[@codeListValue='pointCloud']) > 0">
         <section>
           <field xpath="/mdb:MD_Metadata/mdb:acquisitionInformation/mac:MI_AcquisitionInformation/mac:operation/mac:MI_Operation/mac:otherProperty/gco:Record//delwp:datasetDetails/delwp:MD_DatasetDetails/delwp:dataDetails/delwp:MD_DataDetails//delwp:pointCloudDetails/delwp:MD_PointCloudDetails/delwp:pulseMode" or="pulseMode" in="/mdb:MD_Metadata/mdb:acquisitionInformation/mac:MI_AcquisitionInformation/mac:operation/mac:MI_Operation/mac:otherProperty/gco:Record//delwp:datasetDetails/delwp:MD_DatasetDetails/delwp:dataDetails/delwp:MD_DataDetails//delwp:pointCloudDetails/delwp:MD_PointCloudDetails"/>
           <field xpath="/mdb:MD_Metadata/mdb:acquisitionInformation/mac:MI_AcquisitionInformation/mac:operation/mac:MI_Operation/mac:otherProperty/gco:Record//delwp:datasetDetails/delwp:MD_DatasetDetails/delwp:dataDetails/delwp:MD_DataDetails//delwp:pointCloudDetails/delwp:MD_PointCloudDetails/delwp:returnType" or="returnType" in="/mdb:MD_Metadata/mdb:acquisitionInformation/mac:MI_AcquisitionInformation/mac:operation/mac:MI_Operation/mac:otherProperty/gco:Record//delwp:datasetDetails/delwp:MD_DatasetDetails/delwp:dataDetails/delwp:MD_DataDetails//delwp:pointCloudDetails/delwp:MD_PointCloudDetails"/>
@@ -1829,7 +1832,7 @@
 			</tab>
 
       <!-- Contour data details -->
-      <tab id="contourDataDetails" mode="flat" displayIfRecord="count(mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:spatialRepresentationType/mcc:MD_SpatialRepresentationTypeCode[@codeListValue='contour']) > 0">
+      <tab id="contourDataDetails" mode="flat" displayIfRecord="count(mdb:MD_Metadata/mdb:identificationInfo[mri:MD_DataIdentification or */@gco:isoType='mri:MD_DataIdentification']/*/mri:spatialRepresentationType/mcc:MD_SpatialRepresentationTypeCode[@codeListValue='contour']) > 0">
         <section>
           <field xpath="/mdb:MD_Metadata/mdb:acquisitionInformation/mac:MI_AcquisitionInformation/mac:operation/mac:MI_Operation/mac:otherProperty/gco:Record//delwp:datasetDetails/delwp:MD_DatasetDetails/delwp:dataDetails/delwp:MD_DataDetails//delwp:contourDetails/delwp:MD_ContourDetails/delwp:interval"/>
 				</section>
@@ -1918,9 +1921,9 @@
 
       <tab id="description" default="true" mode="flat">
         <section>
-          <field xpath="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:citation/cit:CI_Citation/cit:title"/>
-          <field xpath="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:citation/cit:CI_Citation/cit:alternateTitle"/>
-          <action type="add" name="alternateTitle" or="alternateTitle" if="count(mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:citation/cit:CI_Citation/cit:alternateTitle)=0" in="mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:citation/cit:CI_Citation">
+          <field xpath="/mdb:MD_Metadata/mdb:identificationInfo[mri:MD_DataIdentification or */@gco:isoType='mri:MD_DataIdentification']/*/mri:citation/cit:CI_Citation/cit:title"/>
+          <field xpath="/mdb:MD_Metadata/mdb:identificationInfo[mri:MD_DataIdentification or */@gco:isoType='mri:MD_DataIdentification']/*/mri:citation/cit:CI_Citation/cit:alternateTitle"/>
+          <action type="add" name="alternateTitle" or="alternateTitle" if="count(mdb:MD_Metadata/mdb:identificationInfo[mri:MD_DataIdentification or */@gco:isoType='mri:MD_DataIdentification']/*/mri:citation/cit:CI_Citation/cit:alternateTitle)=0" in="mdb:MD_Metadata/mdb:identificationInfo[mri:MD_DataIdentification or */@gco:isoType='mri:MD_DataIdentification']/*/mri:citation/cit:CI_Citation">
             <template>
               <snippet>
                 <cit:alternateTitle>
@@ -1929,35 +1932,35 @@
               </snippet>
             </template>
           </action>
-          <field xpath="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:abstract"/>
-          <field xpath="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:purpose"/>
-          <field xpath="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:status" />
+          <field xpath="/mdb:MD_Metadata/mdb:identificationInfo[mri:MD_DataIdentification or */@gco:isoType='mri:MD_DataIdentification']/*/mri:abstract"/>
+          <field xpath="/mdb:MD_Metadata/mdb:identificationInfo[mri:MD_DataIdentification or */@gco:isoType='mri:MD_DataIdentification']/*/mri:purpose"/>
+          <field xpath="/mdb:MD_Metadata/mdb:identificationInfo[mri:MD_DataIdentification or */@gco:isoType='mri:MD_DataIdentification']/*/mri:status" />
 				</section>
 			</tab>
 
       <tab id="projectContacts" mode="flat">
         <section>
-          <text ref="custodianIsMandatory" if="count(mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:citation/cit:CI_Citation/cit:citedResponsibleParty/cit:CI_Responsibility[cit:role/cit:CI_RoleCode/@codeListValue='custodian']/cit:*) = 1"/>
-					<field xpath="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:citation/cit:CI_Citation/cit:citedResponsibleParty" or="citedResponsibleParty" in="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:citation/cit:CI_Citation"/>
+          <text ref="custodianIsMandatory" if="count(mdb:MD_Metadata/mdb:identificationInfo[mri:MD_DataIdentification or */@gco:isoType='mri:MD_DataIdentification']/*/mri:citation/cit:CI_Citation/cit:citedResponsibleParty/cit:CI_Responsibility[cit:role/cit:CI_RoleCode/@codeListValue='custodian']/cit:*) = 1"/>
+					<field xpath="/mdb:MD_Metadata/mdb:identificationInfo[mri:MD_DataIdentification or */@gco:isoType='mri:MD_DataIdentification']/*/mri:citation/cit:CI_Citation/cit:citedResponsibleParty" or="citedResponsibleParty" in="/mdb:MD_Metadata/mdb:identificationInfo[mri:MD_DataIdentification or */@gco:isoType='mri:MD_DataIdentification']/*/mri:citation/cit:CI_Citation"/>
 				</section>
 			</tab>
 
       <tab id="projectKeywords" mode="flat">
         <section>
-          <field xpath="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:topicCategory"/>
+          <field xpath="/mdb:MD_Metadata/mdb:identificationInfo[mri:MD_DataIdentification or */@gco:isoType='mri:MD_DataIdentification']/*/mri:topicCategory"/>
 				</section>
 			</tab>
 
       <tab id="projectConstraints" mode="flat">
         <section>
-          <field xpath="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:resourceConstraints/mco:MD_SecurityConstraints/mco:classification"/>
-          <field name="licenseType" xpath="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:resourceConstraints[mco:MD_LegalConstraints]" or="resourceConstraints" in="/mdb:MD_Metadata/mdb:identificationInfo/*"/>
+          <field xpath="/mdb:MD_Metadata/mdb:identificationInfo[mri:MD_DataIdentification or */@gco:isoType='mri:MD_DataIdentification']/*/mri:resourceConstraints/mco:MD_SecurityConstraints/mco:classification"/>
+          <field name="licenseType" xpath="/mdb:MD_Metadata/mdb:identificationInfo[mri:MD_DataIdentification or */@gco:isoType='mri:MD_DataIdentification']/*/mri:resourceConstraints[mco:MD_LegalConstraints]" or="resourceConstraints" in="/mdb:MD_Metadata/mdb:identificationInfo/*"/>
 				</section>
 			</tab>
 
       <tab id="projectExtents" mode="flat">
         <section>
-          <field xpath="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:extent/gex:EX_Extent/gex:description" or="description" in="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:extent/gex:EX_Extent"/>
+          <field xpath="/mdb:MD_Metadata/mdb:identificationInfo[mri:MD_DataIdentification or */@gco:isoType='mri:MD_DataIdentification']/*/mri:extent/gex:EX_Extent/gex:description" or="description" in="/mdb:MD_Metadata/mdb:identificationInfo[mri:MD_DataIdentification or */@gco:isoType='mri:MD_DataIdentification']/*/mri:extent/gex:EX_Extent"/>
           <!-- mac:scope/mcc:extent/gex:EX_Extent/gex:temporalExtent = rastermeta Year of Acquisition -->
           <field xpath="/mdb:MD_Metadata/mdb:acquisitionInformation/mac:MI_AcquisitionInformation/mac:scope/mcc:MD_Scope/mcc:extent/gex:EX_Extent/gex:temporalElement/gex:EX_TemporalExtent"/>
 				</section>
@@ -2060,50 +2063,50 @@
         </section>
 
         <section name="identifiersAndKeywords">
-          <field name="anzlicId" xpath="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:citation/cit:CI_Citation/cit:identifier/mcc:MD_Identifier[mcc:authority/cit:CI_Citation/cit:title/gco:CharacterString='ANZLIC Dataset Identifier']/mcc:code"/>
-          <field name="vsdl" xpath="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:citation/cit:CI_Citation/cit:identifier/mcc:MD_Identifier[contains(mcc:description/gco:CharacterString,'VSDL')]/mcc:code"/>
-          <field name="jurisdictionId" xpath="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:citation/cit:CI_Citation/cit:identifier/mcc:MD_Identifier[contains(mcc:description/gco:CharacterString,'Jurisdiction')]/mcc:code"/>
-          <field xpath="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:topicCategory"/>
-          <field xpath="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:descriptiveKeywords"/>
+          <field name="anzlicId" xpath="/mdb:MD_Metadata/mdb:identificationInfo[mri:MD_DataIdentification or */@gco:isoType='mri:MD_DataIdentification']/*/mri:citation/cit:CI_Citation/cit:identifier/mcc:MD_Identifier[mcc:authority/cit:CI_Citation/cit:title/gco:CharacterString='ANZLIC Dataset Identifier']/mcc:code"/>
+          <field name="vsdl" xpath="/mdb:MD_Metadata/mdb:identificationInfo[mri:MD_DataIdentification or */@gco:isoType='mri:MD_DataIdentification']/*/mri:citation/cit:CI_Citation/cit:identifier/mcc:MD_Identifier[contains(mcc:description/gco:CharacterString,'VSDL')]/mcc:code"/>
+          <field name="jurisdictionId" xpath="/mdb:MD_Metadata/mdb:identificationInfo[mri:MD_DataIdentification or */@gco:isoType='mri:MD_DataIdentification']/*/mri:citation/cit:CI_Citation/cit:identifier/mcc:MD_Identifier[contains(mcc:description/gco:CharacterString,'Jurisdiction')]/mcc:code"/>
+          <field xpath="/mdb:MD_Metadata/mdb:identificationInfo[mri:MD_DataIdentification or */@gco:isoType='mri:MD_DataIdentification']/*/mri:topicCategory"/>
+          <field xpath="/mdb:MD_Metadata/mdb:identificationInfo[mri:MD_DataIdentification or */@gco:isoType='mri:MD_DataIdentification']/*/mri:descriptiveKeywords"/>
         </section>
 
         <section name="resourceConstraints">
-          <field xpath="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:resourceConstraints/mco:MD_SecurityConstraints/mco:useLimitation"/>
-          <field xpath="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:resourceConstraints/mco:MD_SecurityConstraints/mco:classification"/>
-          <field name="licenseType" xpath="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:resourceConstraints[mco:MD_LegalConstraints]" or="resourceConstraints" in="/mdb:MD_Metadata/mdb:identificationInfo/*"/>
+          <field xpath="/mdb:MD_Metadata/mdb:identificationInfo[mri:MD_DataIdentification or */@gco:isoType='mri:MD_DataIdentification']/*/mri:resourceConstraints/mco:MD_SecurityConstraints/mco:useLimitation"/>
+          <field xpath="/mdb:MD_Metadata/mdb:identificationInfo[mri:MD_DataIdentification or */@gco:isoType='mri:MD_DataIdentification']/*/mri:resourceConstraints/mco:MD_SecurityConstraints/mco:classification"/>
+          <field name="licenseType" xpath="/mdb:MD_Metadata/mdb:identificationInfo[mri:MD_DataIdentification or */@gco:isoType='mri:MD_DataIdentification']/*/mri:resourceConstraints[mco:MD_LegalConstraints]" or="resourceConstraints" in="/mdb:MD_Metadata/mdb:identificationInfo/*"/>
         </section>
 
         <section name="otherDatasetDetails">
-          <field xpath="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:citation/cit:CI_Citation/cit:date"/>
-          <field xpath="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:status"/>
-					<field xpath="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:purpose"/>
-          <field xpath="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:credit"/>
-          <field name="format" xpath="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:resourceFormat/mrd:MD_Format/mrd:formatSpecificationCitation/cit:CI_Citation/cit:title"/>
-          <field xpath="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:supplementalInformation"/>
-          <field xpath="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:resourceMaintenance/mmi:MD_MaintenanceInformation/mmi:maintenanceAndUpdateFrequency"/>
-          <field xpath="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:resourceMaintenance/mmi:MD_MaintenanceInformation/mmi:maintenanceDate"/>
+          <field xpath="/mdb:MD_Metadata/mdb:identificationInfo[mri:MD_DataIdentification or */@gco:isoType='mri:MD_DataIdentification']/*/mri:citation/cit:CI_Citation/cit:date"/>
+          <field xpath="/mdb:MD_Metadata/mdb:identificationInfo[mri:MD_DataIdentification or */@gco:isoType='mri:MD_DataIdentification']/*/mri:status"/>
+					<field xpath="/mdb:MD_Metadata/mdb:identificationInfo[mri:MD_DataIdentification or */@gco:isoType='mri:MD_DataIdentification']/*/mri:purpose"/>
+          <field xpath="/mdb:MD_Metadata/mdb:identificationInfo[mri:MD_DataIdentification or */@gco:isoType='mri:MD_DataIdentification']/*/mri:credit"/>
+          <field name="format" xpath="/mdb:MD_Metadata/mdb:identificationInfo[mri:MD_DataIdentification or */@gco:isoType='mri:MD_DataIdentification']/*/mri:resourceFormat/mrd:MD_Format/mrd:formatSpecificationCitation/cit:CI_Citation/cit:title"/>
+          <field xpath="/mdb:MD_Metadata/mdb:identificationInfo[mri:MD_DataIdentification or */@gco:isoType='mri:MD_DataIdentification']/*/mri:supplementalInformation"/>
+          <field xpath="/mdb:MD_Metadata/mdb:identificationInfo[mri:MD_DataIdentification or */@gco:isoType='mri:MD_DataIdentification']/*/mri:resourceMaintenance/mmi:MD_MaintenanceInformation/mmi:maintenanceAndUpdateFrequency"/>
+          <field xpath="/mdb:MD_Metadata/mdb:identificationInfo[mri:MD_DataIdentification or */@gco:isoType='mri:MD_DataIdentification']/*/mri:resourceMaintenance/mmi:MD_MaintenanceInformation/mmi:maintenanceDate"/>
         </section>
 
         <section name="spatial">
-          <field xpath="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:spatialRepresentationType"/>
-          <field xpath="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:extent/gex:EX_Extent/gex:description"/>
+          <field xpath="/mdb:MD_Metadata/mdb:identificationInfo[mri:MD_DataIdentification or */@gco:isoType='mri:MD_DataIdentification']/*/mri:spatialRepresentationType"/>
+          <field xpath="/mdb:MD_Metadata/mdb:identificationInfo[mri:MD_DataIdentification or */@gco:isoType='mri:MD_DataIdentification']/*/mri:extent/gex:EX_Extent/gex:description"/>
           <field xpath="/mdb:MD_Metadata/mdb:referenceSystemInfo" or="referenceSystemInfo" in="/mdb:MD_Metadata"/>
-          <field xpath="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:extent/gex:EX_Extent/gex:geographicElement/gex:EX_GeographicBoundingBox"/>
-          <field xpath="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:extent/gex:EX_Extent/gex:geographicElement/gex:EX_BoundingPolygon"/>
+          <field xpath="/mdb:MD_Metadata/mdb:identificationInfo[mri:MD_DataIdentification or */@gco:isoType='mri:MD_DataIdentification']/*/mri:extent/gex:EX_Extent/gex:geographicElement/gex:EX_GeographicBoundingBox"/>
+          <field xpath="/mdb:MD_Metadata/mdb:identificationInfo[mri:MD_DataIdentification or */@gco:isoType='mri:MD_DataIdentification']/*/mri:extent/gex:EX_Extent/gex:geographicElement/gex:EX_BoundingPolygon"/>
         </section>
 
         <section name="temporal" displayIfRecord="
-(count(mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:extent/gex:EX_Extent/gex:temporalElement/gex:EX_TemporalExtent/gex:extent) > 0)
+(count(mdb:MD_Metadata/mdb:identificationInfo[mri:MD_DataIdentification or */@gco:isoType='mri:MD_DataIdentification']/*/mri:extent/gex:EX_Extent/gex:temporalElement/gex:EX_TemporalExtent/gex:extent) > 0)
 ">
-          <field xpath="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:extent/gex:EX_Extent/gex:temporalElement/gex:EX_TemporalExtent/gex:extent/gml:TimePeriod/gml:beginPosition"/>
-          <field xpath="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:extent/gex:EX_Extent/gex:temporalElement/gex:EX_TemporalExtent/gex:extent/gml:TimePeriod/gml:endPosition"/>
+          <field xpath="/mdb:MD_Metadata/mdb:identificationInfo[mri:MD_DataIdentification or */@gco:isoType='mri:MD_DataIdentification']/*/mri:extent/gex:EX_Extent/gex:temporalElement/gex:EX_TemporalExtent/gex:extent/gml:TimePeriod/gml:beginPosition"/>
+          <field xpath="/mdb:MD_Metadata/mdb:identificationInfo[mri:MD_DataIdentification or */@gco:isoType='mri:MD_DataIdentification']/*/mri:extent/gex:EX_Extent/gex:temporalElement/gex:EX_TemporalExtent/gex:extent/gml:TimePeriod/gml:endPosition"/>
         </section>
 
         <section name="resolution" displayIfRecord="
-(count(mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:spatialResolution/mri:MD_Resolution) > 0)
+(count(mdb:MD_Metadata/mdb:identificationInfo[mri:MD_DataIdentification or */@gco:isoType='mri:MD_DataIdentification']/*/mri:spatialResolution/mri:MD_Resolution) > 0)
 ">
-          <field xpath="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:spatialResolution/mri:MD_Resolution//mri:distance"/>
-          <field xpath="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:spatialResolution/mri:MD_Resolution//mri:vertical"/>
+          <field xpath="/mdb:MD_Metadata/mdb:identificationInfo[mri:MD_DataIdentification or */@gco:isoType='mri:MD_DataIdentification']/*/mri:spatialResolution/mri:MD_Resolution//mri:distance"/>
+          <field xpath="/mdb:MD_Metadata/mdb:identificationInfo[mri:MD_DataIdentification or */@gco:isoType='mri:MD_DataIdentification']/*/mri:spatialResolution/mri:MD_Resolution//mri:vertical"/>
           <field name="rowResolution" xpath="/mdb:MD_Metadata/mdb:spatialRepresentationInfo/msr:MD_GridSpatialRepresentation/msr:axisDimensionProperties/msr:MD_Dimension[msr:dimensionName/msr:MD_DimensionNameTypeCode/@codeListValue='row']/msr:resolution"/>
           <field name="colResolution" xpath="/mdb:MD_Metadata/mdb:spatialRepresentationInfo/msr:MD_GridSpatialRepresentation/msr:axisDimensionProperties/msr:MD_Dimension[msr:dimensionName/msr:MD_DimensionNameTypeCode/@codeListValue='column']/msr:resolution"/>
         </section>

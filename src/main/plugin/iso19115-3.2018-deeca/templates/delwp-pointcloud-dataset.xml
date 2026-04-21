@@ -84,7 +84,7 @@
     </mrs:MD_ReferenceSystem>
   </mdb:referenceSystemInfo>
   <mdb:identificationInfo>
-    <mri:MD_DataIdentification>
+    <delwp:MD_DataIdentification gco:isoType="mri:MD_DataIdentification">
       <mri:citation>
         <cit:CI_Citation>
           <cit:title>
@@ -171,7 +171,7 @@
           </lan:characterEncoding>
         </lan:PT_Locale>
       </mri:defaultLocale>
-    </mri:MD_DataIdentification>
+    </delwp:MD_DataIdentification>
   </mdb:identificationInfo>
   <mdb:dataQualityInfo>
     <mdq:DQ_DataQuality>
@@ -251,7 +251,7 @@
                     <delwp:MD_DataDetails>
                       <delwp:pointCloudDetails>
                         <delwp:MD_PointCloudDetails>
-                          <!-- all optional but need to make sure uom is added in update-fixed-info.xsl 
+                          <!-- all optional but need to make sure uom is added in update-fixed-info.xsl
                           <delwp:scanRate>
                             <gco:Measure uom="Hz"></gco:Measure>
                           </delwp:scanRate>

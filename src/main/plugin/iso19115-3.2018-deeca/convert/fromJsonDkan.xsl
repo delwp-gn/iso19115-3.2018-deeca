@@ -43,6 +43,7 @@
                 xmlns:xlink="http://www.w3.org/1999/xlink"
                 xmlns:xd="http://www.oxygenxml.com/ns/doc/xsl"
                 xmlns:java-xsl-util="java:org.fao.geonet.util.XslUtil"
+                xmlns:delwp="https://github.com/geonetwork-delwp/iso19115-3.2018"
                 exclude-result-prefixes="#all">
 
   <xsl:import href="protocol-mapping.xsl"></xsl:import>
@@ -154,7 +155,7 @@
       </mdb:metadataStandard>
 
       <mdb:identificationInfo>
-        <mri:MD_DataIdentification>
+        <delwp:MD_DataIdentification gco:isoType="mri:MD_DataIdentification">
           <mri:citation>
             <cit:CI_Citation>
               <cit:title>
@@ -258,7 +259,7 @@
               </lan:characterEncoding>
             </lan:PT_Locale>
           </mri:defaultLocale>
-        </mri:MD_DataIdentification>
+        </delwp:MD_DataIdentification>
       </mdb:identificationInfo>
 
       <mdb:distributionInfo>
