@@ -825,8 +825,19 @@
     </xsl:if>
   </xsl:template>
 
-  <!-- Withheld mdb:contact, cit:citedResponsibleParty, mrd:distributorContact elements -->
-  <xsl:template match="mdb:contact|cit:citedResponsibleParty|mrd:distributorContact|mco:responsibleParty|mmi:contact" priority="10">
+
+  <!-- Withheld cit:citedResponsibleParty elements, except for roles custodian and owner -->
+  <xsl:template match="cit:citedResponsibleParty" priority="10">
+    <xsl:copy>
+      <xsl:copy-of select="@*[name() != 'gco:nilReason']" />
+      <xsl:if test="*/cit:role/cit:CI_RoleCode/@codeListValue != 'custodian' and */cit:role/cit:CI_RoleCode/@codeListValue != 'owner'">
+        <xsl:attribute name="gco:nilReason">withheld</xsl:attribute>
+      </xsl:if>
+      <xsl:apply-templates select="*" />
+    </xsl:copy>
+  </xsl:template>
+  <!-- Withheld mdb:contact, mrd:distributorContact elements -->
+  <xsl:template match="mdb:contact|mrd:distributorContact|mco:responsibleParty|mmi:contact" priority="10">
     <xsl:copy>
       <xsl:copy-of select="@*[name() != 'gco:nilReason']" />
       <xsl:attribute name="gco:nilReason">withheld</xsl:attribute>

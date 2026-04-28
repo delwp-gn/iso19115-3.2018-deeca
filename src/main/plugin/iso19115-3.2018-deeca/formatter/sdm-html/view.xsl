@@ -28,6 +28,8 @@
                 xmlns:mac="http://standards.iso.org/iso/19115/-3/mac/2.0"
                 xmlns:delwp="https://github.com/geonetwork-delwp/iso19115-3.2018"
 
+                xmlns:xlink="http://www.w3.org/1999/xlink"
+
                 xmlns:java="java:org.fao.geonet.util.XslUtil"
                 xmlns:fo="http://www.w3.org/1999/XSL/Format"
 
@@ -126,8 +128,20 @@
       <xsl:value-of select="mdb:identificationInfo[mri:MD_DataIdentification or */@gco:isoType='mri:MD_DataIdentification']/*/mri:citation/cit:CI_Citation/cit:alternateTitle" />
     </xsl:variable>
 
+    <xsl:variable name="representationType">
+      <xsl:apply-templates mode="render-value" select="mdb:identificationInfo[mri:MD_DataIdentification or */@gco:isoType='mri:MD_DataIdentification']/*/mri:spatialRepresentationType/*/@codeListValue" />
+    </xsl:variable>
+
+    <xsl:variable name="horizontalAccuracyResolution">
+      <xsl:value-of select="mdb:identificationInfo[mri:MD_DataIdentification or */@gco:isoType='mri:MD_DataIdentification']/*/mri:spatialResolution/*/mri:distance/gco:Distance" /> <xsl:value-of select="mdb:identificationInfo[mri:MD_DataIdentification or */@gco:isoType='mri:MD_DataIdentification']/*/mri:spatialResolution/*/mri:distance/gco:Distance/@uom" />
+    </xsl:variable>
+
     <xsl:variable name="ccLinkage">
       <xsl:value-of select="mdb:identificationInfo[mri:MD_DataIdentification or */@gco:isoType='mri:MD_DataIdentification']/*/mri:resourceConstraints/mco:MD_LegalConstraints/mco:reference/cit:CI_Citation/cit:CI_OnlineResource/cit:linkage"/>
+    </xsl:variable>
+
+    <xsl:variable name="metadataId">
+      <xsl:value-of select="mdb:metadataIdentifier/mcc:MD_Identifier/mcc:code" />
     </xsl:variable>
 
     <xsl:variable name="id">
@@ -172,6 +186,10 @@
       padding-top: 10px;
       padding-bottom: 10px;
       }
+
+      .keyValueList p {
+        margin: 0;
+      }
     </style>
 
 
@@ -212,8 +230,8 @@
             <td><xsl:value-of select="$title"/></td>
           </tr>
           <tr class="labelCell">
-            <td class="keyColumn">Anzlic ID:</td>
-            <td><xsl:value-of select="$id"/></td>
+            <td class="keyColumn">Metadata ID:</td>
+            <td><xsl:value-of select="$metadataId"/></td>
           </tr>
           <!-- <tr class="labelCell">
             <td class="keyColumn">Cutodial Program:</td>
@@ -221,8 +239,10 @@
           </tr> -->
           <tr class="labelCell">
             <td class="keyColumn">Custodian:</td>
-            <td>
-              <xsl:apply-templates mode="render-value" select="mdb:identificationInfo[mri:MD_DataIdentification or */@gco:isoType='mri:MD_DataIdentification']/*/mri:citation/cit:CI_Citation/cit:citedResponsibleParty/cit:CI_Responsibility[cit:role/cit:CI_RoleCode/@codeListValue = 'custodian']/cit:party/cit:CI_Organisation/cit:name"/>
+            <td class="keyValueList">
+              <xsl:for-each select="mdb:identificationInfo[mri:MD_DataIdentification or */@gco:isoType='mri:MD_DataIdentification']/*/mri:citation/cit:CI_Citation/cit:citedResponsibleParty/cit:CI_Responsibility[cit:role/cit:CI_RoleCode/@codeListValue = 'custodian']/cit:party/cit:CI_Organisation">
+                <p><xsl:apply-templates mode="render-value" select="cit:name"/></p>
+              </xsl:for-each>
             </td>
           </tr>
           <tr class="labelCell">
@@ -249,7 +269,9 @@
           <tr class="labelCell">
             <td class="keyColumn">Publication Date:</td>
             <td>
-              <xsl:value-of select="format-dateTime(mdb:identificationInfo[mri:MD_DataIdentification or */@gco:isoType='mri:MD_DataIdentification']/*/mri:citation/cit:CI_Citation/cit:date/cit:CI_Date[cit:dateType/cit:CI_DateTypeCode/@codeListValue = 'publication']/cit:date,'[D01] [MNn] [Y0001]')"/>
+              <xsl:if test="string(mdb:identificationInfo[mri:MD_DataIdentification or */@gco:isoType='mri:MD_DataIdentification']/*/mri:citation/cit:CI_Citation/cit:date/cit:CI_Date[cit:dateType/cit:CI_DateTypeCode/@codeListValue = 'publication']/cit:date/*/text())">
+                <xsl:value-of select="format-dateTime(mdb:identificationInfo[mri:MD_DataIdentification or */@gco:isoType='mri:MD_DataIdentification']/*/mri:citation/cit:CI_Citation/cit:date/cit:CI_Date[cit:dateType/cit:CI_DateTypeCode/@codeListValue = 'publication']/cit:date,'[D01] [MNn] [Y0001]')"/>
+              </xsl:if>
             </td>
           </tr>
           <tr class="labelCell">
@@ -325,24 +347,34 @@
             </td>
           </tr>
           <tr class="labelCell">
-            <td class="keyColumn">Anzlic ID:</td>
+            <td class="keyColumn">Metadata ID:</td>
             <td>
-              <xsl:value-of select="$id"/>
+              <xsl:value-of select="$metadataId"/>
             </td>
           </tr>
           <tr class="labelCell">
             <td class="keyColumn">Custodian:</td>
-            <td>
-              <xsl:apply-templates mode="render-value"
-                                   select="mdb:identificationInfo[mri:MD_DataIdentification or */@gco:isoType='mri:MD_DataIdentification']/*/mri:citation/cit:CI_Citation/cit:citedResponsibleParty/cit:CI_Responsibility[cit:role/cit:CI_RoleCode/@codeListValue = 'custodian']/cit:party/cit:CI_Organisation/cit:name"/>
+            <td class="keyValueList">
+              <xsl:for-each select="mdb:identificationInfo[mri:MD_DataIdentification or */@gco:isoType='mri:MD_DataIdentification']/*/mri:citation/cit:CI_Citation/cit:citedResponsibleParty/cit:CI_Responsibility[cit:role/cit:CI_RoleCode/@codeListValue = 'custodian']/cit:party/cit:CI_Organisation[string(cit:name)]">
+                <p><xsl:apply-templates mode="render-value" select="cit:name"/></p>
+              </xsl:for-each>
             </td>
           </tr>
           <tr class="labelCell">
             <td class="keyColumn">Owner:</td>
-            <td>
-              <xsl:value-of
-                select="mdb:identificationInfo[mri:MD_DataIdentification or */@gco:isoType='mri:MD_DataIdentification']/*/mri:citation/cit:CI_Citation/cit:citedResponsibleParty/cit:CI_Responsibility[cit:role/cit:CI_RoleCode/@codeListValue = 'owner']/cit:party/cit:CI_Organisation/cit:name"/>
+            <td class="keyValueList">
+              <xsl:for-each select="mdb:identificationInfo[mri:MD_DataIdentification or */@gco:isoType='mri:MD_DataIdentification']/*/mri:citation/cit:CI_Citation/cit:citedResponsibleParty/cit:CI_Responsibility[cit:role/cit:CI_RoleCode/@codeListValue = 'owner']/cit:party/cit:CI_Organisation[string(cit:name)]">
+                <p><xsl:apply-templates mode="render-value" select="cit:name"/></p>
+              </xsl:for-each>
             </td>
+            <tr class="labelCell">
+              <td  class="keyColumn">Representation Type:</td>
+              <td><xsl:value-of select="$representationType"/></td>
+            </tr>
+            <tr class="labelCell">
+              <td  class="keyColumn">Horizontal Accuracy Resolution:</td>
+              <td><xsl:value-of select="$horizontalAccuracyResolution"/></td>
+            </tr>
             <tr class="labelCell">
               <td class="keyColumn">Jurisdiction:</td>
               <td>
@@ -453,7 +485,7 @@
             </td>
           </tr>
           <tr class="labelCell">
-            <td class="keyColumn">Maintainence and Update Frequency:</td>
+            <td class="keyColumn">Maintenance and Update Frequency:</td>
             <td>
               <xsl:apply-templates mode="render-value"
                                    select="mdb:identificationInfo[mri:MD_DataIdentification or */@gco:isoType='mri:MD_DataIdentification']/*/mri:resourceMaintenance/mmi:MD_MaintenanceInformation/mmi:maintenanceAndUpdateFrequency/mmi:MD_MaintenanceFrequencyCode/@codeListValue"/>
@@ -508,50 +540,10 @@
               </xsl:call-template>
             </td>
           </tr>
-
-
           <tr class="labelCell">
-            <td class="keyColumn">Contact Organisation:</td>
+            <td class="keyColumn">Contact:</td>
             <td>
-              <xsl:value-of select="mdb:contact/cit:CI_Responsibility/cit:party/cit:CI_Organisation/cit:name"/>
-            </td>
-          </tr>
-          <tr class="labelCell">
-            <td class="keyColumn">Contact Position:</td>
-            <td>
-              <xsl:value-of
-                select="mdb:contact/cit:CI_Responsibility/cit:party/cit:CI_Organisation/cit:individual/cit:CI_Individual/cit:positionName"/>
-            </td>
-          </tr>
-          <tr class="labelCell">
-            <td class="keyColumn">Address:</td>
-            <td>
-              <xsl:for-each
-                select="mdb:contact/cit:CI_Responsibility/cit:party/cit:CI_Organisation/cit:contactInfo/cit:CI_Contact/cit:address/*">
-                <xsl:apply-templates mode="render-value" select="."/>
-                <br/>
-              </xsl:for-each>
-            </td>
-          </tr>
-          <tr class="labelCell">
-            <td class="keyColumn">Telephone:</td>
-            <td>
-              <xsl:apply-templates mode="render-value"
-                                   select="mdb:contact/cit:CI_Responsibility/cit:party/cit:CI_Organisation/cit:individual/cit:CI_Individual/cit:contactInfo/cit:CI_Contact/cit:phone[cit:CI_Telephone/cit:numberType/cit:CI_TelephoneTypeCode/@codeListValue = 'voice']/cit:CI_Telephone/cit:number"/>
-            </td>
-          </tr>
-          <tr class="labelCell">
-            <td class="keyColumn">Facsimile:</td>
-            <td>
-              <xsl:apply-templates mode="render-value"
-                                   select="mdb:contact/cit:CI_Responsibility/cit:party/cit:CI_Organisation/cit:individual/cit:CI_Individual/cit:contactInfo/cit:CI_Contact/cit:phone[cit:CI_Telephone/cit:numberType/cit:CI_TelephoneTypeCode/@codeListValue = 'fax']/cit:CI_Telephone/cit:number"/>
-            </td>
-          </tr>
-          <tr class="labelCell">
-            <td class="keyColumn">Email Address:</td>
-            <td>
-              <xsl:apply-templates mode="render-value"
-                                   select="mdb:contact/cit:CI_Responsibility/cit:party/cit:CI_Organisation/cit:individual/cit:CI_Individual/cit:contactInfo/cit:CI_Contact/cit:address/cit:CI_Address/cit:electronicMailAddress"/>
+              <xsl:value-of select="mdb:identificationInfo[mri:MD_DataIdentification or */@gco:isoType='mri:MD_DataIdentification']/*/mri:pointOfContact/cit:CI_Responsibility[cit:role/cit:CI_RoleCode/@codeListValue='pointOfContact']/cit:party/cit:CI_Organisation/cit:individual/cit:CI_Individual/cit:contactInfo/cit:CI_Contact/cit:address/cit:CI_Address/cit:electronicMailAddress"/>
             </td>
           </tr>
           <tr class="labelCell">
