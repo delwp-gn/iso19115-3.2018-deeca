@@ -136,10 +136,13 @@
                               cit:dateType/*/@codeListValue = 'revision'
                             ]/cit:date/gco:DateTime[gn-fn-index:is-isoDate(.)]"/>
 
-    <xsl:variable name="mainLanguage" as="xs:string?"
+    <xsl:variable name="mainLanguageAux" as="xs:string?"
                   select="mdb:defaultLocale/lan:PT_Locale/
                             lan:language/lan:LanguageCode/
                               @codeListValue[normalize-space(.) != '']"/>
+
+    <xsl:variable name="mainLanguage" as="xs:string?"
+                  select="if (string($mainLanguageAux)) then $mainLanguageAux else 'eng'"/>
 
 
     <xsl:variable name="otherLanguages" as="attribute()*"
