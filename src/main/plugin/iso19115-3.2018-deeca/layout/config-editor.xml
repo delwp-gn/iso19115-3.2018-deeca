@@ -109,7 +109,7 @@
 
     <!-- Configuration to check duplicated metadata alternate title (resource name) -->
     <for name="cit:alternateTitle"
-         xpath="/mdb:MD_Metadata/mdb:identificationInfo[mri:MD_DataIdentification or */@gco:isoType='mri:MD_DataIdentification']/*/mri:citation/cit:CI_Citation/cit:alternateTitle"
+         xpath="/mdb:MD_Metadata/mdb:identificationInfo/delwp:MD_DataIdentification/mri:citation/cit:CI_Citation/cit:alternateTitle"
          use="data-gn-duplicated-metadata-value-checker">
       <directiveAttributes
         data-field-key="altTitle" />
