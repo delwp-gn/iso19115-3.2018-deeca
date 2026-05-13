@@ -1975,7 +1975,7 @@
     </description>
   </element>
   <element name="cit:alternateTitle" id="777.1"
-           context="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:citation/cit:CI_Citation/cit:alternateTitle">
+           context="/mdb:MD_Metadata/mdb:identificationInfo/delwp:MD_DataIdentification/mri:citation/cit:CI_Citation/cit:alternateTitle">
     <label>Resource Name</label>
     <description>Name of the resource</description>
     <condition>mandatory</condition>
@@ -2070,7 +2070,7 @@
     </_condition>
   </element>
   <element name="mri:characterSet" id="40.0"
-           context="mri:MD_DataIdentification">
+           context="delwp:MD_DataIdentification">
     <label>Character set</label>
     <description>Full name of the character coding standard used for the
       dataset
@@ -3057,7 +3057,7 @@
     <description>Language used for documenting metadata</description>
     <condition>conditional</condition>
   </element>
-  <element name="mri:language" context="mri:MD_DataIdentification"
+  <element name="mri:language" context="delwp:MD_DataIdentification"
            id="39.0">
     <label>Language</label>
     <description>Language(s) used within the dataset</description>
@@ -4275,7 +4275,7 @@
     </description>
   </element>
   <element name="cit:title" id="285.0"
-           context="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:resourceFormat/mrd:MD_Format/mrd:formatSpecificationCitation/cit:CI_Citation/cit:title">
+           context="/mdb:MD_Metadata/mdb:identificationInfo/delwp:MD_DataIdentification/mri:resourceFormat/mrd:MD_Format/mrd:formatSpecificationCitation/cit:CI_Citation/cit:title">
     <label>Format name</label>
     <description>Name of the data format(s)</description>
     <help>File or link format name</help>
@@ -4714,11 +4714,11 @@
     <label>Time position</label>
     <description/>
   </element>
-  <element name="gml:timePosition" id="71000.0" context="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:extent/gex:EX_Extent/gex:temporalElement/gex:EX_TemporalExtent/gex:extent/gml:TimePeriod/gml:begin/gml:TimeInstant/gml:timePosition">
+  <element name="gml:timePosition" id="71000.0" context="/mdb:MD_Metadata/mdb:identificationInfo/delwp:MD_DataIdentification/mri:extent/gex:EX_Extent/gex:temporalElement/gex:EX_TemporalExtent/gex:extent/gml:TimePeriod/gml:begin/gml:TimeInstant/gml:timePosition">
     <label>Start Date</label>
     <description>Start of dataset temporal extent</description>
   </element>
-  <element name="gml:timePosition" id="71001.0" context="/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:extent/gex:EX_Extent/gex:temporalElement/gex:EX_TemporalExtent/gex:extent/gml:TimePeriod/gml:end/gml:TimeInstant/gml:timePosition">
+  <element name="gml:timePosition" id="71001.0" context="/mdb:MD_Metadata/mdb:identificationInfo/delwp:MD_DataIdentification/mri:extent/gex:EX_Extent/gex:temporalElement/gex:EX_TemporalExtent/gex:extent/gml:TimePeriod/gml:end/gml:TimeInstant/gml:timePosition">
     <label>End Date</label>
     <description>End of dataset temporal extent</description>
   </element>
