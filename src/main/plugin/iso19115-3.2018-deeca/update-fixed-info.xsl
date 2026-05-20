@@ -143,11 +143,11 @@
               </mdb:contact>
               <!-- copy any other metadata contacts with the exception of processors and
                    pointOfContact so we make sure that IDC is point of contact -->
-              <xsl:apply-templates select="mdb:contact[not(cit:CI_Responsibility/cit:role/cit:CI_RoleCode='processor' or cit:CI_Responsibility/cit:role/cit:CI_RoleCode='pointOfContact')]"/>
+              <xsl:apply-templates select="mdb:contact[not(cit:CI_Responsibility/cit:role/cit:CI_RoleCode/@codeListValue='processor' or cit:CI_Responsibility/cit:role/cit:CI_RoleCode/@codeListValue='pointOfContact')]"/>
             </xsl:when>
             <xsl:otherwise>
               <!-- admin does not replace a processor, so add IDC and then grab all mdb:contact except pointOfContact -->
-              <xsl:apply-templates select="mdb:contact[cit:CI_Responsibility/cit:role/cit:CI_RoleCode!='pointOfContact']"/>
+              <xsl:apply-templates select="mdb:contact[cit:CI_Responsibility/cit:role/cit:CI_RoleCode/@codeListValue!='pointOfContact']"/>
             </xsl:otherwise>
           </xsl:choose>
         </xsl:otherwise>
